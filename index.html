@@ -9,335 +9,486 @@
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
     <style>
+        /* ===== RESET & GENEL ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0b1120;
+            color: #e8edf5;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
             padding: 20px;
-            background: #f5f5f5;
         }
+
         .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #2a3f6e;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-        button {
-            background: #4caf50;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 5px;
+            max-width: 520px;
             width: 100%;
-            transition: 0.3s;
+            background: linear-gradient(145deg, #141c2f, #1a243b);
+            border-radius: 32px;
+            padding: 28px 24px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(2px);
+            transition: all 0.2s;
+        }
+
+        /* ===== HEADER ===== */
+        .app-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 6px;
+        }
+
+        .app-logo {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #f7931a, #ffb347);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 800;
+            color: #0b1120;
+            box-shadow: 0 6px 16px rgba(247, 147, 26, 0.3);
+            flex-shrink: 0;
+        }
+
+        .app-title {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(to right, #ffffff, #b0c7e7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .app-sub {
+            font-size: 13px;
+            color: #8899bb;
+            margin-top: -4px;
+            margin-left: 62px;
+            margin-bottom: 20px;
+            letter-spacing: 0.3px;
+        }
+
+        /* ===== KULLANICI BİLGİSİ ===== */
+        .user-info {
+            background: rgba(46, 125, 50, 0.15);
+            border: 1px solid rgba(76, 175, 80, 0.25);
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 14px;
+            color: #81c784;
+            display: none;
+            margin-bottom: 18px;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(2px);
+        }
+        .user-info.visible {
+            display: flex;
+        }
+        .user-info .icon {
+            font-size: 18px;
+        }
+        .user-info .name {
+            font-weight: 600;
+            color: #a5d6a7;
+        }
+
+        /* ===== BUTONLAR ===== */
+        button {
+            background: linear-gradient(135deg, #2a3f6e, #1d2d4f);
+            color: white;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.25s ease;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
         }
         button:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            opacity: 0.95;
+        }
+        button:active {
+            transform: scale(0.97);
         }
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none !important;
         }
+
         .wallet-btn {
-            background: #2a3f6e;
+            background: linear-gradient(135deg, #f7931a, #e67e22);
+            color: #0b1120;
+            font-weight: 700;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 20px rgba(247, 147, 26, 0.25);
         }
-        .product {
-            background: #f8f9fa;
-            padding: 15px;
-            margin: 12px 0;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-            text-align: left;
+        .wallet-btn:hover {
+            box-shadow: 0 6px 28px rgba(247, 147, 26, 0.4);
         }
-        .product h3 {
-            font-size: 16px;
-            color: #333;
-        }
-        .product .price {
-            font-size: 18px;
-            font-weight: bold;
-            color: #2a3f6e;
-        }
-        .product .desc {
-            font-size: 12px;
-            color: #888;
-            margin: 5px 0 10px;
-        }
-        .product .usd-price {
-            font-size: 11px;
-            color: #999;
-        }
+
         .buy-btn {
-            background: #ff6b35;
+            background: linear-gradient(135deg, #00b894, #00a381);
             width: auto;
-            padding: 8px 20px;
+            padding: 10px 28px;
             font-size: 13px;
+            border-radius: 40px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(0, 184, 148, 0.2);
+            margin-top: 8px;
         }
-        .category {
-            margin: 25px 0 15px;
-            padding: 10px 0;
-            border-bottom: 2px solid #2a3f6e;
+        .buy-btn:hover {
+            box-shadow: 0 6px 24px rgba(0, 184, 148, 0.35);
         }
-        .category h3 {
-            font-size: 18px;
-            color: #2a3f6e;
-            text-align: left;
-        }
-        .user-info {
-            background: #e3f2fd;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-            font-size: 14px;
-            color: #0d47a1;
-            display: none;
-        }
-        .user-info.visible {
-            display: block;
-        }
+
+        /* ===== DURUM MESAJI ===== */
         .status {
-            background: #e8f5e9;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 15px 0;
+            background: rgba(46, 125, 50, 0.12);
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin: 12px 0 18px;
             display: none;
             font-size: 14px;
+            border-left: 3px solid #4caf50;
+            color: #b0d4b0;
         }
+        .status.error {
+            background: rgba(198, 40, 40, 0.12);
+            border-left-color: #c62828;
+            color: #ef9a9a;
+        }
+
+        /* ===== ÜRÜNLER ===== */
         #productSection {
             display: none;
+            margin-top: 18px;
         }
         #productSection.visible {
             display: block;
         }
-        .footer {
-            margin-top: 30px;
-            font-size: 12px;
-            color: #999;
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #e8edf5;
+            margin-bottom: 4px;
         }
-        .gcv-note {
-            background: #fff3cd;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 15px;
+        .section-sub {
             font-size: 13px;
-            color: #856404;
+            color: #8899bb;
+            margin-bottom: 20px;
+        }
+
+        .gcv-note {
+            background: rgba(247, 147, 26, 0.08);
+            border: 1px solid rgba(247, 147, 26, 0.15);
+            padding: 12px 16px;
+            border-radius: 14px;
+            margin-bottom: 22px;
+            font-size: 13px;
+            color: #f0c27a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
         }
         .gcv-note strong {
-            color: #d39e00;
+            color: #f7931a;
+            font-size: 15px;
+        }
+
+        .category {
+            margin: 28px 0 14px;
+        }
+        .category h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #b0c7e7;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .product {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(2px);
+            padding: 16px 18px;
+            margin: 12px 0;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s;
+        }
+        .product:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+        .product h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #e8edf5;
+            margin-bottom: 2px;
+        }
+        .product .price-pi {
+            font-size: 20px;
+            font-weight: 700;
+            color: #f7931a;
+        }
+        .product .price-usd {
+            font-size: 13px;
+            color: #8899bb;
+            margin-left: 6px;
+        }
+        .product .desc {
+            font-size: 13px;
+            color: #8899bb;
+            margin: 4px 0 10px;
+            line-height: 1.4;
+        }
+        .product .buy-row {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 36px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 12px;
+            color: #556688;
+            text-align: center;
+            letter-spacing: 0.3px;
+        }
+        .footer strong {
+            color: #8899bb;
+        }
+
+        /* ===== LOADING ===== */
+        .loading-dots::after {
+            content: '...';
+            animation: dots 1.2s steps(4, end) infinite;
+        }
+        @keyframes dots {
+            0% { content: ''; }
+            25% { content: '.'; }
+            50% { content: '..'; }
+            75% { content: '...'; }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .container { padding: 18px 14px 30px; }
+            .app-title { font-size: 20px; }
+            .product .price-pi { font-size: 18px; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>🛡️ Pi Trust</h1>
-        <p class="subtitle">Güvenli ticaretin yeni adresi</p>
 
-        <!-- Kullanıcı Bilgisi -->
+        <!-- ===== HEADER ===== -->
+        <div class="app-header">
+            <div class="app-logo">🛡️</div>
+            <div>
+                <div class="app-title">Pi Trust</div>
+            </div>
+        </div>
+        <div class="app-sub">Güvenli ticaretin yeni adresi</div>
+
+        <!-- ===== KULLANICI BİLGİSİ ===== -->
         <div id="userInfo" class="user-info">
-            ✅ Hoş geldin, <span id="usernameDisplay"></span>!
+            <span class="icon">✅</span>
+            Hoş geldin, <span class="name" id="usernameDisplay"></span>!
         </div>
 
-        <!-- Giriş Butonu -->
+        <!-- ===== GİRİŞ BUTONU ===== -->
         <button id="loginBtn" class="wallet-btn">🔗 Pi ile Giriş Yap</button>
 
-        <!-- Durum Mesajı -->
+        <!-- ===== DURUM MESAJI ===== -->
         <div id="status" class="status"></div>
 
         <!-- ===== ÜRÜNLER BÖLÜMÜ ===== -->
         <div id="productSection">
-            <h2 style="font-size: 20px; color: #333; margin: 20px 0 10px;">🌍 Global Pazar Yeri</h2>
+            <div class="section-title">🌍 Global Pazar Yeri</div>
+            <div class="section-sub">GCV bazlı gerçek fiyatlar</div>
+
             <div class="gcv-note">
-                💎 <strong>GCV: 1 Pi = 314.159 $</strong><br />
-                Tüm fiyatlar bu değere göre hesaplanmıştır.
+                💎 <strong>1 Pi = 314.159 $</strong> (GCV)
+                <span style="color:#8899bb; margin-left:auto;">• 18+ ürün</span>
             </div>
 
             <!-- KATEGORİ: ARAÇLAR -->
             <div class="category"><h3>🚗 Araçlar</h3></div>
 
             <div class="product">
-                <h3>Tesla Model 3 (2024)</h3>
-                <div class="price">≈ 133,690 Pi</div>
-                <div class="usd-price">42,000 $</div>
+                <h4>Tesla Model 3 (2024)</h4>
+                <div><span class="price-pi">≈ 133,690 Pi</span> <span class="price-usd">• 42,000 $</span></div>
                 <div class="desc">Sıfır, elektrikli, otomatik pilot</div>
-                <button class="buy-btn" onclick="buyProduct('Tesla Model 3', 133690)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Tesla Model 3', 133690)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>TOGG T10X (2024)</h3>
-                <div class="price">≈ 111,408 Pi</div>
-                <div class="usd-price">35,000 $</div>
+                <h4>TOGG T10X (2024)</h4>
+                <div><span class="price-pi">≈ 111,408 Pi</span> <span class="price-usd">• 35,000 $</span></div>
                 <div class="desc">Yerli üretim, elektrikli SUV</div>
-                <button class="buy-btn" onclick="buyProduct('TOGG T10X', 111408)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('TOGG T10X', 111408)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>BMW iX (2023)</h3>
-                <div class="price">≈ 120,958 Pi</div>
-                <div class="usd-price">38,000 $</div>
+                <h4>BMW iX (2023)</h4>
+                <div><span class="price-pi">≈ 120,958 Pi</span> <span class="price-usd">• 38,000 $</span></div>
                 <div class="desc">Elektrikli, lüks SUV</div>
-                <button class="buy-btn" onclick="buyProduct('BMW iX', 120958)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('BMW iX', 120958)">Satın Al</button></div>
             </div>
 
             <!-- KATEGORİ: EMLAK -->
             <div class="category"><h3>🏠 Emlak</h3></div>
 
             <div class="product">
-                <h3>Şehir Merkezi Daire</h3>
-                <div class="price">≈ 477,464 Pi</div>
-                <div class="usd-price">150,000 $</div>
+                <h4>Şehir Merkezi Daire</h4>
+                <div><span class="price-pi">≈ 477,464 Pi</span> <span class="price-usd">• 150,000 $</span></div>
                 <div class="desc">3+1, 140 m², havuzlu site</div>
-                <button class="buy-btn" onclick="buyProduct('Şehir Merkezi Daire', 477464)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Şehir Merkezi Daire', 477464)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>Deniz Manzaralı Villa</h3>
-                <div class="price">≈ 1,273,237 Pi</div>
-                <div class="usd-price">400,000 $</div>
+                <h4>Deniz Manzaralı Villa</h4>
+                <div><span class="price-pi">≈ 1,273,237 Pi</span> <span class="price-usd">• 400,000 $</span></div>
                 <div class="desc">5+2, 300 m², özel havuz</div>
-                <button class="buy-btn" onclick="buyProduct('Deniz Manzaralı Villa', 1273237)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Deniz Manzaralı Villa', 1273237)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>Yatırımlık Arsa</h3>
-                <div class="price">≈ 238,732 Pi</div>
-                <div class="usd-price">75,000 $</div>
+                <h4>Yatırımlık Arsa</h4>
+                <div><span class="price-pi">≈ 238,732 Pi</span> <span class="price-usd">• 75,000 $</span></div>
                 <div class="desc">500 m², imarlı, şehir yakını</div>
-                <button class="buy-btn" onclick="buyProduct('Yatırımlık Arsa', 238732)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Yatırımlık Arsa', 238732)">Satın Al</button></div>
             </div>
 
             <!-- KATEGORİ: UÇUŞ BİLETLERİ -->
             <div class="category"><h3>✈️ Uçuş Biletleri</h3></div>
 
             <div class="product">
-                <h3>İstanbul - Londra</h3>
-                <div class="price">≈ 3,820 Pi</div>
-                <div class="usd-price">1,200 $</div>
+                <h4>İstanbul - Londra</h4>
+                <div><span class="price-pi">≈ 3,820 Pi</span> <span class="price-usd">• 1,200 $</span></div>
                 <div class="desc">THY, Business Class</div>
-                <button class="buy-btn" onclick="buyProduct('İstanbul - Londra', 3820)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - Londra', 3820)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>İstanbul - Dubai</h3>
-                <div class="price">≈ 2,546 Pi</div>
-                <div class="usd-price">800 $</div>
+                <h4>İstanbul - Dubai</h4>
+                <div><span class="price-pi">≈ 2,546 Pi</span> <span class="price-usd">• 800 $</span></div>
                 <div class="desc">Emirates, Ekonomi</div>
-                <button class="buy-btn" onclick="buyProduct('İstanbul - Dubai', 2546)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - Dubai', 2546)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>İstanbul - New York</h3>
-                <div class="price">≈ 7,957 Pi</div>
-                <div class="usd-price">2,500 $</div>
+                <h4>İstanbul - New York</h4>
+                <div><span class="price-pi">≈ 7,957 Pi</span> <span class="price-usd">• 2,500 $</span></div>
                 <div class="desc">THY, Business Class</div>
-                <button class="buy-btn" onclick="buyProduct('İstanbul - New York', 7957)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - New York', 7957)">Satın Al</button></div>
             </div>
 
             <!-- KATEGORİ: ELEKTRONİK -->
             <div class="category"><h3>📱 Elektronik</h3></div>
 
             <div class="product">
-                <h3>iPhone 16 Pro Max</h3>
-                <div class="price">≈ 3,820 Pi</div>
-                <div class="usd-price">1,200 $</div>
+                <h4>iPhone 16 Pro Max</h4>
+                <div><span class="price-pi">≈ 3,820 Pi</span> <span class="price-usd">• 1,200 $</span></div>
                 <div class="desc">512GB, titanyum</div>
-                <button class="buy-btn" onclick="buyProduct('iPhone 16 Pro Max', 3820)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('iPhone 16 Pro Max', 3820)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>MacBook Pro M3</h3>
-                <div class="price">≈ 7,002 Pi</div>
-                <div class="usd-price">2,200 $</div>
+                <h4>MacBook Pro M3</h4>
+                <div><span class="price-pi">≈ 7,002 Pi</span> <span class="price-usd">• 2,200 $</span></div>
                 <div class="desc">16GB RAM, 512GB SSD</div>
-                <button class="buy-btn" onclick="buyProduct('MacBook Pro M3', 7002)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('MacBook Pro M3', 7002)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>PlayStation 5</h3>
-                <div class="price">≈ 1,751 Pi</div>
-                <div class="usd-price">550 $</div>
+                <h4>PlayStation 5</h4>
+                <div><span class="price-pi">≈ 1,751 Pi</span> <span class="price-usd">• 550 $</span></div>
                 <div class="desc">Sıfır, 2 kollu</div>
-                <button class="buy-btn" onclick="buyProduct('PlayStation 5', 1751)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('PlayStation 5', 1751)">Satın Al</button></div>
             </div>
 
             <!-- KATEGORİ: DİJİTAL HİZMETLER -->
             <div class="category"><h3>💻 Dijital Hizmetler</h3></div>
 
             <div class="product">
-                <h3>Kurumsal Web Tasarım</h3>
-                <div class="price">≈ 7,957 Pi</div>
-                <div class="usd-price">2,500 $</div>
+                <h4>Kurumsal Web Tasarım</h4>
+                <div><span class="price-pi">≈ 7,957 Pi</span> <span class="price-usd">• 2,500 $</span></div>
                 <div class="desc">Kurumsal web sitesi, SEO uyumlu</div>
-                <button class="buy-btn" onclick="buyProduct('Kurumsal Web Tasarım', 7957)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Kurumsal Web Tasarım', 7957)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>SEO & Dijital Pazarlama</h3>
-                <div class="price">≈ 4,774 Pi</div>
-                <div class="usd-price">1,500 $</div>
+                <h4>SEO & Dijital Pazarlama</h4>
+                <div><span class="price-pi">≈ 4,774 Pi</span> <span class="price-usd">• 1,500 $</span></div>
                 <div class="desc">Aylık SEO ve reklam yönetimi</div>
-                <button class="buy-btn" onclick="buyProduct('SEO & Dijital Pazarlama', 4774)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('SEO & Dijital Pazarlama', 4774)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>Logo & Marka Tasarımı</h3>
-                <div class="price">≈ 2,546 Pi</div>
-                <div class="usd-price">800 $</div>
+                <h4>Logo & Marka Tasarımı</h4>
+                <div><span class="price-pi">≈ 2,546 Pi</span> <span class="price-usd">• 800 $</span></div>
                 <div class="desc">Profesyonel kurumsal kimlik</div>
-                <button class="buy-btn" onclick="buyProduct('Logo & Marka Tasarımı', 2546)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Logo & Marka Tasarımı', 2546)">Satın Al</button></div>
             </div>
 
             <!-- KATEGORİ: EĞİTİM -->
             <div class="category"><h3>📚 Eğitim</h3></div>
 
             <div class="product">
-                <h3>Full-Stack Bootcamp</h3>
-                <div class="price">≈ 8,913 Pi</div>
-                <div class="usd-price">2,800 $</div>
+                <h4>Full-Stack Bootcamp</h4>
+                <div><span class="price-pi">≈ 8,913 Pi</span> <span class="price-usd">• 2,800 $</span></div>
                 <div class="desc">Full-stack, 12 hafta, sertifikalı</div>
-                <button class="buy-btn" onclick="buyProduct('Full-Stack Bootcamp', 8913)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Full-Stack Bootcamp', 8913)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>Online İngilizce Kursu</h3>
-                <div class="price">≈ 1,910 Pi</div>
-                <div class="usd-price">600 $</div>
+                <h4>Online İngilizce Kursu</h4>
+                <div><span class="price-pi">≈ 1,910 Pi</span> <span class="price-usd">• 600 $</span></div>
                 <div class="desc">6 ay, konuşma odaklı</div>
-                <button class="buy-btn" onclick="buyProduct('Online İngilizce Kursu', 1910)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Online İngilizce Kursu', 1910)">Satın Al</button></div>
             </div>
 
             <div class="product">
-                <h3>Kariyer Mentörlüğü</h3>
-                <div class="price">≈ 1,273 Pi</div>
-                <div class="usd-price">400 $</div>
+                <h4>Kariyer Mentörlüğü</h4>
+                <div><span class="price-pi">≈ 1,273 Pi</span> <span class="price-usd">• 400 $</span></div>
                 <div class="desc">1 ay, birebir kariyer koçluğu</div>
-                <button class="buy-btn" onclick="buyProduct('Kariyer Mentörlüğü', 1273)">Satın Al</button>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Kariyer Mentörlüğü', 1273)">Satın Al</button></div>
             </div>
 
         </div><!-- /productSection -->
 
-        <p class="footer">Pi Trust Protocol v1.0 | GCV: 1 Pi = 314.159 $</p>
+        <div class="footer">
+            <strong>Pi Trust Protocol</strong> v1.0 &nbsp;•&nbsp; GCV: 1 Pi = 314.159 $
+        </div>
+
     </div>
 
     <!-- ===== JAVASCRIPT ===== -->
@@ -345,21 +496,19 @@
         (function() {
             'use strict';
 
-            // --- DOM Elemanları ---
+            // --- DOM ---
             const loginBtn = document.getElementById('loginBtn');
             const statusDiv = document.getElementById('status');
             const userInfoDiv = document.getElementById('userInfo');
             const usernameSpan = document.getElementById('usernameDisplay');
             const productSection = document.getElementById('productSection');
 
-            // --- GCV Sabiti ---
-            const GCV = 314159; // 1 Pi = 314.159 $
+            const GCV = 314159;
 
             function setStatus(msg, isErr) {
                 statusDiv.style.display = 'block';
                 statusDiv.textContent = msg;
-                statusDiv.style.background = isErr ? '#ffebee' : '#e8f5e9';
-                statusDiv.style.color = isErr ? '#c62828' : '#2e7d32';
+                statusDiv.className = 'status' + (isErr ? ' error' : '');
             }
 
             function hideStatus() {
@@ -382,13 +531,11 @@
                 }
             }
 
-            // --- Backend simülasyonu ---
             async function verifyOnBackend(accessToken) {
-                console.log('Access Token alındı (backend doğrulaması simüle edildi):', accessToken);
+                console.log('Access Token (backend simülasyonu):', accessToken);
                 return true;
             }
 
-            // --- Ana Authentication ---
             async function authenticateWithPi() {
                 setStatus('⏳ Pi Browser ile bağlantı kuruluyor...');
                 try {
@@ -418,7 +565,6 @@
                 await authenticateWithPi();
             }
 
-            // --- Sayfa yüklenince ---
             window.addEventListener('load', async function() {
                 try {
                     await Pi.init({ version: '2.0' });
@@ -432,21 +578,26 @@
                 }
             });
 
-            // --- Satın Al butonu ---
+            // --- Satın Al ---
             window.buyProduct = function(name, price) {
                 const userInfo = document.getElementById('userInfo');
                 if (!userInfo.classList.contains('visible')) {
                     alert('⚠️ Lütfen önce Pi ile giriş yapın!');
                     return;
                 }
-                // Pi cinsinden fiyatı göster
-                alert('🛒 ' + name + ' satın alınıyor!\n💰 Fiyat: ' + price.toLocaleString('tr-TR') + ' Pi\n\nGCV: 1 Pi = 314.159 $\n(Ödeme sistemi henüz aktif değil.)');
+
+                // Pi Payments simülasyonu
+                const msg = '🛒 ' + name + ' satın alınıyor!\n' +
+                            '💰 Fiyat: ' + price.toLocaleString('tr-TR') + ' Pi\n' +
+                            '💎 GCV: 1 Pi = 314.159 $\n\n' +
+                            '✅ Ödeme sistemi aktif değil. Demo modu.';
+                alert(msg);
+
+                // Gerçek Pi Payments için buraya Pi.createPayment() gelecek
+                console.log('Satın alındı:', name, price, 'Pi');
             };
 
-            // --- Konsola GCV bilgisi yaz ---
-            console.log('Pi Trust Protocol v1.0');
-            console.log('GCV: 1 Pi = 314.159 $');
-
+            console.log('Pi Trust Protocol v1.0 | GCV: 1 Pi = 314.159 $');
         })();
     </script>
 
