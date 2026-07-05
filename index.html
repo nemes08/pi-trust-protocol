@@ -284,18 +284,6 @@
             color: #8899bb;
         }
 
-        /* ===== LOADING ===== */
-        .loading-dots::after {
-            content: '...';
-            animation: dots 1.2s steps(4, end) infinite;
-        }
-        @keyframes dots {
-            0% { content: ''; }
-            25% { content: '.'; }
-            50% { content: '..'; }
-            75% { content: '...'; }
-        }
-
         /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
             .container { padding: 18px 14px 30px; }
@@ -344,23 +332,23 @@
 
             <div class="product">
                 <h4>Tesla Model 3 (2024)</h4>
-                <div><span class="price-pi">≈ 133,690 Pi</span> <span class="price-usd">• 42,000 $</span></div>
+                <div><span class="price-pi">0.133 Pi</span> <span class="price-usd">• 42,000 $</span></div>
                 <div class="desc">Sıfır, elektrikli, otomatik pilot</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Tesla Model 3', 133690)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Tesla Model 3', 0.133)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>TOGG T10X (2024)</h4>
-                <div><span class="price-pi">≈ 111,408 Pi</span> <span class="price-usd">• 35,000 $</span></div>
+                <div><span class="price-pi">0.111 Pi</span> <span class="price-usd">• 35,000 $</span></div>
                 <div class="desc">Yerli üretim, elektrikli SUV</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('TOGG T10X', 111408)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('TOGG T10X', 0.111)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>BMW iX (2023)</h4>
-                <div><span class="price-pi">≈ 120,958 Pi</span> <span class="price-usd">• 38,000 $</span></div>
+                <div><span class="price-pi">0.120 Pi</span> <span class="price-usd">• 38,000 $</span></div>
                 <div class="desc">Elektrikli, lüks SUV</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('BMW iX', 120958)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('BMW iX', 0.120)">Satın Al</button></div>
             </div>
 
             <!-- KATEGORİ: EMLAK -->
@@ -368,23 +356,23 @@
 
             <div class="product">
                 <h4>Şehir Merkezi Daire</h4>
-                <div><span class="price-pi">≈ 477,464 Pi</span> <span class="price-usd">• 150,000 $</span></div>
+                <div><span class="price-pi">0.477 Pi</span> <span class="price-usd">• 150,000 $</span></div>
                 <div class="desc">3+1, 140 m², havuzlu site</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Şehir Merkezi Daire', 477464)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Şehir Merkezi Daire', 0.477)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>Deniz Manzaralı Villa</h4>
-                <div><span class="price-pi">≈ 1,273,237 Pi</span> <span class="price-usd">• 400,000 $</span></div>
+                <div><span class="price-pi">1.273 Pi</span> <span class="price-usd">• 400,000 $</span></div>
                 <div class="desc">5+2, 300 m², özel havuz</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Deniz Manzaralı Villa', 1273237)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Deniz Manzaralı Villa', 1.273)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>Yatırımlık Arsa</h4>
-                <div><span class="price-pi">≈ 238,732 Pi</span> <span class="price-usd">• 75,000 $</span></div>
+                <div><span class="price-pi">0.238 Pi</span> <span class="price-usd">• 75,000 $</span></div>
                 <div class="desc">500 m², imarlı, şehir yakını</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Yatırımlık Arsa', 238732)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Yatırımlık Arsa', 0.238)">Satın Al</button></div>
             </div>
 
             <!-- KATEGORİ: UÇUŞ BİLETLERİ -->
@@ -392,23 +380,23 @@
 
             <div class="product">
                 <h4>İstanbul - Londra</h4>
-                <div><span class="price-pi">≈ 3,820 Pi</span> <span class="price-usd">• 1,200 $</span></div>
+                <div><span class="price-pi">0.0038 Pi</span> <span class="price-usd">• 1,200 $</span></div>
                 <div class="desc">THY, Business Class</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - Londra', 3820)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - Londra', 0.0038)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>İstanbul - Dubai</h4>
-                <div><span class="price-pi">≈ 2,546 Pi</span> <span class="price-usd">• 800 $</span></div>
+                <div><span class="price-pi">0.0025 Pi</span> <span class="price-usd">• 800 $</span></div>
                 <div class="desc">Emirates, Ekonomi</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - Dubai', 2546)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - Dubai', 0.0025)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>İstanbul - New York</h4>
-                <div><span class="price-pi">≈ 7,957 Pi</span> <span class="price-usd">• 2,500 $</span></div>
+                <div><span class="price-pi">0.0079 Pi</span> <span class="price-usd">• 2,500 $</span></div>
                 <div class="desc">THY, Business Class</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - New York', 7957)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - New York', 0.0079)">Satın Al</button></div>
             </div>
 
             <!-- KATEGORİ: ELEKTRONİK -->
@@ -416,23 +404,23 @@
 
             <div class="product">
                 <h4>iPhone 16 Pro Max</h4>
-                <div><span class="price-pi">≈ 3,820 Pi</span> <span class="price-usd">• 1,200 $</span></div>
+                <div><span class="price-pi">0.0038 Pi</span> <span class="price-usd">• 1,200 $</span></div>
                 <div class="desc">512GB, titanyum</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('iPhone 16 Pro Max', 3820)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('iPhone 16 Pro Max', 0.0038)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>MacBook Pro M3</h4>
-                <div><span class="price-pi">≈ 7,002 Pi</span> <span class="price-usd">• 2,200 $</span></div>
+                <div><span class="price-pi">0.0070 Pi</span> <span class="price-usd">• 2,200 $</span></div>
                 <div class="desc">16GB RAM, 512GB SSD</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('MacBook Pro M3', 7002)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('MacBook Pro M3', 0.0070)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>PlayStation 5</h4>
-                <div><span class="price-pi">≈ 1,751 Pi</span> <span class="price-usd">• 550 $</span></div>
+                <div><span class="price-pi">0.0017 Pi</span> <span class="price-usd">• 550 $</span></div>
                 <div class="desc">Sıfır, 2 kollu</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('PlayStation 5', 1751)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('PlayStation 5', 0.0017)">Satın Al</button></div>
             </div>
 
             <!-- KATEGORİ: DİJİTAL HİZMETLER -->
@@ -440,23 +428,23 @@
 
             <div class="product">
                 <h4>Kurumsal Web Tasarım</h4>
-                <div><span class="price-pi">≈ 7,957 Pi</span> <span class="price-usd">• 2,500 $</span></div>
+                <div><span class="price-pi">0.0079 Pi</span> <span class="price-usd">• 2,500 $</span></div>
                 <div class="desc">Kurumsal web sitesi, SEO uyumlu</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Kurumsal Web Tasarım', 7957)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Kurumsal Web Tasarım', 0.0079)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>SEO & Dijital Pazarlama</h4>
-                <div><span class="price-pi">≈ 4,774 Pi</span> <span class="price-usd">• 1,500 $</span></div>
+                <div><span class="price-pi">0.0047 Pi</span> <span class="price-usd">• 1,500 $</span></div>
                 <div class="desc">Aylık SEO ve reklam yönetimi</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('SEO & Dijital Pazarlama', 4774)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('SEO & Dijital Pazarlama', 0.0047)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>Logo & Marka Tasarımı</h4>
-                <div><span class="price-pi">≈ 2,546 Pi</span> <span class="price-usd">• 800 $</span></div>
+                <div><span class="price-pi">0.0025 Pi</span> <span class="price-usd">• 800 $</span></div>
                 <div class="desc">Profesyonel kurumsal kimlik</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Logo & Marka Tasarımı', 2546)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Logo & Marka Tasarımı', 0.0025)">Satın Al</button></div>
             </div>
 
             <!-- KATEGORİ: EĞİTİM -->
@@ -464,23 +452,23 @@
 
             <div class="product">
                 <h4>Full-Stack Bootcamp</h4>
-                <div><span class="price-pi">≈ 8,913 Pi</span> <span class="price-usd">• 2,800 $</span></div>
+                <div><span class="price-pi">0.0089 Pi</span> <span class="price-usd">• 2,800 $</span></div>
                 <div class="desc">Full-stack, 12 hafta, sertifikalı</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Full-Stack Bootcamp', 8913)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Full-Stack Bootcamp', 0.0089)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>Online İngilizce Kursu</h4>
-                <div><span class="price-pi">≈ 1,910 Pi</span> <span class="price-usd">• 600 $</span></div>
+                <div><span class="price-pi">0.0019 Pi</span> <span class="price-usd">• 600 $</span></div>
                 <div class="desc">6 ay, konuşma odaklı</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Online İngilizce Kursu', 1910)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Online İngilizce Kursu', 0.0019)">Satın Al</button></div>
             </div>
 
             <div class="product">
                 <h4>Kariyer Mentörlüğü</h4>
-                <div><span class="price-pi">≈ 1,273 Pi</span> <span class="price-usd">• 400 $</span></div>
+                <div><span class="price-pi">0.0012 Pi</span> <span class="price-usd">• 400 $</span></div>
                 <div class="desc">1 ay, birebir kariyer koçluğu</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Kariyer Mentörlüğü', 1273)">Satın Al</button></div>
+                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Kariyer Mentörlüğü', 0.0012)">Satın Al</button></div>
             </div>
 
         </div><!-- /productSection -->
@@ -586,14 +574,12 @@
                     return;
                 }
 
-                // Pi Payments simülasyonu
                 const msg = '🛒 ' + name + ' satın alınıyor!\n' +
-                            '💰 Fiyat: ' + price.toLocaleString('tr-TR') + ' Pi\n' +
+                            '💰 Fiyat: ' + price + ' Pi\n' +
                             '💎 GCV: 1 Pi = 314.159 $\n\n' +
                             '✅ Ödeme sistemi aktif değil. Demo modu.';
                 alert(msg);
 
-                // Gerçek Pi Payments için buraya Pi.createPayment() gelecek
                 console.log('Satın alındı:', name, price, 'Pi');
             };
 
