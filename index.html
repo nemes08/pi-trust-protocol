@@ -1,9 +1,13 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pi Trust Protocol</title>
+
+    <!-- ===== 1. Pi Network Temel SDK'sı ===== -->
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+
     <style>
         * {
             margin: 0;
@@ -51,6 +55,10 @@
             transform: scale(1.02);
             opacity: 0.9;
         }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         .wallet-btn {
             background: #2a3f6e;
             margin-bottom: 20px;
@@ -90,60 +98,194 @@
             margin: 15px 0;
             display: none;
         }
+        .user-info {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 14px;
+            color: #0d47a1;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>🛡️ Pi Trust</h1>
         <p class="subtitle">Güvenli ticaretin yeni adresi</p>
-        
-        <button class="wallet-btn" onclick="connectWallet()">🔗 Pi Cüzdanını Bağla</button>
-        
-        <div id="status" class="status">✅ Cüzdan bağlı</div>
-        
-        <h2 style="font-size:18px; color:#333; margin:20px 0 10px;">📦 Ürünler</h2>
-        
-        <div class="product">
-            <h3>📱 Akıllı Telefon</h3>
-            <span class="price">150 Pi</span>
-            <br>
-            <button class="buy-btn" onclick="buyProduct('Akıllı Telefon', 150)">Satın Al</button>
+
+        <!-- ===== 2. Oturum Durumu ve Kullanıcı Bilgisi ===== -->
+        <div id="userInfo" class="user-info" style="display: none;">
+            ✅ Hoş geldin, <span id="usernameDisplay"></span>!
         </div>
-        
-        <div class="product">
-            <h3>🎧 Kablosuz Kulaklık</h3>
-            <span class="price">75 Pi</span>
-            <br>
-            <button class="buy-btn" onclick="buyProduct('Kablosuz Kulaklık', 75)">Satın Al</button>
+
+        <!-- ===== 3. Giriş Butonu ===== -->
+        <button id="loginBtn" class="wallet-btn">🔗 Pi ile Giriş Yap</button>
+
+        <!-- ===== 4. Durum Mesajı ===== -->
+        <div id="status" class="status"></div>
+
+        <!-- ===== 5. Ürün Listesi (Giriş yapılmadıkça gizli) ===== -->
+        <div id="productSection" style="display: none;">
+            <h2 style="font-size:18px; color:#333; margin:20px 0 10px;">📦 Ürünler</h2>
+
+            <div class="product">
+                <h3>📱 Akıllı Telefon</h3>
+                <span class="price">150 Pi</span><br />
+                <button class="buy-btn" onclick="alert('Satın alma işlemi henüz aktif değil.')">Satın Al</button>
+            </div>
+
+            <div class="product">
+                <h3>🎧 Kablosuz Kulaklık</h3>
+                <span class="price">75 Pi</span><br />
+                <button class="buy-btn" onclick="alert('Satın alma işlemi henüz aktif değil.')">Satın Al</button>
+            </div>
+
+            <div class="product">
+                <h3>⌚ Akıllı Saat</h3>
+                <span class="price">200 Pi</span><br />
+                <button class="buy-btn" onclick="alert('Satın alma işlemi henüz aktif değil.')">Satın Al</button>
+            </div>
         </div>
-        
-        <div class="product">
-            <h3>⌚ Akıllı Saat</h3>
-            <span class="price">200 Pi</span>
-            <br>
-            <button class="buy-btn" onclick="buyProduct('Akıllı Saat', 200)">Satın Al</button>
-        </div>
-        
+
         <p class="footer">Pi Trust Protocol v1.0</p>
     </div>
-    
+
+    <!-- ===== 6. JavaScript Kodu ===== -->
     <script>
-        let walletConnected = false;
-        
-        function connectWallet() {
-            walletConnected = true;
-            document.getElementById('status').style.display = 'block';
-            document.getElementById('status').textContent = '✅ Cüzdan başarıyla bağlandı!';
-            alert('🔗 Pi Cüzdanı bağlandı!');
+        // --- 6a. Temel DOM elemanları ---
+        const loginBtn = document.getElementById('loginBtn');
+        const statusDiv = document.getElementById('status');
+        const userInfoDiv = document.getElementById('userInfo');
+        const usernameSpan = document.getElementById('usernameDisplay');
+        const productSection = document.getElementById('productSection');
+
+        // --- 6b. Durum mesajını göster/gizle ---
+        function setStatus(message, isError = false) {
+            statusDiv.style.display = 'block';
+            statusDiv.textContent = message;
+            statusDiv.style.background = isError ? '#ffebee' : '#e8f5e9';
+            statusDiv.style.color = isError ? '#c62828' : '#2e7d32';
         }
-        
-        function buyProduct(name, price) {
-            if (!walletConnected) {
-                alert('⚠️ Lütfen önce Pi Cüzdanını bağlayın!');
-                return;
+
+        function hideStatus() {
+            statusDiv.style.display = 'none';
+        }
+
+        // --- 6c. Kullanıcı oturumunu güncelle ---
+        function updateUI(user) {
+            if (user && user.username) {
+                // Kullanıcı giriş yaptı
+                usernameSpan.textContent = user.username;
+                userInfoDiv.style.display = 'block';
+                productSection.style.display = 'block';
+                loginBtn.textContent = '✅ Oturum Açık';
+                loginBtn.disabled = true;
+                hideStatus();
+            } else {
+                // Kullanıcı çıkış yaptı
+                userInfoDiv.style.display = 'none';
+                productSection.style.display = 'none';
+                loginBtn.textContent = '🔗 Pi ile Giriş Yap';
+                loginBtn.disabled = false;
             }
-            alert('🛒 ' + name + ' satın alınıyor!\n💰 Fiyat: ' + price + ' Pi\n\nÖdeme escrow hesabına yatırılacak.\nÜrün teslim edildiğinde ödeme satıcıya serbest kalacak.');
         }
+
+        // --- 6d. Backend'e token gönder ve oturum doğrulama ---
+        async function verifyOnBackend(accessToken) {
+            try {
+                // 1. Backend'e token gönder (örnek URL - kendi backend adresinle değiştir)
+                // const backendUrl = 'https://kendi-backend-adresin.com/api/verify-pi';
+                // const response = await fetch(backendUrl, {
+                //     method: 'POST',
+                //     headers: { 'Content-Type': 'application/json' },
+                //     body: JSON.stringify({ accessToken })
+                // });
+                // const data = await response.json();
+                // return data.valid; // backend true/false döner
+
+                // 2. Şimdilik doğrudan Pi API'sini dene (tarayıcı CORS engelleyebilir)
+                //    Bu yüzden doğrudan api.minepi.com/v2/me çağrılmaz, backend üzerinden yapılmalı.
+                //    Demo amaçlı token'ı kaydedip geçerli varsayıyoruz.
+                console.log('Access Token alındı (backend doğrulaması simüle edildi):', accessToken);
+                return true; // backend doğrulaması başarılı varsay
+            } catch (error) {
+                console.error('Backend doğrulama hatası:', error);
+                return false;
+            }
+        }
+
+        // --- 6e. Pi Authentication işlemi ---
+        async function authenticateWithPi() {
+            setStatus('⏳ Pi Browser ile bağlantı kuruluyor...');
+
+            try {
+                // 1. Pi SDK'sını başlat
+                await Pi.init({ version: '2.0' }); // Promise olarak beklenir
+
+                // 2. Kullanıcı kimlik doğrulaması
+                const authResult = await Pi.authenticate(['username'], onIncomplete);
+
+                // 3. Sonucu kontrol et
+                if (!authResult || !authResult.accessToken || !authResult.user) {
+                    throw new Error('Kimlik doğrulama başarısız oldu.');
+                }
+
+                // 4. Token'ı backend'e gönder
+                const isValid = await verifyOnBackend(authResult.accessToken);
+                if (!isValid) {
+                    throw new Error('Backend doğrulaması başarısız.');
+                }
+
+                // 5. UI güncelle
+                updateUI(authResult.user);
+                setStatus('✅ Giriş başarıyla tamamlandı!');
+
+            } catch (error) {
+                console.error('Auth hatası:', error);
+                setStatus('❌ ' + error.message, true);
+                loginBtn.disabled = false; // butonu tekrar aktif et
+            }
+        }
+
+        // --- 6f. Kullanıcı iptal veya eksik bilgi durumu ---
+        function onIncomplete(error) {
+            // Pi.authenticate() içinde kullanıcı iptal ederse veya hata oluşursa bu fonksiyon çağrılır
+            console.warn('Auth işlemi tamamlanmadı:', error);
+            setStatus('⚠️ Giriş işlemi tamamlanmadı veya iptal edildi.', true);
+            loginBtn.disabled = false;
+        }
+
+        // --- 6g. Otomatik ve manuel tetikleme ---
+        async function handleLogin() {
+            loginBtn.disabled = true;
+            setStatus('⏳ Pi Authentication başlatılıyor...');
+            await authenticateWithPi();
+        }
+
+        // --- 6h. Sayfa yüklendiğinde otomatik dene ---
+        window.addEventListener('load', async () => {
+            // Pi SDK'sı yüklendikten sonra, önce Pi.init çalıştır
+            try {
+                await Pi.init({ version: '2.0' });
+                console.log('Pi SDK hazır.');
+
+                // Geçerli bir oturum var mı kontrol et (isteğe bağlı)
+                // Basitçe login butonunu aktif et
+                loginBtn.addEventListener('click', handleLogin);
+
+                // Otomatik giriş dene
+                await authenticateWithPi();
+            } catch (error) {
+                console.warn('Pi SDK başlatılamadı:', error);
+                // Pi Browser dışında veya sandbox modunda çalışıyor olabilir
+                setStatus('⚠️ Pi SDK başlatılamadı. Lütfen Pi Browser üzerinden açın.', true);
+                loginBtn.disabled = false;
+            }
+        });
+
+        // --- 6i. Yardımcı: Konsoldan manuel test ---
+        console.log('Pi Trust Protocol hazır. Login butonuna tıklayarak giriş yapabilirsiniz.');
+        console.log('Manuel test için: handleLogin() çalıştırın.');
     </script>
 </body>
 </html>
