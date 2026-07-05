@@ -84,6 +84,10 @@
             color: #888;
             margin: 5px 0 10px;
         }
+        .product .usd-price {
+            font-size: 11px;
+            color: #999;
+        }
         .buy-btn {
             background: #ff6b35;
             width: auto;
@@ -139,6 +143,9 @@
             font-size: 13px;
             color: #856404;
         }
+        .gcv-note strong {
+            color: #d39e00;
+        }
     </style>
 </head>
 <body>
@@ -162,8 +169,8 @@
         <div id="productSection">
             <h2 style="font-size: 20px; color: #333; margin: 20px 0 10px;">🌍 Global Pazar Yeri</h2>
             <div class="gcv-note">
-                💎 Fiyatlar <strong>GCV (Güncel Cari Değer)</strong> bazındadır.<br />
-                1 Pi = 1 GCV
+                💎 <strong>1 Pi = 314.159 $ (GCV)</strong><br />
+                Fiyatlar bu değere göre hesaplanmıştır.
             </div>
 
             <!-- KATEGORİ: ARAÇLAR -->
@@ -171,23 +178,26 @@
 
             <div class="product">
                 <h3>Tesla Model 3 (2024)</h3>
-                <div class="price">42,000 GCV</div>
+                <div class="price">≈ 133,690 Pi</div>
+                <div class="usd-price">42,000 $</div>
                 <div class="desc">Sıfır, elektrikli, otomatik pilot</div>
-                <button class="buy-btn" onclick="buyProduct('Tesla Model 3', 42000)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('Tesla Model 3', 133690)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>TOGG T10X (2024)</h3>
-                <div class="price">35,000 GCV</div>
+                <div class="price">≈ 111,408 Pi</div>
+                <div class="usd-price">35,000 $</div>
                 <div class="desc">Yerli üretim, elektrikli SUV</div>
-                <button class="buy-btn" onclick="buyProduct('TOGG T10X', 35000)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('TOGG T10X', 111408)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>BMW iX (2023)</h3>
-                <div class="price">38,000 GCV</div>
+                <div class="price">≈ 120,958 Pi</div>
+                <div class="usd-price">38,000 $</div>
                 <div class="desc">Elektrikli, lüks SUV</div>
-                <button class="buy-btn" onclick="buyProduct('BMW iX', 38000)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('BMW iX', 120958)">Satın Al</button>
             </div>
 
             <!-- KATEGORİ: EMLAK -->
@@ -195,23 +205,26 @@
 
             <div class="product">
                 <h3>Şehir Merkezi Daire</h3>
-                <div class="price">150,000 GCV</div>
+                <div class="price">≈ 477,464 Pi</div>
+                <div class="usd-price">150,000 $</div>
                 <div class="desc">3+1, 140 m², havuzlu site</div>
-                <button class="buy-btn" onclick="buyProduct('Şehir Merkezi Daire', 150000)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('Şehir Merkezi Daire', 477464)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>Deniz Manzaralı Villa</h3>
-                <div class="price">400,000 GCV</div>
+                <div class="price">≈ 1,273,237 Pi</div>
+                <div class="usd-price">400,000 $</div>
                 <div class="desc">5+2, 300 m², özel havuz</div>
-                <button class="buy-btn" onclick="buyProduct('Deniz Manzaralı Villa', 400000)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('Deniz Manzaralı Villa', 1273237)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>Yatırımlık Arsa</h3>
-                <div class="price">75,000 GCV</div>
+                <div class="price">≈ 238,732 Pi</div>
+                <div class="usd-price">75,000 $</div>
                 <div class="desc">500 m², imarlı, şehir yakını</div>
-                <button class="buy-btn" onclick="buyProduct('Yatırımlık Arsa', 75000)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('Yatırımlık Arsa', 238732)">Satın Al</button>
             </div>
 
             <!-- KATEGORİ: UÇUŞ BİLETLERİ -->
@@ -219,23 +232,26 @@
 
             <div class="product">
                 <h3>İstanbul - Londra</h3>
-                <div class="price">1,200 GCV</div>
+                <div class="price">≈ 3,820 Pi</div>
+                <div class="usd-price">1,200 $</div>
                 <div class="desc">THY, Business Class</div>
-                <button class="buy-btn" onclick="buyProduct('İstanbul - Londra', 1200)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('İstanbul - Londra', 3820)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>İstanbul - Dubai</h3>
-                <div class="price">800 GCV</div>
+                <div class="price">≈ 2,546 Pi</div>
+                <div class="usd-price">800 $</div>
                 <div class="desc">Emirates, Ekonomi</div>
-                <button class="buy-btn" onclick="buyProduct('İstanbul - Dubai', 800)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('İstanbul - Dubai', 2546)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>İstanbul - New York</h3>
-                <div class="price">2,500 GCV</div>
+                <div class="price">≈ 7,957 Pi</div>
+                <div class="usd-price">2,500 $</div>
                 <div class="desc">THY, Business Class</div>
-                <button class="buy-btn" onclick="buyProduct('İstanbul - New York', 2500)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('İstanbul - New York', 7957)">Satın Al</button>
             </div>
 
             <!-- KATEGORİ: ELEKTRONİK -->
@@ -243,23 +259,26 @@
 
             <div class="product">
                 <h3>iPhone 16 Pro Max</h3>
-                <div class="price">1,200 GCV</div>
+                <div class="price">≈ 3,820 Pi</div>
+                <div class="usd-price">1,200 $</div>
                 <div class="desc">512GB, titanyum</div>
-                <button class="buy-btn" onclick="buyProduct('iPhone 16 Pro Max', 1200)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('iPhone 16 Pro Max', 3820)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>MacBook Pro M3</h3>
-                <div class="price">2,200 GCV</div>
+                <div class="price">≈ 7,002 Pi</div>
+                <div class="usd-price">2,200 $</div>
                 <div class="desc">16GB RAM, 512GB SSD</div>
-                <button class="buy-btn" onclick="buyProduct('MacBook Pro M3', 2200)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('MacBook Pro M3', 7002)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>PlayStation 5</h3>
-                <div class="price">550 GCV</div>
+                <div class="price">≈ 1,751 Pi</div>
+                <div class="usd-price">550 $</div>
                 <div class="desc">Sıfır, 2 kollu</div>
-                <button class="buy-btn" onclick="buyProduct('PlayStation 5', 550)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('PlayStation 5', 1751)">Satın Al</button>
             </div>
 
             <!-- KATEGORİ: DİJİTAL HİZMETLER -->
@@ -267,23 +286,26 @@
 
             <div class="product">
                 <h3>Kurumsal Web Tasarım</h3>
-                <div class="price">2,500 GCV</div>
+                <div class="price">≈ 7,957 Pi</div>
+                <div class="usd-price">2,500 $</div>
                 <div class="desc">Kurumsal web sitesi, SEO uyumlu</div>
-                <button class="buy-btn" onclick="buyProduct('Kurumsal Web Tasarım', 2500)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('Kurumsal Web Tasarım', 7957)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>SEO & Dijital Pazarlama</h3>
-                <div class="price">1,500 GCV</div>
+                <div class="price">≈ 4,774 Pi</div>
+                <div class="usd-price">1,500 $</div>
                 <div class="desc">Aylık SEO ve reklam yönetimi</div>
-                <button class="buy-btn" onclick="buyProduct('SEO & Dijital Pazarlama', 1500)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('SEO & Dijital Pazarlama', 4774)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>Logo & Marka Tasarımı</h3>
-                <div class="price">800 GCV</div>
+                <div class="price">≈ 2,546 Pi</div>
+                <div class="usd-price">800 $</div>
                 <div class="desc">Profesyonel kurumsal kimlik</div>
-                <button class="buy-btn" onclick="buyProduct('Logo & Marka Tasarımı', 800)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('Logo & Marka Tasarımı', 2546)">Satın Al</button>
             </div>
 
             <!-- KATEGORİ: EĞİTİM -->
@@ -291,28 +313,31 @@
 
             <div class="product">
                 <h3>Full-Stack Bootcamp</h3>
-                <div class="price">2,800 GCV</div>
+                <div class="price">≈ 8,913 Pi</div>
+                <div class="usd-price">2,800 $</div>
                 <div class="desc">Full-stack, 12 hafta, sertifikalı</div>
-                <button class="buy-btn" onclick="buyProduct('Full-Stack Bootcamp', 2800)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('Full-Stack Bootcamp', 8913)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>Online İngilizce Kursu</h3>
-                <div class="price">600 GCV</div>
+                <div class="price">≈ 1,910 Pi</div>
+                <div class="usd-price">600 $</div>
                 <div class="desc">6 ay, konuşma odaklı</div>
-                <button class="buy-btn" onclick="buyProduct('Online İngilizce Kursu', 600)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('Online İngilizce Kursu', 1910)">Satın Al</button>
             </div>
 
             <div class="product">
                 <h3>Kariyer Mentörlüğü</h3>
-                <div class="price">400 GCV</div>
+                <div class="price">≈ 1,273 Pi</div>
+                <div class="usd-price">400 $</div>
                 <div class="desc">1 ay, birebir kariyer koçluğu</div>
-                <button class="buy-btn" onclick="buyProduct('Kariyer Mentörlüğü', 400)">Satın Al</button>
+                <button class="buy-btn" onclick="buyProduct('Kariyer Mentörlüğü', 1273)">Satın Al</button>
             </div>
 
         </div><!-- /productSection -->
 
-        <p class="footer">Pi Trust Protocol v1.0 | GCV Bazlı</p>
+        <p class="footer">Pi Trust Protocol v1.0 | 1 Pi = 314.159 $ (GCV)</p>
     </div>
 
     <!-- ===== JAVASCRIPT ===== -->
@@ -411,7 +436,7 @@
                     alert('⚠️ Lütfen önce Pi ile giriş yapın!');
                     return;
                 }
-                alert('🛒 ' + name + ' satın alınıyor!\n💰 Fiyat: ' + price + ' GCV\n\n(Ödeme sistemi henüz aktif değil.)');
+                alert('🛒 ' + name + ' satın alınıyor!\n💰 Fiyat: ' + price.toLocaleString('tr-TR') + ' Pi\n\n(Ödeme sistemi henüz aktif değil.)');
             };
 
         })();
