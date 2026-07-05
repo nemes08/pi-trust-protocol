@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pi Trust Protocol</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2a3f6e;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+            width: 100%;
+            transition: 0.3s;
+        }
+        button:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+        }
+        .wallet-btn {
+            background: #2a3f6e;
+            margin-bottom: 20px;
+        }
+        .product {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 12px;
+            border: 1px solid #e9ecef;
+        }
+        .product h3 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .price {
+            color: #2a3f6e;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .buy-btn {
+            background: #ff6b35;
+            width: auto;
+            padding: 10px 20px;
+            margin-top: 10px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: #999;
+        }
+        .status {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛡️ Pi Trust</h1>
+        <p class="subtitle">Güvenli ticaretin yeni adresi</p>
+        
+        <button class="wallet-btn" onclick="connectWallet()">🔗 Pi Cüzdanını Bağla</button>
+        
+        <div id="status" class="status">✅ Cüzdan bağlı</div>
+        
+        <h2 style="font-size:18px; color:#333; margin:20px 0 10px;">📦 Ürünler</h2>
+        
+        <div class="product">
+            <h3>📱 Akıllı Telefon</h3>
+            <span class="price">150 Pi</span>
+            <br>
+            <button class="buy-btn" onclick="buyProduct('Akıllı Telefon', 150)">Satın Al</button>
+        </div>
+        
+        <div class="product">
+            <h3>🎧 Kablosuz Kulaklık</h3>
+            <span class="price">75 Pi</span>
+            <br>
+            <button class="buy-btn" onclick="buyProduct('Kablosuz Kulaklık', 75)">Satın Al</button>
+        </div>
+        
+        <div class="product">
+            <h3>⌚ Akıllı Saat</h3>
+            <span class="price">200 Pi</span>
+            <br>
+            <button class="buy-btn" onclick="buyProduct('Akıllı Saat', 200)">Satın Al</button>
+        </div>
+        
+        <p class="footer">Pi Trust Protocol v1.0</p>
+    </div>
+    
+    <script>
+        let walletConnected = false;
+        
+        function connectWallet() {
+            walletConnected = true;
+            document.getElementById('status').style.display = 'block';
+            document.getElementById('status').textContent = '✅ Cüzdan başarıyla bağlandı!';
+            alert('🔗 Pi Cüzdanı bağlandı!');
+        }
+        
+        function buyProduct(name, price) {
+            if (!walletConnected) {
+                alert('⚠️ Lütfen önce Pi Cüzdanını bağlayın!');
+                return;
+            }
+            alert('🛒 ' + name + ' satın alınıyor!\n💰 Fiyat: ' + price + ' Pi\n\nÖdeme escrow hesabına yatırılacak.\nÜrün teslim edildiğinde ödeme satıcıya serbest kalacak.');
+        }
+    </script>
+</body>
+</html>
