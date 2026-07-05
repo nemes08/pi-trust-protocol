@@ -1,287 +1,164 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pi Trust Protocol</title>
+<!-- ===== 5. Ürün Bölümü (Giriş gerektirir) ===== -->
+<div id="productSection">
+    <h2 style="font-size: 20px; color: #333; margin: 20px 0 10px;">🌍 Global Pazar Yeri</h2>
+    <p style="font-size: 14px; color: #666; margin-bottom: 20px;">
+        💎 Fiyatlar <strong>GCV (Güncel Cari Değer)</strong> bazındadır.
+        <br />1 Pi = 1 GCV
+    </p>
 
-    <!-- ===== 1. Pi Network Temel SDK'sı (Zorunlu) ===== -->
-    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-
-    <style>
-        /* ===== Stiller ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 20px;
-            background: #f5f5f5;
-        }
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #2a3f6e;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-        button {
-            background: #4caf50;
-            color: white;
-            padding: 14px 28px;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            margin: 5px;
-            width: 100%;
-            transition: 0.3s;
-        }
-        button:hover {
-            transform: scale(1.02);
-            opacity: 0.9;
-        }
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .wallet-btn {
-            background: #2a3f6e;
-            margin-bottom: 20px;
-        }
-        .product {
-            background: #f8f9fa;
-            padding: 15px;
-            margin: 10px 0;
-            border-radius: 12px;
-            border: 1px solid #e9ecef;
-        }
-        .product h3 {
-            color: #333;
-            margin-bottom: 5px;
-        }
-        .price {
-            color: #2a3f6e;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .buy-btn {
-            background: #ff6b35;
-            width: auto;
-            padding: 10px 20px;
-            margin-top: 10px;
-        }
-        .footer {
-            margin-top: 30px;
-            font-size: 12px;
-            color: #999;
-        }
-        .status {
-            background: #e8f5e9;
-            color: #2e7d32;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 15px 0;
-            display: none;
-        }
-        .user-info {
-            background: #e3f2fd;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 10px 0;
-            font-size: 14px;
-            color: #0d47a1;
-            display: none;
-        }
-        .user-info.visible {
-            display: block;
-        }
-        #productSection {
-            display: none;
-        }
-        #productSection.visible {
-            display: block;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🛡️ Pi Trust</h1>
-        <p class="subtitle">Güvenli ticaretin yeni adresi</p>
-
-        <!-- ===== 2. Kullanıcı Bilgisi ===== -->
-        <div id="userInfo" class="user-info">
-            ✅ Hoş geldin, <span id="usernameDisplay"></span>!
+    <!-- ===== Kategori: Araçlar ===== -->
+    <div class="category">
+        <h3 style="color: #2a3f6e; margin: 20px 0 10px;">🚗 Araçlar</h3>
+        
+        <div class="product" data-price="42000">
+            <h3>🚗 Tesla Model 3 (2024)</h3>
+            <span class="price">42,000 GCV</span>
+            <p style="font-size: 12px; color: #888;">Sıfır, elektrikli, otomatik pilot</p>
+            <button class="buy-btn" onclick="buyProduct('Tesla Model 3', 42000)">Satın Al</button>
         </div>
-
-        <!-- ===== 3. Giriş Butonu ===== -->
-        <button id="loginBtn" class="wallet-btn">🔗 Pi ile Giriş Yap</button>
-
-        <!-- ===== 4. Durum Mesajı ===== -->
-        <div id="status" class="status"></div>
-
-        <!-- ===== 5. Ürün Bölümü (Giriş gerektirir) ===== -->
-        <div id="productSection">
-            <h2 style="font-size: 18px; color: #333; margin: 20px 0 10px;">📦 Ürünler</h2>
-
-            <div class="product">
-                <h3>📱 Akıllı Telefon</h3>
-                <span class="price">150 Pi</span><br />
-                <button class="buy-btn" onclick="alert('Satın alma işlemi yakında aktif olacak.')">Satın Al</button>
-            </div>
-
-            <div class="product">
-                <h3>🎧 Kablosuz Kulaklık</h3>
-                <span class="price">75 Pi</span><br />
-                <button class="buy-btn" onclick="alert('Satın alma işlemi yakında aktif olacak.')">Satın Al</button>
-            </div>
-
-            <div class="product">
-                <h3>⌚ Akıllı Saat</h3>
-                <span class="price">200 Pi</span><br />
-                <button class="buy-btn" onclick="alert('Satın alma işlemi yakında aktif olacak.')">Satın Al</button>
-            </div>
+        
+        <div class="product" data-price="35000">
+            <h3>🚗 TOGG T10X (2024)</h3>
+            <span class="price">35,000 GCV</span>
+            <p style="font-size: 12px; color: #888;">Yerli üretim, elektrikli SUV</p>
+            <button class="buy-btn" onclick="buyProduct('TOGG T10X', 35000)">Satın Al</button>
         </div>
-
-        <p class="footer">Pi Trust Protocol v1.0</p>
+        
+        <div class="product" data-price="38000">
+            <h3>🚗 BMW iX (2023)</h3>
+            <span class="price">38,000 GCV</span>
+            <p style="font-size: 12px; color: #888;">Elektrikli, lüks SUV</p>
+            <button class="buy-btn" onclick="buyProduct('BMW iX', 38000)">Satın Al</button>
+        </div>
     </div>
 
-    <!-- ===== 6. JavaScript (Authentication) ===== -->
-    <script>
-        (function() {
-            'use strict';
+    <!-- ===== Kategori: Emlak ===== -->
+    <div class="category">
+        <h3 style="color: #2a3f6e; margin: 20px 0 10px;">🏠 Emlak</h3>
+        
+        <div class="product" data-price="150000">
+            <h3>🏠 Şehir Merkezi Daire</h3>
+            <span class="price">150,000 GCV</span>
+            <p style="font-size: 12px; color: #888;">3+1, 140 m², havuzlu site</p>
+            <button class="buy-btn" onclick="buyProduct('Şehir Merkezi Daire', 150000)">Satın Al</button>
+        </div>
+        
+        <div class="product" data-price="400000">
+            <h3>🏡 Deniz Manzaralı Villa</h3>
+            <span class="price">400,000 GCV</span>
+            <p style="font-size: 12px; color: #888;">5+2, 300 m², özel havuz</p>
+            <button class="buy-btn" onclick="buyProduct('Deniz Manzaralı Villa', 400000)">Satın Al</button>
+        </div>
+        
+        <div class="product" data-price="75000">
+            <h3>🌳 Yatırımlık Arsa</h3>
+            <span class="price">75,000 GCV</span>
+            <p style="font-size: 12px; color: #888;">500 m², imarlı, şehir yakını</p>
+            <button class="buy-btn" onclick="buyProduct('Yatırımlık Arsa', 75000)">Satın Al</button>
+        </div>
+    </div>
 
-            // --- DOM Elemanları ---
-            const loginBtn = document.getElementById('loginBtn');
-            const statusDiv = document.getElementById('status');
-            const userInfoDiv = document.getElementById('userInfo');
-            const usernameSpan = document.getElementById('usernameDisplay');
-            const productSection = document.getElementById('productSection');
+    <!-- ===== Kategori: Uçuş Biletleri ===== -->
+    <div class="category">
+        <h3 style="color: #2a3f6e; margin: 20px 0 10px;">✈️ Uçuş Biletleri</h3>
+        
+        <div class="product" data-price="1200">
+            <h3>✈️ İstanbul - Londra</h3>
+            <span class="price">1,200 GCV</span>
+            <p style="font-size: 12px; color: #888;">THY, Business Class</p>
+            <button class="buy-btn" onclick="buyProduct('İstanbul - Londra', 1200)">Satın Al</button>
+        </div>
+        
+        <div class="product" data-price="800">
+            <h3>✈️ İstanbul - Dubai</h3>
+            <span class="price">800 GCV</span>
+            <p style="font-size: 12px; color: #888;">Emirates, Ekonomi</p>
+            <button class="buy-btn" onclick="buyProduct('İstanbul - Dubai', 800)">Satın Al</button>
+        </div>
+        
+        <div class="product" data-price="2500">
+            <h3>✈️ İstanbul - New York</h3>
+            <span class="price">2,500 GCV</span>
+            <p style="font-size: 12px; color: #888;">THY, Business Class</p>
+            <button class="buy-btn" onclick="buyProduct('İstanbul - New York', 2500)">Satın Al</button>
+        </div>
+    </div>
 
-            // --- Durum Mesajı ---
-            function setStatus(message, isError = false) {
-                statusDiv.style.display = 'block';
-                statusDiv.textContent = message;
-                statusDiv.style.background = isError ? '#ffebee' : '#e8f5e9';
-                statusDiv.style.color = isError ? '#c62828' : '#2e7d32';
-            }
+    <!-- ===== Kategori: Elektronik ===== -->
+    <div class="category">
+        <h3 style="color: #2a3f6e; margin: 20px 0 10px;">📱 Elektronik</h3>
+        
+        <div class="product" data-price="1200">
+            <h3>📱 iPhone 16 Pro Max</h3>
+            <span class="price">1,200 GCV</span>
+            <p style="font-size: 12px; color: #888;">512GB, titanyum</p>
+            <button class="buy-btn" onclick="buyProduct('iPhone 16 Pro Max', 1200)">Satın Al</button>
+        </div>
+        
+        <div class="product" data-price="2200">
+            <h3>💻 MacBook Pro M3</h3>
+            <span class="price">2,200 GCV</span>
+            <p style="font-size: 12px; color: #888;">16GB RAM, 512GB SSD</p>
+            <button class="buy-btn" onclick="buyProduct('MacBook Pro M3', 2200)">Satın Al</button>
+        </div>
+        
+        <div class="product" data-price="550">
+            <h3>🎮 PlayStation 5</h3>
+            <span class="price">550 GCV</span>
+            <p style="font-size: 12px; color: #888;">Sıfır, 2 kollu</p>
+            <button class="buy-btn" onclick="buyProduct('PlayStation 5', 550)">Satın Al</button>
+        </div>
+    </div>
 
-            function hideStatus() {
-                statusDiv.style.display = 'none';
-            }
+    <!-- ===== Kategori: Dijital Hizmetler ===== -->
+    <div class="category">
+        <h3 style="color: #2a3f6e; margin: 20px 0 10px;">💻 Dijital Hizmetler</h3>
+        
+        <div class="product" data-price="2500">
+            <h3>🌐 Kurumsal Web Tasarım</h3>
+            <span class="price">2,500 GCV</span>
+            <p style="font-size: 12px; color: #888;">Kurumsal web sitesi, SEO uyumlu</p>
+            <button class="buy-btn" onclick="buyProduct('Kurumsal Web Tasarım', 2500)">Satın Al</button>
+        </div>
+        
+        <div class="product" data-price="1500">
+            <h3>📈 SEO & Dijital Pazarlama</h3>
+            <span class="price">1,500 GCV</span>
+            <p style="font-size: 12px; color: #888;">Aylık SEO ve reklam yönetimi</p>
+            <button class="buy-btn" onclick="buyProduct('SEO & Dijital Pazarlama', 1500)">Satın Al</button>
+        </div>
+        
+        <div class="product" data-price="800">
+            <h3>🎨 Logo & Marka Tasarımı</h3>
+            <span class="price">800 GCV</span>
+            <p style="font-size: 12px; color: #888;">Profesyonel kurumsal kimlik</p>
+            <button class="buy-btn" onclick="buyProduct('Logo & Marka Tasarımı', 800)">Satın Al</button>
+        </div>
+    </div>
 
-            // --- UI Güncelleme ---
-            function updateUI(user) {
-                if (user && user.username) {
-                    usernameSpan.textContent = user.username;
-                    userInfoDiv.classList.add('visible');
-                    productSection.classList.add('visible');
-                    loginBtn.textContent = '✅ Oturum Açık';
-                    loginBtn.disabled = true;
-                    hideStatus();
-                } else {
-                    userInfoDiv.classList.remove('visible');
-                    productSection.classList.remove('visible');
-                    loginBtn.textContent = '🔗 Pi ile Giriş Yap';
-                    loginBtn.disabled = false;
-                }
-            }
-
-            // --- Backend Doğrulaması (Şimdilik simüle) ---
-            async function verifyOnBackend(accessToken) {
-                try {
-                    // Gerçek backend entegrasyonu için burayı kullan
-                    // const response = await fetch('/api/verify-pi', { ... });
-                    console.log('Access Token alındı (backend doğrulaması simüle edildi):', accessToken);
-                    return true;
-                } catch (error) {
-                    console.error('Backend doğrulama hatası:', error);
-                    return false;
-                }
-            }
-
-            // --- Ana Authentication Fonksiyonu ---
-            async function authenticateWithPi() {
-                setStatus('⏳ Pi Browser ile bağlantı kuruluyor...');
-
-                try {
-                    // 1. Pi SDK'sını başlat (Promise olarak bekle)
-                    await Pi.init({ version: '2.0' });
-
-                    // 2. Kullanıcı kimlik doğrulaması (username scope)
-                    const authResult = await Pi.authenticate(['username'], function(error) {
-                        // Kullanıcı iptal veya hata durumu
-                        console.warn('Auth işlemi tamamlanmadı:', error);
-                        setStatus('⚠️ Giriş işlemi tamamlanmadı veya iptal edildi.', true);
-                        loginBtn.disabled = false;
-                    });
-
-                    // 3. Sonucu kontrol et
-                    if (!authResult || !authResult.accessToken || !authResult.user) {
-                        throw new Error('Kimlik doğrulama başarısız oldu.');
-                    }
-
-                    // 4. Token'ı backend'e gönder ve doğrula
-                    const isValid = await verifyOnBackend(authResult.accessToken);
-                    if (!isValid) {
-                        throw new Error('Backend doğrulaması başarısız.');
-                    }
-
-                    // 5. UI güncelle
-                    updateUI(authResult.user);
-                    setStatus('✅ Giriş başarıyla tamamlandı!');
-
-                } catch (error) {
-                    console.error('Auth hatası:', error);
-                    setStatus('❌ ' + error.message, true);
-                    loginBtn.disabled = false;
-                }
-            }
-
-            // --- Giriş Butonu Olayı ---
-            async function handleLogin() {
-                loginBtn.disabled = true;
-                setStatus('⏳ Pi Authentication başlatılıyor...');
-                await authenticateWithPi();
-            }
-
-            // --- Sayfa Yüklendiğinde Otomatik Giriş Dene ---
-            window.addEventListener('load', async function() {
-                try {
-                    // Pi SDK'sını başlat
-                    await Pi.init({ version: '2.0' });
-                    console.log('Pi SDK hazır.');
-
-                    // Butona tıklama olayını bağla
-                    loginBtn.addEventListener('click', handleLogin);
-
-                    // Otomatik giriş dene
-                    await authenticateWithPi();
-                } catch (error) {
-                    console.warn('Pi SDK başlatılamadı:', error);
-                    setStatus('⚠️ Pi SDK başlatılamadı. Lütfen Pi Browser üzerinden açın.', true);
-                    loginBtn.disabled = false;
-                }
-            });
-
-            // --- Yardımcı Konsol ---
-            console.log('Pi Trust Protocol hazır. Login butonuna tıklayarak giriş yapabilirsiniz.');
-        })();
-    </script>
-</body>
-</html>
+    <!-- ===== Kategori: Eğitim ===== -->
+    <div class="category">
+        <h3 style="color: #2a3f6e; margin: 20px 0 10px;">📚 Eğitim</h3>
+        
+        <div class="product" data-price="2800">
+            <h3>🎓 Full-Stack Bootcamp</h3>
+            <span class="price">2,800 GCV</span>
+            <p style="font-size: 12px; color: #888;">Full-stack, 12 hafta, sertifikalı</p>
+            <button class="buy-btn" onclick="buyProduct('Full-Stack Bootcamp', 2800)">Satın Al</button>
+        </div>
+        
+        <div class="product" data-price="600">
+            <h3>🗣️ Online İngilizce Kursu</h3>
+            <span class="price">600 GCV</span>
+            <p style="font-size: 12px; color: #888;">6 ay, konuşma odaklı</p>
+            <button class="buy-btn" onclick="buyProduct('Online İngilizce Kursu', 600)">Satın Al</button>
+        </div>
+        
+        <div class="product" data-price="400">
+            <h3>🧑‍🏫 Kariyer Mentörlüğü</h3>
+            <span class="price">400 GCV</span>
+            <p style="font-size: 12px; color: #888;">1 ay, birebir kariyer koçluğu</p>
+            <button class="buy-btn" onclick="buyProduct('Kariyer Mentörlüğü', 400)">Satın Al</button>
+        </div>
+    </div>
+</div>
