@@ -158,6 +158,10 @@
         .buy-btn:hover {
             box-shadow: 0 6px 24px rgba(0, 184, 148, 0.35);
         }
+        .buy-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
 
         /* ===== DURUM MESAJI ===== */
         .status {
@@ -174,6 +178,11 @@
             background: rgba(198, 40, 40, 0.12);
             border-left-color: #c62828;
             color: #ef9a9a;
+        }
+        .status.info {
+            background: rgba(247, 147, 26, 0.12);
+            border-left-color: #f7931a;
+            color: #f0c27a;
         }
 
         /* ===== ÜRÜNLER ===== */
@@ -492,19 +501,23 @@
             const productSection = document.getElementById('productSection');
 
             const GCV = 314159;
+            let currentUser = null;
 
-            function setStatus(msg, isErr) {
+            // --- Status ---
+            function setStatus(msg, type) {
                 statusDiv.style.display = 'block';
                 statusDiv.textContent = msg;
-                statusDiv.className = 'status' + (isErr ? ' error' : '');
+                statusDiv.className = 'status' + (type ? ' ' + type : '');
             }
 
             function hideStatus() {
                 statusDiv.style.display = 'none';
             }
 
+            // --- UI Güncelle ---
             function updateUI(user) {
                 if (user && user.username) {
+                    currentUser = user;
                     usernameSpan.textContent = user.username;
                     userInfoDiv.classList.add('visible');
                     productSection.classList.add('visible');
@@ -512,6 +525,7 @@
                     loginBtn.disabled = true;
                     hideStatus();
                 } else {
+                    currentUser = null;
                     userInfoDiv.classList.remove('visible');
                     productSection.classList.remove('visible');
                     loginBtn.textContent = '🔗 Pi ile Giriş Yap';
@@ -519,18 +533,20 @@
                 }
             }
 
+            // --- Backend simülasyonu ---
             async function verifyOnBackend(accessToken) {
                 console.log('Access Token (backend simülasyonu):', accessToken);
                 return true;
             }
 
+            // --- Auth ---
             async function authenticateWithPi() {
-                setStatus('⏳ Pi Browser ile bağlantı kuruluyor...');
+                setStatus('⏳ Pi Browser ile bağlantı kuruluyor...', 'info');
                 try {
                     await Pi.init({ version: '2.0' });
                     const authResult = await Pi.authenticate(['username'], function(error) {
                         console.warn('Auth iptal:', error);
-                        setStatus('⚠️ Giriş iptal edildi.', true);
+                        setStatus('⚠️ Giriş iptal edildi.', 'error');
                         loginBtn.disabled = false;
                     });
                     if (!authResult || !authResult.accessToken || !authResult.user) {
@@ -542,14 +558,14 @@
                     setStatus('✅ Giriş başarıyla tamamlandı!');
                 } catch (error) {
                     console.error('Auth hatası:', error);
-                    setStatus('❌ ' + error.message, true);
+                    setStatus('❌ ' + error.message, 'error');
                     loginBtn.disabled = false;
                 }
             }
 
             async function handleLogin() {
                 loginBtn.disabled = true;
-                setStatus('⏳ Başlatılıyor...');
+                setStatus('⏳ Başlatılıyor...', 'info');
                 await authenticateWithPi();
             }
 
@@ -561,29 +577,66 @@
                     await authenticateWithPi();
                 } catch (error) {
                     console.warn('Pi SDK başlatılamadı:', error);
-                    setStatus('⚠️ Pi SDK başlatılamadı. Lütfen Pi Browser\'da açın.', true);
+                    setStatus('⚠️ Pi SDK başlatılamadı. Lütfen Pi Browser\'da açın.', 'error');
                     loginBtn.disabled = false;
                 }
             });
 
-            // --- Satın Al ---
-            window.buyProduct = function(name, price) {
-                const userInfo = document.getElementById('userInfo');
-                if (!userInfo.classList.contains('visible')) {
+            // =============================================
+            // ===== Pİ PAYMENTS ENTEGRASYONU =====
+            // =============================================
+            window.buyProduct = async function(name, price) {
+                // 1. Kullanıcı giriş yapmış mı?
+                if (!currentUser) {
                     alert('⚠️ Lütfen önce Pi ile giriş yapın!');
                     return;
                 }
 
-                const msg = '🛒 ' + name + ' satın alınıyor!\n' +
-                            '💰 Fiyat: ' + price + ' Pi\n' +
-                            '💎 GCV: 1 Pi = 314.159 $\n\n' +
-                            '✅ Ödeme sistemi aktif değil. Demo modu.';
-                alert(msg);
+                // 2. Butonu devre dışı bırak
+                const buttons = document.querySelectorAll('.buy-btn');
+                buttons.forEach(b => b.disabled = true);
 
-                console.log('Satın alındı:', name, price, 'Pi');
+                try {
+                    setStatus('⏳ Ödeme başlatılıyor...', 'info');
+
+                    // 3. Pi.createPayment ile ödeme oluştur
+                    const payment = await Pi.createPayment({
+                        amount: price,
+                        memo: name + ' satın alımı',
+                        metadata: { product: name }
+                    }, {
+                        onReady: function() {
+                            setStatus('✅ Ödeme onayı için Pi cüzdanını açın...', 'info');
+                        },
+                        onComplete: function(payment) {
+                            // Ödeme başarılı
+                            setStatus('✅ ' + name + ' satın alındı! (Tx: ' + payment.txid + ')');
+                            alert('🎉 ' + name + ' satın alındı!\n' +
+                                  '💰 Ödenen: ' + price + ' Pi\n' +
+                                  '💎 GCV: 1 Pi = 314.159 $\n' +
+                                  '✅ İşlem başarılı!');
+                            console.log('Ödeme başarılı:', payment);
+                        },
+                        onError: function(error) {
+                            // Ödeme hatası
+                            setStatus('❌ Ödeme hatası: ' + error.message, 'error');
+                            alert('❌ Ödeme başarısız: ' + error.message);
+                            console.error('Ödeme hatası:', error);
+                        }
+                    });
+
+                } catch (error) {
+                    console.error('Ödeme hatası:', error);
+                    setStatus('❌ ' + error.message, 'error');
+                    alert('❌ Ödeme başlatılamadı: ' + error.message);
+                } finally {
+                    // Butonları tekrar aktif et
+                    buttons.forEach(b => b.disabled = false);
+                }
             };
 
             console.log('Pi Trust Protocol v1.0 | GCV: 1 Pi = 314.159 $');
+            console.log('Pi Payments aktif!');
         })();
     </script>
 
