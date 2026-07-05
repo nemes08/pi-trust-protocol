@@ -169,8 +169,8 @@
         <div id="productSection">
             <h2 style="font-size: 20px; color: #333; margin: 20px 0 10px;">🌍 Global Pazar Yeri</h2>
             <div class="gcv-note">
-                💎 <strong>1 Pi = 314.159 $ (GCV)</strong><br />
-                Fiyatlar bu değere göre hesaplanmıştır.
+                💎 <strong>GCV: 1 Pi = 314.159 $</strong><br />
+                Tüm fiyatlar bu değere göre hesaplanmıştır.
             </div>
 
             <!-- KATEGORİ: ARAÇLAR -->
@@ -337,7 +337,7 @@
 
         </div><!-- /productSection -->
 
-        <p class="footer">Pi Trust Protocol v1.0 | 1 Pi = 314.159 $ (GCV)</p>
+        <p class="footer">Pi Trust Protocol v1.0 | GCV: 1 Pi = 314.159 $</p>
     </div>
 
     <!-- ===== JAVASCRIPT ===== -->
@@ -351,6 +351,9 @@
             const userInfoDiv = document.getElementById('userInfo');
             const usernameSpan = document.getElementById('usernameDisplay');
             const productSection = document.getElementById('productSection');
+
+            // --- GCV Sabiti ---
+            const GCV = 314159; // 1 Pi = 314.159 $
 
             function setStatus(msg, isErr) {
                 statusDiv.style.display = 'block';
@@ -436,8 +439,13 @@
                     alert('⚠️ Lütfen önce Pi ile giriş yapın!');
                     return;
                 }
-                alert('🛒 ' + name + ' satın alınıyor!\n💰 Fiyat: ' + price.toLocaleString('tr-TR') + ' Pi\n\n(Ödeme sistemi henüz aktif değil.)');
+                // Pi cinsinden fiyatı göster
+                alert('🛒 ' + name + ' satın alınıyor!\n💰 Fiyat: ' + price.toLocaleString('tr-TR') + ' Pi\n\nGCV: 1 Pi = 314.159 $\n(Ödeme sistemi henüz aktif değil.)');
             };
+
+            // --- Konsola GCV bilgisi yaz ---
+            console.log('Pi Trust Protocol v1.0');
+            console.log('GCV: 1 Pi = 314.159 $');
 
         })();
     </script>
