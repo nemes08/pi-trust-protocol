@@ -479,7 +479,7 @@
                 try {
                     await Pi.init({ version: '2.0' });
                     
-                    // ===== "payments" scope eklendi =====
+                    // ===== "payments" scope ile giriş =====
                     const authResult = await Pi.authenticate(['username', 'payments'], function(error) {
                         console.warn('Auth iptal:', error);
                         setStatus('⚠️ Giriş iptal edildi.', 'error');
@@ -520,7 +520,7 @@
             });
 
             // =============================================
-            // ===== Pİ PAYMENTS - DÜZGÜN CALLBACK'LER =====
+            // ===== Pİ PAYMENTS - KESİN ÇÖZÜM =====
             // =============================================
             window.buyProduct = async function(name, price) {
                 if (!currentUser) {
@@ -534,18 +534,12 @@
                 try {
                     setStatus('⏳ Ödeme başlatılıyor...', 'info');
 
-                    // ===== TÜM CALLBACK'LER TAM OLARAK TANIMLANDI =====
-                    const payment = await Pi.createPayment({
-                        amount: price,
-                        memo: name + ' satın alımı',
-                        metadata: { product: name }
-                    }, {
-                        // 1. Ödeme hazır olduğunda
+                    // ===== CALLBACK'LER ÖNCE TANIMLANIYOR =====
+                    const callbacks = {
                         onReady: function() {
                             setStatus('✅ Ödeme onayı için Pi cüzdanını açın...', 'info');
                             console.log('Ödeme hazır.');
                         },
-                        // 2. Ödeme başarıyla tamamlandığında
                         onComplete: function(payment) {
                             setStatus('✅ ' + name + ' satın alındı!');
                             alert('🎉 ' + name + ' satın alındı!\n' +
@@ -554,13 +548,24 @@
                                   '✅ İşlem başarılı!');
                             console.log('Ödeme başarılı:', payment);
                         },
-                        // 3. Ödeme sırasında hata oluştuğunda
                         onError: function(error) {
                             setStatus('❌ Ödeme hatası: ' + error.message, 'error');
                             alert('❌ Ödeme başarısız: ' + error.message);
                             console.error('Ödeme hatası:', error);
                         }
-                    });
+                    };
+
+                    console.log('Callback fonksiyonları:', callbacks);
+                    console.log('onReady var mı?', typeof callbacks.onReady === 'function');
+                    console.log('onComplete var mı?', typeof callbacks.onComplete === 'function');
+                    console.log('onError var mı?', typeof callbacks.onError === 'function');
+
+                    // ===== ÖDEME OLUŞTUR =====
+                    const payment = await Pi.createPayment({
+                        amount: price,
+                        memo: name + ' satın alımı',
+                        metadata: { product: name }
+                    }, callbacks);
 
                     console.log('Ödeme nesnesi:', payment);
 
