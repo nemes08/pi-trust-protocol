@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pi Trust Protocol</title>
-
-    <!-- Pi Network SDK -->
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-
     <style>
         * {
             margin: 0;
@@ -250,9 +247,15 @@
             color: #8899bb;
         }
         @media (max-width: 480px) {
-            .container { padding: 18px 14px 30px; }
-            .app-title { font-size: 20px; }
-            .product .price-pi { font-size: 18px; }
+            .container {
+                padding: 18px 14px 30px;
+            }
+            .app-title {
+                font-size: 20px;
+            }
+            .product .price-pi {
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -478,14 +481,13 @@
                 setStatus('⏳ Pi Browser ile bağlantı kuruluyor...', 'info');
                 try {
                     await Pi.init({ version: '2.0' });
-                    
-                    // ===== "payments" scope ile giriş =====
+
                     const authResult = await Pi.authenticate(['username', 'payments'], function(error) {
                         console.warn('Auth iptal:', error);
                         setStatus('⚠️ Giriş iptal edildi.', 'error');
                         loginBtn.disabled = false;
                     });
-                    
+
                     if (!authResult || !authResult.accessToken || !authResult.user) {
                         throw new Error('Kimlik doğrulama başarısız.');
                     }
@@ -520,9 +522,9 @@
             });
 
             // =============================================
-            // ===== Pİ PAYMENTS - KESİN ÇÖZÜM =====
+            // ===== Pİ PAYMENTS - RESMİ SDK ÖRNEĞİ =====
             // =============================================
-            window.buyProduct = async function(name, price) {
+            window.buyProduct = function(name, price) {
                 if (!currentUser) {
                     alert('⚠️ Lütfen önce Pi ile giriş yapın!');
                     return;
@@ -531,55 +533,50 @@
                 const buttons = document.querySelectorAll('.buy-btn');
                 buttons.forEach(b => b.disabled = true);
 
-                try {
-                    setStatus('⏳ Ödeme başlatılıyor...', 'info');
+                // ===== RESMİ SDK ÖRNEĞİ =====
+                // https://pi-apps.github.io/pi-sdk-docs/quick-start/genai/Payments
 
-                    // ===== CALLBACK'LER ÖNCE TANIMLANIYOR =====
-                    const callbacks = {
-                        onReady: function() {
-                            setStatus('✅ Ödeme onayı için Pi cüzdanını açın...', 'info');
-                            console.log('Ödeme hazır.');
-                        },
-                        onComplete: function(payment) {
-                            setStatus('✅ ' + name + ' satın alındı!');
-                            alert('🎉 ' + name + ' satın alındı!\n' +
-                                  '💰 Ödenen: ' + price + ' Pi\n' +
-                                  '💎 GCV: 1 Pi = 314.159 $\n' +
-                                  '✅ İşlem başarılı!');
-                            console.log('Ödeme başarılı:', payment);
-                        },
-                        onError: function(error) {
-                            setStatus('❌ Ödeme hatası: ' + error.message, 'error');
-                            alert('❌ Ödeme başarısız: ' + error.message);
-                            console.error('Ödeme hatası:', error);
-                        }
-                    };
+                const paymentData = {
+                    amount: price,
+                    memo: name + ' satın alımı',
+                    metadata: { product: name }
+                };
 
-                    console.log('Callback fonksiyonları:', callbacks);
-                    console.log('onReady var mı?', typeof callbacks.onReady === 'function');
-                    console.log('onComplete var mı?', typeof callbacks.onComplete === 'function');
-                    console.log('onError var mı?', typeof callbacks.onError === 'function');
+                console.log('Ödeme başlatılıyor...', paymentData);
 
-                    // ===== ÖDEME OLUŞTUR =====
-                    const payment = await Pi.createPayment({
-                        amount: price,
-                        memo: name + ' satın alımı',
-                        metadata: { product: name }
-                    }, callbacks);
-
+                // ===== DOĞRUDAN Pi.createPayment =====
+                Pi.createPayment(paymentData, {
+                    onReady: function(payment) {
+                        console.log('Ödeme hazır:', payment);
+                        setStatus('✅ Ödeme onayı için Pi cüzdanını açın...', 'info');
+                    },
+                    onComplete: function(payment) {
+                        console.log('Ödeme tamamlandı:', payment);
+                        setStatus('✅ ' + name + ' satın alındı!');
+                        alert('🎉 ' + name + ' satın alındı!\n' +
+                            '💰 Ödenen: ' + price + ' Pi\n' +
+                            '💎 GCV: 1 Pi = 314.159 $\n' +
+                            '✅ İşlem başarılı!');
+                        buttons.forEach(b => b.disabled = false);
+                    },
+                    onError: function(error) {
+                        console.error('Ödeme hatası:', error);
+                        setStatus('❌ Ödeme hatası: ' + error.message, 'error');
+                        alert('❌ Ödeme başarısız: ' + error.message);
+                        buttons.forEach(b => b.disabled = false);
+                    }
+                }).then(function(payment) {
                     console.log('Ödeme nesnesi:', payment);
-
-                } catch (error) {
-                    console.error('Ödeme hatası:', error);
+                }).catch(function(error) {
+                    console.error('Ödeme catch hatası:', error);
                     setStatus('❌ ' + error.message, 'error');
                     alert('❌ Ödeme başlatılamadı: ' + error.message);
-                } finally {
                     buttons.forEach(b => b.disabled = false);
-                }
+                });
             };
 
             console.log('Pi Trust Protocol v1.0 | GCV: 1 Pi = 314.159 $');
-            console.log('Pi Payments aktif!');
+            console.log('Pi Payments aktif - Resmi SDK örneği kullanılıyor.');
         })();
     </script>
 
