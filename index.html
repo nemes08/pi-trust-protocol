@@ -544,7 +544,8 @@
                 setStatus('⏳ Pi Browser ile bağlantı kuruluyor...', 'info');
                 try {
                     await Pi.init({ version: '2.0' });
-                    const authResult = await Pi.authenticate(['username'], function(error) {
+                    // ===== BURASI DEĞİŞTİ: "payments" scope eklendi! =====
+                    const authResult = await Pi.authenticate(['username', 'payments'], function(error) {
                         console.warn('Auth iptal:', error);
                         setStatus('⚠️ Giriş iptal edildi.', 'error');
                         loginBtn.disabled = false;
