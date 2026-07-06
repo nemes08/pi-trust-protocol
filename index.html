@@ -9,13 +9,11 @@
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
 
     <style>
-        /* ===== RESET & GENEL ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #0b1120;
@@ -25,7 +23,6 @@
             justify-content: center;
             padding: 20px;
         }
-
         .container {
             max-width: 520px;
             width: 100%;
@@ -34,18 +31,13 @@
             padding: 28px 24px 40px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(2px);
-            transition: all 0.2s;
         }
-
-        /* ===== HEADER ===== */
         .app-header {
             display: flex;
             align-items: center;
             gap: 14px;
             margin-bottom: 6px;
         }
-
         .app-logo {
             width: 48px;
             height: 48px;
@@ -60,7 +52,6 @@
             box-shadow: 0 6px 16px rgba(247, 147, 26, 0.3);
             flex-shrink: 0;
         }
-
         .app-title {
             font-size: 24px;
             font-weight: 700;
@@ -68,17 +59,13 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-
         .app-sub {
             font-size: 13px;
             color: #8899bb;
             margin-top: -4px;
             margin-left: 62px;
             margin-bottom: 20px;
-            letter-spacing: 0.3px;
         }
-
-        /* ===== KULLANICI BİLGİSİ ===== */
         .user-info {
             background: rgba(46, 125, 50, 0.15);
             border: 1px solid rgba(76, 175, 80, 0.25);
@@ -90,20 +77,14 @@
             margin-bottom: 18px;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(2px);
         }
         .user-info.visible {
             display: flex;
-        }
-        .user-info .icon {
-            font-size: 18px;
         }
         .user-info .name {
             font-weight: 600;
             color: #a5d6a7;
         }
-
-        /* ===== BUTONLAR ===== */
         button {
             background: linear-gradient(135deg, #2a3f6e, #1d2d4f);
             color: white;
@@ -115,25 +96,18 @@
             cursor: pointer;
             width: 100%;
             transition: all 0.25s ease;
-            letter-spacing: 0.3px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
         }
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
             opacity: 0.95;
         }
-        button:active {
-            transform: scale(0.97);
-        }
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none !important;
         }
-
         .wallet-btn {
             background: linear-gradient(135deg, #f7931a, #e67e22);
             color: #0b1120;
@@ -141,10 +115,6 @@
             margin-bottom: 14px;
             box-shadow: 0 4px 20px rgba(247, 147, 26, 0.25);
         }
-        .wallet-btn:hover {
-            box-shadow: 0 6px 28px rgba(247, 147, 26, 0.4);
-        }
-
         .buy-btn {
             background: linear-gradient(135deg, #00b894, #00a381);
             width: auto;
@@ -162,8 +132,6 @@
             opacity: 0.5;
             cursor: not-allowed;
         }
-
-        /* ===== DURUM MESAJI ===== */
         .status {
             background: rgba(46, 125, 50, 0.12);
             padding: 10px 14px;
@@ -184,8 +152,6 @@
             border-left-color: #f7931a;
             color: #f0c27a;
         }
-
-        /* ===== ÜRÜNLER ===== */
         #productSection {
             display: none;
             margin-top: 18px;
@@ -193,7 +159,6 @@
         #productSection.visible {
             display: block;
         }
-
         .section-title {
             font-size: 22px;
             font-weight: 700;
@@ -205,7 +170,6 @@
             color: #8899bb;
             margin-bottom: 20px;
         }
-
         .gcv-note {
             background: rgba(247, 147, 26, 0.08);
             border: 1px solid rgba(247, 147, 26, 0.15);
@@ -223,7 +187,6 @@
             color: #f7931a;
             font-size: 15px;
         }
-
         .category {
             margin: 28px 0 14px;
         }
@@ -231,17 +194,14 @@
             font-size: 18px;
             font-weight: 600;
             color: #b0c7e7;
-            letter-spacing: 0.5px;
             display: flex;
             align-items: center;
             gap: 10px;
             padding-bottom: 6px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
-
         .product {
             background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(2px);
             padding: 16px 18px;
             margin: 12px 0;
             border-radius: 16px;
@@ -278,8 +238,6 @@
             display: flex;
             justify-content: flex-end;
         }
-
-        /* ===== FOOTER ===== */
         .footer {
             margin-top: 36px;
             padding-top: 18px;
@@ -287,13 +245,10 @@
             font-size: 12px;
             color: #556688;
             text-align: center;
-            letter-spacing: 0.3px;
         }
         .footer strong {
             color: #8899bb;
         }
-
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
             .container { padding: 18px 14px 30px; }
             .app-title { font-size: 20px; }
@@ -304,8 +259,6 @@
 <body>
 
     <div class="container">
-
-        <!-- ===== HEADER ===== -->
         <div class="app-header">
             <div class="app-logo">🛡️</div>
             <div>
@@ -314,19 +267,14 @@
         </div>
         <div class="app-sub">Güvenli ticaretin yeni adresi</div>
 
-        <!-- ===== KULLANICI BİLGİSİ ===== -->
         <div id="userInfo" class="user-info">
-            <span class="icon">✅</span>
+            <span>✅</span>
             Hoş geldin, <span class="name" id="usernameDisplay"></span>!
         </div>
 
-        <!-- ===== GİRİŞ BUTONU ===== -->
         <button id="loginBtn" class="wallet-btn">🔗 Pi ile Giriş Yap</button>
-
-        <!-- ===== DURUM MESAJI ===== -->
         <div id="status" class="status"></div>
 
-        <!-- ===== ÜRÜNLER BÖLÜMÜ ===== -->
         <div id="productSection">
             <div class="section-title">🌍 Global Pazar Yeri</div>
             <div class="section-sub">GCV bazlı gerçek fiyatlar</div>
@@ -336,7 +284,6 @@
                 <span style="color:#8899bb; margin-left:auto;">• 18+ ürün</span>
             </div>
 
-            <!-- KATEGORİ: ARAÇLAR -->
             <div class="category"><h3>🚗 Araçlar</h3></div>
 
             <div class="product">
@@ -360,7 +307,6 @@
                 <div class="buy-row"><button class="buy-btn" onclick="buyProduct('BMW iX', 0.120)">Satın Al</button></div>
             </div>
 
-            <!-- KATEGORİ: EMLAK -->
             <div class="category"><h3>🏠 Emlak</h3></div>
 
             <div class="product">
@@ -384,7 +330,6 @@
                 <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Yatırımlık Arsa', 0.238)">Satın Al</button></div>
             </div>
 
-            <!-- KATEGORİ: UÇUŞ BİLETLERİ -->
             <div class="category"><h3>✈️ Uçuş Biletleri</h3></div>
 
             <div class="product">
@@ -408,7 +353,6 @@
                 <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - New York', 0.0079)">Satın Al</button></div>
             </div>
 
-            <!-- KATEGORİ: ELEKTRONİK -->
             <div class="category"><h3>📱 Elektronik</h3></div>
 
             <div class="product">
@@ -432,7 +376,6 @@
                 <div class="buy-row"><button class="buy-btn" onclick="buyProduct('PlayStation 5', 0.0017)">Satın Al</button></div>
             </div>
 
-            <!-- KATEGORİ: DİJİTAL HİZMETLER -->
             <div class="category"><h3>💻 Dijital Hizmetler</h3></div>
 
             <div class="product">
@@ -456,7 +399,6 @@
                 <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Logo & Marka Tasarımı', 0.0025)">Satın Al</button></div>
             </div>
 
-            <!-- KATEGORİ: EĞİTİM -->
             <div class="category"><h3>📚 Eğitim</h3></div>
 
             <div class="product">
@@ -480,30 +422,25 @@
                 <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Kariyer Mentörlüğü', 0.0012)">Satın Al</button></div>
             </div>
 
-        </div><!-- /productSection -->
+        </div>
 
         <div class="footer">
             <strong>Pi Trust Protocol</strong> v1.0 &nbsp;•&nbsp; GCV: 1 Pi = 314.159 $
         </div>
-
     </div>
 
-    <!-- ===== JAVASCRIPT ===== -->
     <script>
         (function() {
             'use strict';
 
-            // --- DOM ---
             const loginBtn = document.getElementById('loginBtn');
             const statusDiv = document.getElementById('status');
             const userInfoDiv = document.getElementById('userInfo');
             const usernameSpan = document.getElementById('usernameDisplay');
             const productSection = document.getElementById('productSection');
 
-            const GCV = 314159;
             let currentUser = null;
 
-            // --- Status ---
             function setStatus(msg, type) {
                 statusDiv.style.display = 'block';
                 statusDiv.textContent = msg;
@@ -514,7 +451,6 @@
                 statusDiv.style.display = 'none';
             }
 
-            // --- UI Güncelle ---
             function updateUI(user) {
                 if (user && user.username) {
                     currentUser = user;
@@ -533,23 +469,23 @@
                 }
             }
 
-            // --- Backend simülasyonu ---
             async function verifyOnBackend(accessToken) {
-                console.log('Access Token (backend simülasyonu):', accessToken);
+                console.log('Access Token:', accessToken);
                 return true;
             }
 
-            // --- Auth ---
             async function authenticateWithPi() {
                 setStatus('⏳ Pi Browser ile bağlantı kuruluyor...', 'info');
                 try {
                     await Pi.init({ version: '2.0' });
+                    
                     // ===== BURASI DEĞİŞTİ: "payments" scope eklendi! =====
                     const authResult = await Pi.authenticate(['username', 'payments'], function(error) {
                         console.warn('Auth iptal:', error);
                         setStatus('⚠️ Giriş iptal edildi.', 'error');
                         loginBtn.disabled = false;
                     });
+                    
                     if (!authResult || !authResult.accessToken || !authResult.user) {
                         throw new Error('Kimlik doğrulama başarısız.');
                     }
@@ -583,24 +519,19 @@
                 }
             });
 
-            // =============================================
-            // ===== Pİ PAYMENTS ENTEGRASYONU =====
-            // =============================================
+            // ===== Pİ PAYMENTS =====
             window.buyProduct = async function(name, price) {
-                // 1. Kullanıcı giriş yapmış mı?
                 if (!currentUser) {
                     alert('⚠️ Lütfen önce Pi ile giriş yapın!');
                     return;
                 }
 
-                // 2. Butonu devre dışı bırak
                 const buttons = document.querySelectorAll('.buy-btn');
                 buttons.forEach(b => b.disabled = true);
 
                 try {
                     setStatus('⏳ Ödeme başlatılıyor...', 'info');
 
-                    // 3. Pi.createPayment ile ödeme oluştur
                     const payment = await Pi.createPayment({
                         amount: price,
                         memo: name + ' satın alımı',
@@ -610,7 +541,6 @@
                             setStatus('✅ Ödeme onayı için Pi cüzdanını açın...', 'info');
                         },
                         onComplete: function(payment) {
-                            // Ödeme başarılı
                             setStatus('✅ ' + name + ' satın alındı! (Tx: ' + payment.txid + ')');
                             alert('🎉 ' + name + ' satın alındı!\n' +
                                   '💰 Ödenen: ' + price + ' Pi\n' +
@@ -619,7 +549,6 @@
                             console.log('Ödeme başarılı:', payment);
                         },
                         onError: function(error) {
-                            // Ödeme hatası
                             setStatus('❌ Ödeme hatası: ' + error.message, 'error');
                             alert('❌ Ödeme başarısız: ' + error.message);
                             console.error('Ödeme hatası:', error);
@@ -631,7 +560,6 @@
                     setStatus('❌ ' + error.message, 'error');
                     alert('❌ Ödeme başlatılamadı: ' + error.message);
                 } finally {
-                    // Butonları tekrar aktif et
                     buttons.forEach(b => b.disabled = false);
                 }
             };
