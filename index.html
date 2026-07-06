@@ -479,7 +479,7 @@
                 try {
                     await Pi.init({ version: '2.0' });
                     
-                    // ===== BURASI DEĞİŞTİ: "payments" scope eklendi! =====
+                    // ===== "payments" scope eklendi =====
                     const authResult = await Pi.authenticate(['username', 'payments'], function(error) {
                         console.warn('Auth iptal:', error);
                         setStatus('⚠️ Giriş iptal edildi.', 'error');
@@ -519,7 +519,9 @@
                 }
             });
 
-            // ===== Pİ PAYMENTS =====
+            // =============================================
+            // ===== Pİ PAYMENTS - DÜZGÜN CALLBACK'LER =====
+            // =============================================
             window.buyProduct = async function(name, price) {
                 if (!currentUser) {
                     alert('⚠️ Lütfen önce Pi ile giriş yapın!');
@@ -532,28 +534,35 @@
                 try {
                     setStatus('⏳ Ödeme başlatılıyor...', 'info');
 
+                    // ===== TÜM CALLBACK'LER TAM OLARAK TANIMLANDI =====
                     const payment = await Pi.createPayment({
                         amount: price,
                         memo: name + ' satın alımı',
                         metadata: { product: name }
                     }, {
+                        // 1. Ödeme hazır olduğunda
                         onReady: function() {
                             setStatus('✅ Ödeme onayı için Pi cüzdanını açın...', 'info');
+                            console.log('Ödeme hazır.');
                         },
+                        // 2. Ödeme başarıyla tamamlandığında
                         onComplete: function(payment) {
-                            setStatus('✅ ' + name + ' satın alındı! (Tx: ' + payment.txid + ')');
+                            setStatus('✅ ' + name + ' satın alındı!');
                             alert('🎉 ' + name + ' satın alındı!\n' +
                                   '💰 Ödenen: ' + price + ' Pi\n' +
                                   '💎 GCV: 1 Pi = 314.159 $\n' +
                                   '✅ İşlem başarılı!');
                             console.log('Ödeme başarılı:', payment);
                         },
+                        // 3. Ödeme sırasında hata oluştuğunda
                         onError: function(error) {
                             setStatus('❌ Ödeme hatası: ' + error.message, 'error');
                             alert('❌ Ödeme başarısız: ' + error.message);
                             console.error('Ödeme hatası:', error);
                         }
                     });
+
+                    console.log('Ödeme nesnesi:', payment);
 
                 } catch (error) {
                     console.error('Ödeme hatası:', error);
