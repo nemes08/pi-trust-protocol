@@ -38,18 +38,13 @@
             gap: 14px;
         }
         .app-logo {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, #f7931a, #ffb347);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 26px;
-            font-weight: 800;
-            color: #0b1120;
-            box-shadow: 0 6px 16px rgba(247, 147, 26, 0.3);
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            object-fit: cover;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
             flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         .app-title {
             font-size: 24px;
@@ -76,7 +71,7 @@
             font-size: 13px;
             color: #8899bb;
             margin-top: -4px;
-            margin-left: 62px;
+            margin-left: 68px;
             margin-bottom: 20px;
         }
         .user-info {
@@ -170,8 +165,6 @@
             padding-bottom: 6px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
-        
-        /* GÖRSEL UYUMLU YENİ ÜRÜN KARTI TASARIMI */
         .product {
             background: rgba(255, 255, 255, 0.04);
             margin: 16px 0;
@@ -194,9 +187,7 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             background: #141c2f;
         }
-        .product-body {
-            padding: 16px;
-        }
+        .product-body { padding: 16px; }
         .product h4 { font-size: 17px; font-weight: 600; color: #e8edf5; margin-bottom: 4px; }
         .product .price-row {
             display: flex;
@@ -207,7 +198,6 @@
         .product .price-usd { font-size: 13px; color: #8899bb; margin-left: 6px; }
         .product .desc { font-size: 13px; color: #8899bb; line-height: 1.4; margin-bottom: 14px; }
         .product .buy-row { display: flex; justify-content: flex-end; }
-        
         .footer {
             margin-top: 36px;
             padding-top: 18px;
@@ -228,7 +218,7 @@
     <div class="container">
         <div class="header-row">
             <div class="app-header">
-                <div class="app-logo">🛡️</div>
+                <img class="app-logo" src="https://raw.githubusercontent.com/nemes08/pi-trust-protocol/main/1000312286.png" alt="Pi Trust Logo">
                 <div>
                     <div class="app-title">Pi Trust</div>
                 </div>
@@ -351,14 +341,13 @@
                 loginSuccess: "✅ Đăng nhập thành công!",
                 init: "⏳ Đang khởi tạo...",
                 pleaseLogin: "⚠️ Vui lòng đăng nhập bằng Pi trước!",
-                payReady: "✅ Mở ví Pi để phê duyệt thanh toán...",
+                payReady: "Mở ví Pi để phê duyệt thanh toán...",
                 payCancel: "⚠️ Thanh toán đã bị hủy bởi người dùng.",
                 paySuccess: "🎉 Mua hàng thành công!",
-                payFail: "❌ Lỗi thanh toán: "
+                payFail: "Lỗi thanh toán: "
             }
         };
 
-        // --- GERÇEK GÖRSEL LİNKLERİ EKLENMİŞ KATALOG VERİSİ ---
         const catalogData = [
             {
                 category: { tr: "🚗 Araçlar", en: "🚗 Vehicles", zh: "🚗 车辆", vi: "🚗 Phương tiện" },
@@ -374,7 +363,7 @@
                         name: "TOGG T10X (2024)", 
                         pi: 0.111, 
                         usd: 35000, 
-                        img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80", // SUV Temsili Görsel
+                        img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80",
                         desc: { tr: "Yerli üretim, modern elektrikli SUV", en: "Domestic production, modern electric SUV", zh: "国产、现代纯电动 SUV", vi: "Sản xuất nội địa, SUV điện hiện đại" } 
                     },
                     { 
@@ -592,6 +581,9 @@
             const buttons = document.querySelectorAll('.buy-btn');
             buttons.forEach(b => b.disabled = true);
 
+            // ⚠️ ADIM 2'DE CANLIYA ALACAĞIMIZ SUNUCU ADRESİ BURAYA GELECEK
+            const BACKEND_URL = "https://sizin-backend-domaininiz.com"; 
+
             const paymentData = {
                 amount: price,
                 memo: name + ' purchase',
@@ -599,28 +591,53 @@
             };
 
             Pi.createPayment(paymentData, {
-                onReady: function(paymentId) {
-                    console.log('Payment ID Ready:', paymentId);
+                onReady: async function(paymentId) {
+                    console.log('Ödeme ID alındı, backend onayına gönderiliyor:', paymentId);
                     setStatus(translations[currentLang].payReady, 'info');
+                    
+                    try {
+                        await fetch(`${BACKEND_URL}/api/payments/approve`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ paymentId })
+                        });
+                        console.log('Backend ödemeyi onayladı (Approved).');
+                    } catch (err) {
+                        console.error('Backend onay hatası:', err);
+                    }
                 },
-                onComplete: function(paymentResult) {
-                    console.log('Payment Completed:', paymentResult);
+                onComplete: async function(paymentResult) {
+                    console.log('Ödeme cüzdanda bitti, blockchain txid:', paymentResult.txid);
                     setStatus(translations[currentLang].paySuccess, 'success');
-                    alert(translations[currentLang].paySuccess + "\n" + name + " - " + price + " Pi");
+                    
+                    try {
+                        await fetch(`${BACKEND_URL}/api/payments/complete`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ 
+                                paymentId: paymentResult.identifier, 
+                                txid: paymentResult.txid 
+                            })
+                        });
+                        alert(translations[currentLang].paySuccess + "\n" + name + " - " + price + " Pi");
+                    } catch (err) {
+                        console.error('Backend tamamlama hatası:', err);
+                    }
+                    
                     buttons.forEach(b => b.disabled = false);
                 },
                 onCancel: function(paymentId) {
-                    console.log('Payment Canceled ID:', paymentId);
+                    console.log('Kullanıcı cüzdanı kapattı:', paymentId);
                     setStatus(translations[currentLang].payCancel, 'info');
                     buttons.forEach(b => b.disabled = false);
                 },
                 onError: function(error, payment) {
-                    console.error('Payment Error:', error);
+                    console.error('Ödeme sistem hatası:', error);
                     setStatus(translations[currentLang].payFail + error.message, 'error');
                     buttons.forEach(b => b.disabled = false);
                 }
             }).catch(function(err) {
-                console.error('Payment Catch Error:', err);
+                console.error('Payment tetikleme hatası:', err);
                 buttons.forEach(b => b.disabled = false);
             });
         };
