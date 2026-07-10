@@ -6,11 +6,7 @@
     <title>Pi Trust Protocol</title>
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: #0b1120;
@@ -28,12 +24,18 @@
             padding: 28px 24px 40px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.06);
+            position: relative;
+        }
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
         }
         .app-header {
             display: flex;
             align-items: center;
             gap: 14px;
-            margin-bottom: 6px;
         }
         .app-logo {
             width: 48px;
@@ -56,6 +58,20 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .lang-selector {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e8edf5;
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-size: 13px;
+            cursor: pointer;
+            outline: none;
+        }
+        .lang-selector option {
+            background: #141c2f;
+            color: #e8edf5;
+        }
         .app-sub {
             font-size: 13px;
             color: #8899bb;
@@ -75,13 +91,8 @@
             align-items: center;
             gap: 8px;
         }
-        .user-info.visible {
-            display: flex;
-        }
-        .user-info .name {
-            font-weight: 600;
-            color: #a5d6a7;
-        }
+        .user-info.visible { display: flex; }
+        .user-info .name { font-weight: 600; color: #a5d6a7; }
         button {
             background: linear-gradient(135deg, #2a3f6e, #1d2d4f);
             color: white;
@@ -100,11 +111,7 @@
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
             opacity: 0.95;
         }
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
+        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
         .wallet-btn {
             background: linear-gradient(135deg, #f7931a, #e67e22);
             color: #0b1120;
@@ -115,20 +122,13 @@
         .buy-btn {
             background: linear-gradient(135deg, #00b894, #00a381);
             width: auto;
-            padding: 10px 28px;
+            padding: 10px 24px;
             font-size: 13px;
             border-radius: 40px;
             font-weight: 600;
             box-shadow: 0 4px 14px rgba(0, 184, 148, 0.2);
-            margin-top: 8px;
         }
-        .buy-btn:hover {
-            box-shadow: 0 6px 24px rgba(0, 184, 148, 0.35);
-        }
-        .buy-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+        .buy-btn:hover { box-shadow: 0 6px 24px rgba(0, 184, 148, 0.35); }
         .status {
             background: rgba(46, 125, 50, 0.12);
             padding: 10px 14px;
@@ -139,34 +139,12 @@
             border-left: 3px solid #4caf50;
             color: #b0d4b0;
         }
-        .status.error {
-            background: rgba(198, 40, 40, 0.12);
-            border-left-color: #c62828;
-            color: #ef9a9a;
-        }
-        .status.info {
-            background: rgba(247, 147, 26, 0.12);
-            border-left-color: #f7931a;
-            color: #f0c27a;
-        }
-        #productSection {
-            display: none;
-            margin-top: 18px;
-        }
-        #productSection.visible {
-            display: block;
-        }
-        .section-title {
-            font-size: 22px;
-            font-weight: 700;
-            color: #e8edf5;
-            margin-bottom: 4px;
-        }
-        .section-sub {
-            font-size: 13px;
-            color: #8899bb;
-            margin-bottom: 20px;
-        }
+        .status.error { background: rgba(198, 40, 40, 0.12); border-left-color: #c62828; color: #ef9a9a; }
+        .status.info { background: rgba(247, 147, 26, 0.12); border-left-color: #f7931a; color: #f0c27a; }
+        #productSection { display: none; margin-top: 18px; }
+        #productSection.visible { display: block; }
+        .section-title { font-size: 22px; font-weight: 700; color: #e8edf5; margin-bottom: 4px; }
+        .section-sub { font-size: 13px; color: #8899bb; margin-bottom: 20px; }
         .gcv-note {
             background: rgba(247, 147, 26, 0.08);
             border: 1px solid rgba(247, 147, 26, 0.15);
@@ -180,13 +158,8 @@
             gap: 8px;
             flex-wrap: wrap;
         }
-        .gcv-note strong {
-            color: #f7931a;
-            font-size: 15px;
-        }
-        .category {
-            margin: 28px 0 14px;
-        }
+        .gcv-note strong { color: #f7931a; font-size: 15px; }
+        .category { margin: 28px 0 14px; }
         .category h3 {
             font-size: 18px;
             font-weight: 600;
@@ -197,44 +170,44 @@
             padding-bottom: 6px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
         }
+        
+        /* GÖRSEL UYUMLU YENİ ÜRÜN KARTI TASARIMI */
         .product {
             background: rgba(255, 255, 255, 0.04);
-            padding: 16px 18px;
-            margin: 12px 0;
-            border-radius: 16px;
+            margin: 16px 0;
+            border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
             transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
         }
         .product:hover {
             background: rgba(255, 255, 255, 0.07);
             border-color: rgba(255, 255, 255, 0.08);
+            transform: translateY(-1px);
         }
-        .product h4 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #e8edf5;
-            margin-bottom: 2px;
+        .product-img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: #141c2f;
         }
-        .product .price-pi {
-            font-size: 20px;
-            font-weight: 700;
-            color: #f7931a;
+        .product-body {
+            padding: 16px;
         }
-        .product .price-usd {
-            font-size: 13px;
-            color: #8899bb;
-            margin-left: 6px;
-        }
-        .product .desc {
-            font-size: 13px;
-            color: #8899bb;
-            margin: 4px 0 10px;
-            line-height: 1.4;
-        }
-        .product .buy-row {
+        .product h4 { font-size: 17px; font-weight: 600; color: #e8edf5; margin-bottom: 4px; }
+        .product .price-row {
             display: flex;
-            justify-content: flex-end;
+            align-items: baseline;
+            margin-bottom: 6px;
         }
+        .product .price-pi { font-size: 20px; font-weight: 700; color: #f7931a; }
+        .product .price-usd { font-size: 13px; color: #8899bb; margin-left: 6px; }
+        .product .desc { font-size: 13px; color: #8899bb; line-height: 1.4; margin-bottom: 14px; }
+        .product .buy-row { display: flex; justify-content: flex-end; }
+        
         .footer {
             margin-top: 36px;
             padding-top: 18px;
@@ -243,342 +216,416 @@
             color: #556688;
             text-align: center;
         }
-        .footer strong {
-            color: #8899bb;
-        }
+        .footer strong { color: #8899bb; }
         @media (max-width: 480px) {
-            .container {
-                padding: 18px 14px 30px;
-            }
-            .app-title {
-                font-size: 20px;
-            }
-            .product .price-pi {
-                font-size: 18px;
-            }
+            .container { padding: 18px 14px 30px; }
+            .app-title { font-size: 20px; }
+            .product-img { height: 150px; }
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <div class="app-header">
-            <div class="app-logo">🛡️</div>
-            <div>
-                <div class="app-title">Pi Trust</div>
+        <div class="header-row">
+            <div class="app-header">
+                <div class="app-logo">🛡️</div>
+                <div>
+                    <div class="app-title">Pi Trust</div>
+                </div>
             </div>
+            <select id="langSelect" class="lang-selector">
+                <option value="en">English</option>
+                <option value="tr">Türkçe</option>
+                <option value="zh">中文</option>
+                <option value="vi">Tiếng Việt</option>
+            </select>
         </div>
-        <div class="app-sub">Güvenli ticaretin yeni adresi</div>
-
+        
+        <div class="app-sub" id="txtAppSub">Güvenli ticaretin yeni adresi</div>
+        
         <div id="userInfo" class="user-info">
-            <span>✅</span>
-            Hoş geldin, <span class="name" id="usernameDisplay"></span>!
+            <span>✅</span> <span id="txtWelcome">Hoş geldin,</span> <span class="name" id="usernameDisplay"></span>!
         </div>
-
+        
         <button id="loginBtn" class="wallet-btn">🔗 Pi ile Giriş Yap</button>
         <div id="status" class="status"></div>
-
+        
         <div id="productSection">
-            <div class="section-title">🌍 Global Pazar Yeri</div>
-            <div class="section-sub">GCV bazlı gerçek fiyatlar</div>
-
+            <div class="section-title" id="txtGlobalMarket">🌍 Global Pazar Yeri</div>
+            <div class="section-sub" id="txtGcvSub">GCV bazlı gerçek fiyatlar</div>
+            
             <div class="gcv-note">
-                💎 <strong>1 Pi = 314.159 $</strong> (GCV)
-                <span style="color:#8899bb; margin-left:auto;">• 18+ ürün</span>
+                💎 <strong>1 Pi = 314.159 $</strong> (GCV) 
+                <span style="color:#8899bb; margin-left:auto;" id="txtItemCount">• 18+ ürün</span>
             </div>
-
-            <div class="category"><h3>🚗 Araçlar</h3></div>
-
-            <div class="product">
-                <h4>Tesla Model 3 (2024)</h4>
-                <div><span class="price-pi">0.133 Pi</span> <span class="price-usd">• 42,000 $</span></div>
-                <div class="desc">Sıfır, elektrikli, otomatik pilot</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Tesla Model 3', 0.133)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>TOGG T10X (2024)</h4>
-                <div><span class="price-pi">0.111 Pi</span> <span class="price-usd">• 35,000 $</span></div>
-                <div class="desc">Yerli üretim, elektrikli SUV</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('TOGG T10X', 0.111)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>BMW iX (2023)</h4>
-                <div><span class="price-pi">0.120 Pi</span> <span class="price-usd">• 38,000 $</span></div>
-                <div class="desc">Elektrikli, lüks SUV</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('BMW iX', 0.120)">Satın Al</button></div>
-            </div>
-
-            <div class="category"><h3>🏠 Emlak</h3></div>
-
-            <div class="product">
-                <h4>Şehir Merkezi Daire</h4>
-                <div><span class="price-pi">0.477 Pi</span> <span class="price-usd">• 150,000 $</span></div>
-                <div class="desc">3+1, 140 m², havuzlu site</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Şehir Merkezi Daire', 0.477)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>Deniz Manzaralı Villa</h4>
-                <div><span class="price-pi">1.273 Pi</span> <span class="price-usd">• 400,000 $</span></div>
-                <div class="desc">5+2, 300 m², özel havuz</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Deniz Manzaralı Villa', 1.273)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>Yatırımlık Arsa</h4>
-                <div><span class="price-pi">0.238 Pi</span> <span class="price-usd">• 75,000 $</span></div>
-                <div class="desc">500 m², imarlı, şehir yakını</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Yatırımlık Arsa', 0.238)">Satın Al</button></div>
-            </div>
-
-            <div class="category"><h3>✈️ Uçuş Biletleri</h3></div>
-
-            <div class="product">
-                <h4>İstanbul - Londra</h4>
-                <div><span class="price-pi">0.0038 Pi</span> <span class="price-usd">• 1,200 $</span></div>
-                <div class="desc">THY, Business Class</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - Londra', 0.0038)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>İstanbul - Dubai</h4>
-                <div><span class="price-pi">0.0025 Pi</span> <span class="price-usd">• 800 $</span></div>
-                <div class="desc">Emirates, Ekonomi</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - Dubai', 0.0025)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>İstanbul - New York</h4>
-                <div><span class="price-pi">0.0079 Pi</span> <span class="price-usd">• 2,500 $</span></div>
-                <div class="desc">THY, Business Class</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('İstanbul - New York', 0.0079)">Satın Al</button></div>
-            </div>
-
-            <div class="category"><h3>📱 Elektronik</h3></div>
-
-            <div class="product">
-                <h4>iPhone 16 Pro Max</h4>
-                <div><span class="price-pi">0.0038 Pi</span> <span class="price-usd">• 1,200 $</span></div>
-                <div class="desc">512GB, titanyum</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('iPhone 16 Pro Max', 0.0038)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>MacBook Pro M3</h4>
-                <div><span class="price-pi">0.0070 Pi</span> <span class="price-usd">• 2,200 $</span></div>
-                <div class="desc">16GB RAM, 512GB SSD</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('MacBook Pro M3', 0.0070)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>PlayStation 5</h4>
-                <div><span class="price-pi">0.0017 Pi</span> <span class="price-usd">• 550 $</span></div>
-                <div class="desc">Sıfır, 2 kollu</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('PlayStation 5', 0.0017)">Satın Al</button></div>
-            </div>
-
-            <div class="category"><h3>💻 Dijital Hizmetler</h3></div>
-
-            <div class="product">
-                <h4>Kurumsal Web Tasarım</h4>
-                <div><span class="price-pi">0.0079 Pi</span> <span class="price-usd">• 2,500 $</span></div>
-                <div class="desc">Kurumsal web sitesi, SEO uyumlu</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Kurumsal Web Tasarım', 0.0079)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>SEO & Dijital Pazarlama</h4>
-                <div><span class="price-pi">0.0047 Pi</span> <span class="price-usd">• 1,500 $</span></div>
-                <div class="desc">Aylık SEO ve reklam yönetimi</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('SEO & Dijital Pazarlama', 0.0047)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>Logo & Marka Tasarımı</h4>
-                <div><span class="price-pi">0.0025 Pi</span> <span class="price-usd">• 800 $</span></div>
-                <div class="desc">Profesyonel kurumsal kimlik</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Logo & Marka Tasarımı', 0.0025)">Satın Al</button></div>
-            </div>
-
-            <div class="category"><h3>📚 Eğitim</h3></div>
-
-            <div class="product">
-                <h4>Full-Stack Bootcamp</h4>
-                <div><span class="price-pi">0.0089 Pi</span> <span class="price-usd">• 2,800 $</span></div>
-                <div class="desc">Full-stack, 12 hafta, sertifikalı</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Full-Stack Bootcamp', 0.0089)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>Online İngilizce Kursu</h4>
-                <div><span class="price-pi">0.0019 Pi</span> <span class="price-usd">• 600 $</span></div>
-                <div class="desc">6 ay, konuşma odaklı</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Online İngilizce Kursu', 0.0019)">Satın Al</button></div>
-            </div>
-
-            <div class="product">
-                <h4>Kariyer Mentörlüğü</h4>
-                <div><span class="price-pi">0.0012 Pi</span> <span class="price-usd">• 400 $</span></div>
-                <div class="desc">1 ay, birebir kariyer koçluğu</div>
-                <div class="buy-row"><button class="buy-btn" onclick="buyProduct('Kariyer Mentörlüğü', 0.0012)">Satın Al</button></div>
-            </div>
-
+            
+            <div id="catalogContainer"></div>
         </div>
-
+        
         <div class="footer">
             <strong>Pi Trust Protocol</strong> v1.0 &nbsp;•&nbsp; GCV: 1 Pi = 314.159 $
         </div>
     </div>
 
     <script>
-        (function() {
-            'use strict';
+    (function() {
+        'use strict';
 
-            const loginBtn = document.getElementById('loginBtn');
-            const statusDiv = document.getElementById('status');
-            const userInfoDiv = document.getElementById('userInfo');
-            const usernameSpan = document.getElementById('usernameDisplay');
-            const productSection = document.getElementById('productSection');
-
-            let currentUser = null;
-
-            function setStatus(msg, type) {
-                statusDiv.style.display = 'block';
-                statusDiv.textContent = msg;
-                statusDiv.className = 'status' + (type ? ' ' + type : '');
+        const translations = {
+            en: {
+                appSub: "The new address of secure trade",
+                welcome: "Welcome,",
+                loginBtn: "🔗 Login with Pi",
+                loginActive: "✅ Logged In",
+                globalMarket: "🌍 Global Marketplace",
+                gcvSub: "Real prices based on GCV",
+                itemCount: "• 18+ items",
+                buy: "Buy Now",
+                sdkError: "⚠️ Pi SDK could not be initialized. Please open in Pi Browser.",
+                connecting: "⏳ Connecting to Pi Browser...",
+                authCancel: "⚠️ Login canceled.",
+                authFail: "❌ Authentication failed.",
+                loginSuccess: "✅ Successfully logged in!",
+                init: "⏳ Initializing...",
+                pleaseLogin: "⚠️ Please login with Pi first!",
+                payReady: "✅ Open Pi wallet to approve payment...",
+                payCancel: "⚠️ Payment canceled by user.",
+                paySuccess: "🎉 Purchase successful!",
+                payFail: "❌ Payment failed: "
+            },
+            tr: {
+                appSub: "Güvenli ticaretin yeni adresi",
+                welcome: "Hoş geldin,",
+                loginBtn: "🔗 Pi ile Giriş Yap",
+                loginActive: "✅ Oturum Açık",
+                globalMarket: "🌍 Global Pazar Yeri",
+                gcvSub: "GCV bazlı gerçek fiyatlar",
+                itemCount: "• 18+ ürün",
+                buy: "Satın Al",
+                sdkError: "⚠️ Pi SDK başlatılamadı. Lütfen Pi Browser'da açın.",
+                connecting: "⏳ Pi Browser ile bağlantı kuruluyor...",
+                authCancel: "⚠️ Giriş iptal edildi.",
+                authFail: "❌ Kimlik doğrulama başarısız.",
+                loginSuccess: "✅ Giriş başarıyla tamamlandı!",
+                init: "⏳ Başlatılıyor...",
+                pleaseLogin: "⚠️ Lütfen önce Pi ile giriş yapın!",
+                payReady: "✅ Ödeme onayı için Pi cüzdanını açın...",
+                payCancel: "⚠️ Ödeme kullanıcı tarafından iptal edildi.",
+                paySuccess: "🎉 Satın alma başarılı!",
+                payFail: "❌ Ödeme hatası: "
+            },
+            zh: {
+                appSub: "安全交易的新选择",
+                welcome: "欢迎，",
+                loginBtn: "🔗 使用 Pi 登录",
+                loginActive: "✅ 已登录",
+                globalMarket: "🌍 全球生态商城",
+                gcvSub: "基于物价共识(GCV)的真实价格",
+                itemCount: "• 18+ 商品",
+                buy: "立即购买",
+                sdkError: "⚠️ Pi SDK 初始化失败。请在 Pi 浏览器中打开。",
+                connecting: "⏳ 正在连接 Pi 浏览器...",
+                authCancel: "⚠️ 登录已取消。",
+                authFail: "❌ 身份验证失败。",
+                loginSuccess: "✅ 登录成功！",
+                init: "⏳ 正在初始化...",
+                pleaseLogin: "⚠️ 请先使用 Pi 登录！",
+                payReady: "✅ 请打开 Pi 钱包以确认支付...",
+                payCancel: "⚠️ 用户取消了支付。",
+                paySuccess: "🎉 购买成功！",
+                payFail: "❌ 支付失败: "
+            },
+            vi: {
+                appSub: "Địa chỉ mới cho giao dịch an toàn",
+                welcome: "Chào mừng,",
+                loginBtn: "🔗 Đăng nhập bằng Pi",
+                loginActive: "✅ Đã đăng nhập",
+                globalMarket: "🌍 Chợ toàn cầu",
+                gcvSub: "Giá thực tế dựa trên GCV",
+                itemCount: "• 18+ sản phẩm",
+                buy: "Mua ngay",
+                sdkError: "⚠️ Không thể khởi tạo Pi SDK. Vui lòng mở trong Pi Browser.",
+                connecting: "⏳ Đang kết nối với Pi Browser...",
+                authCancel: "⚠️ Đăng nhập bị hủy.",
+                authFail: "❌ Xác thực thất bại.",
+                loginSuccess: "✅ Đăng nhập thành công!",
+                init: "⏳ Đang khởi tạo...",
+                pleaseLogin: "⚠️ Vui lòng đăng nhập bằng Pi trước!",
+                payReady: "✅ Mở ví Pi để phê duyệt thanh toán...",
+                payCancel: "⚠️ Thanh toán đã bị hủy bởi người dùng.",
+                paySuccess: "🎉 Mua hàng thành công!",
+                payFail: "❌ Lỗi thanh toán: "
             }
+        };
 
-            function hideStatus() {
-                statusDiv.style.display = 'none';
-            }
-
-            function updateUI(user) {
-                if (user && user.username) {
-                    currentUser = user;
-                    usernameSpan.textContent = user.username;
-                    userInfoDiv.classList.add('visible');
-                    productSection.classList.add('visible');
-                    loginBtn.textContent = '✅ Oturum Açık';
-                    loginBtn.disabled = true;
-                    hideStatus();
-                } else {
-                    currentUser = null;
-                    userInfoDiv.classList.remove('visible');
-                    productSection.classList.remove('visible');
-                    loginBtn.textContent = '🔗 Pi ile Giriş Yap';
-                    loginBtn.disabled = false;
-                }
-            }
-
-            async function verifyOnBackend(accessToken) {
-                console.log('Access Token:', accessToken);
-                return true;
-            }
-
-            async function authenticateWithPi() {
-                setStatus('⏳ Pi Browser ile bağlantı kuruluyor...', 'info');
-                try {
-                    await Pi.init({ version: '2.0' });
-
-                    const authResult = await Pi.authenticate(['username', 'payments'], function(error) {
-                        console.warn('Auth iptal:', error);
-                        setStatus('⚠️ Giriş iptal edildi.', 'error');
-                        loginBtn.disabled = false;
-                    });
-
-                    if (!authResult || !authResult.accessToken || !authResult.user) {
-                        throw new Error('Kimlik doğrulama başarısız.');
+        // --- GERÇEK GÖRSEL LİNKLERİ EKLENMİŞ KATALOG VERİSİ ---
+        const catalogData = [
+            {
+                category: { tr: "🚗 Araçlar", en: "🚗 Vehicles", zh: "🚗 车辆", vi: "🚗 Phương tiện" },
+                items: [
+                    { 
+                        name: "Tesla Model 3 (2024)", 
+                        pi: 0.133, 
+                        usd: 42000, 
+                        img: "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=600&q=80",
+                        desc: { tr: "Sıfır, elektrikli, otomatik pilot", en: "Brand new, electric, autopilot", zh: "全新、纯电动、自动驾驶", vi: "Mới 100%, thuần điện, tự lái" } 
+                    },
+                    { 
+                        name: "TOGG T10X (2024)", 
+                        pi: 0.111, 
+                        usd: 35000, 
+                        img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80", // SUV Temsili Görsel
+                        desc: { tr: "Yerli üretim, modern elektrikli SUV", en: "Domestic production, modern electric SUV", zh: "国产、现代纯电动 SUV", vi: "Sản xuất nội địa, SUV điện hiện đại" } 
+                    },
+                    { 
+                        name: "BMW iX (2023)", 
+                        pi: 0.120, 
+                        usd: 38000, 
+                        img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=600&q=80",
+                        desc: { tr: "Elektrikli, lüks SUV konforu", en: "Electric, luxury SUV comfort", zh: "纯电动、豪华 SUV 体验", vi: "SUV điện sang trọng, tiện nghi" } 
                     }
-                    const isValid = await verifyOnBackend(authResult.accessToken);
-                    if (!isValid) throw new Error('Backend doğrulaması başarısız.');
-                    updateUI(authResult.user);
-                    setStatus('✅ Giriş başarıyla tamamlandı!');
-                } catch (error) {
-                    console.error('Auth hatası:', error);
-                    setStatus('❌ ' + error.message, 'error');
-                    loginBtn.disabled = false;
-                }
+                ]
+            },
+            {
+                category: { tr: "🏠 Emlak", en: "🏠 Real Estate", zh: "🏠 房地产", vi: "🏠 Bất động sản" },
+                items: [
+                    { 
+                        name: "Şehir Merkezi Daire", 
+                        pi: 0.477, 
+                        usd: 150000, 
+                        img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80",
+                        desc: { tr: "3+1, 140 m², havuzlu lüks site", en: "3+1, 140 m², luxury complex with pool", zh: "3房1厅，140平米，带泳池高级公寓", vi: "3+1, 140 m², khu phức hợp cao cấp có hồ bơi" } 
+                    },
+                    { 
+                        name: "Deniz Manzaralı Villa", 
+                        pi: 1.273, 
+                        usd: 400000, 
+                        img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
+                        desc: { tr: "5+2, 300 m², özel havuzlu lüks villa", en: "5+2, 300 m², luxury villa with private pool", zh: "5房2厅，300平米，独栋私家泳池豪宅", vi: "5+2, 300 m², biệt thự sang trọng có hồ bơi riêng" } 
+                    }
+                ]
+            },
+            {
+                category: { tr: "📱 Elektronik", en: "📱 Electronics", zh: "📱 电子产品", vi: "📱 Điện tử" },
+                items: [
+                    { 
+                        name: "iPhone 16 Pro Max", 
+                        pi: 0.0038, 
+                        usd: 1200, 
+                        img: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=600&q=80",
+                        desc: { tr: "512GB, güçlü titanyum kasa", en: "512GB, strong titanium design", zh: "512GB，坚固钛金属机身", vi: "512GB, vỏ titan bền bỉ" } 
+                    },
+                    { 
+                        name: "MacBook Pro M3", 
+                        pi: 0.0070, 
+                        usd: 2200, 
+                        img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80",
+                        desc: { tr: "16GB RAM, 512GB SSD yüksek performans", en: "16GB RAM, 512GB SSD high performance", zh: "16GB 内存，512GB 固态高性能", vi: "16GB RAM, 512GB SSD hiệu năng cao" } 
+                    }
+                ]
+            }
+        ];
+
+        let currentLang = 'en';
+        let currentUser = null;
+
+        const loginBtn = document.getElementById('loginBtn');
+        const statusDiv = document.getElementById('status');
+        const userInfoDiv = document.getElementById('userInfo');
+        const usernameSpan = document.getElementById('usernameDisplay');
+        const productSection = document.getElementById('productSection');
+        const langSelect = document.getElementById('langSelect');
+        const catalogContainer = document.getElementById('catalogContainer');
+
+        function setStatus(msg, type) {
+            statusDiv.style.display = 'block';
+            statusDiv.textContent = msg;
+            statusDiv.className = 'status' + (type ? ' ' + type : '');
+        }
+
+        function hideStatus() {
+            statusDiv.style.display = 'none';
+        }
+
+        function applyLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            
+            document.getElementById('txtAppSub').textContent = t.appSub;
+            document.getElementById('txtWelcome').textContent = t.welcome;
+            document.getElementById('txtGlobalMarket').textContent = t.globalMarket;
+            document.getElementById('txtGcvSub').textContent = t.gcvSub;
+            document.getElementById('txtItemCount').textContent = t.itemCount;
+            
+            if (!currentUser) {
+                loginBtn.textContent = t.loginBtn;
+            } else {
+                loginBtn.textContent = t.loginActive;
             }
 
-            async function handleLogin() {
-                loginBtn.disabled = true;
-                setStatus('⏳ Başlatılıyor...', 'info');
-                await authenticateWithPi();
-            }
+            renderCatalog();
+        }
 
-            window.addEventListener('load', async function() {
-                try {
-                    await Pi.init({ version: '2.0' });
-                    console.log('Pi SDK hazır.');
-                    loginBtn.addEventListener('click', handleLogin);
-                    await authenticateWithPi();
-                } catch (error) {
-                    console.warn('Pi SDK başlatılamadı:', error);
-                    setStatus('⚠️ Pi SDK başlatılamadı. Lütfen Pi Browser\'da açın.', 'error');
-                    loginBtn.disabled = false;
-                }
+        function renderCatalog() {
+            catalogContainer.innerHTML = '';
+            catalogData.forEach(cat => {
+                const catHeader = document.createElement('div');
+                catHeader.className = 'category';
+                catHeader.innerHTML = `<h3>${cat.category[currentLang] || cat.category['en']}</h3>`;
+                catalogContainer.appendChild(catHeader);
+
+                cat.items.forEach(item => {
+                    const prodDiv = document.createElement('div');
+                    prodDiv.className = 'product';
+                    prodDiv.innerHTML = `
+                        <img class="product-img" src="${item.img}" alt="${item.name}" loading="lazy">
+                        <div class="product-body">
+                            <h4>${item.name}</h4>
+                            <div class="price-row">
+                                <span class="price-pi">${item.pi} Pi</span> 
+                                <span class="price-usd">• ${item.usd.toLocaleString()} $</span>
+                            </div>
+                            <div class="desc">${item.desc[currentLang] || item.desc['en']}</div>
+                            <div class="buy-row">
+                                <button class="buy-btn" data-name="${item.name}" data-price="${item.pi}">
+                                    ${translations[currentLang].buy}
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    catalogContainer.appendChild(prodDiv);
+                });
             });
 
-            // =============================================
-            // ===== Pİ PAYMENTS - RESMİ SDK ÖRNEĞİ =====
-            // =============================================
-            window.buyProduct = function(name, price) {
-                if (!currentUser) {
-                    alert('⚠️ Lütfen önce Pi ile giriş yapın!');
-                    return;
+            document.querySelectorAll('.buy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    buyProduct(this.getAttribute('data-name'), parseFloat(this.getAttribute('data-price')));
+                });
+            });
+        }
+
+        function updateUI(user) {
+            if (user && user.username) {
+                currentUser = user;
+                usernameSpan.textContent = user.username;
+                userInfoDiv.classList.add('visible');
+                productSection.classList.add('visible');
+                loginBtn.textContent = translations[currentLang].loginActive;
+                loginBtn.disabled = true;
+                hideStatus();
+            } else {
+                currentUser = null;
+                userInfoDiv.classList.remove('visible');
+                productSection.classList.remove('visible');
+                loginBtn.textContent = translations[currentLang].loginBtn;
+                loginBtn.disabled = false;
+            }
+        }
+
+        async function verifyOnBackend(accessToken) {
+            console.log('Access Token Verifying:', accessToken);
+            return true; 
+        }
+
+        async function authenticateWithPi() {
+            setStatus(translations[currentLang].connecting, 'info');
+            try {
+                await Pi.init({ version: '2.0' });
+                const authResult = await Pi.authenticate(['username', 'payments'], function(error) {
+                    console.warn('Auth error:', error);
+                    setStatus(translations[currentLang].authCancel, 'error');
+                    loginBtn.disabled = false;
+                });
+
+                if (!authResult || !authResult.accessToken || !authResult.user) {
+                    throw new Error(translations[currentLang].authFail);
                 }
 
-                const buttons = document.querySelectorAll('.buy-btn');
-                buttons.forEach(b => b.disabled = true);
+                const isValid = await verifyOnBackend(authResult.accessToken);
+                if (!isValid) throw new Error("Backend validation failed.");
 
-                // ===== RESMİ SDK ÖRNEĞİ =====
-                // https://pi-apps.github.io/pi-sdk-docs/quick-start/genai/Payments
+                updateUI(authResult.user);
+                setStatus(translations[currentLang].loginSuccess, 'success');
+            } catch (error) {
+                console.error('Auth error:', error);
+                setStatus(error.message, 'error');
+                loginBtn.disabled = false;
+            }
+        }
 
-                const paymentData = {
-                    amount: price,
-                    memo: name + ' satın alımı',
-                    metadata: { product: name }
-                };
+        async function handleLogin() {
+            loginBtn.disabled = true;
+            setStatus(translations[currentLang].init, 'info');
+            await authenticateWithPi();
+        }
 
-                console.log('Ödeme başlatılıyor...', paymentData);
+        window.addEventListener('load', async function() {
+            const navLang = navigator.language || navigator.userLanguage;
+            const shortLang = navLang.substring(0, 2);
+            if (translations[shortLang]) {
+                currentLang = shortLang;
+                langSelect.value = shortLang;
+            }
+            applyLanguage(currentLang);
 
-                // ===== DOĞRUDAN Pi.createPayment =====
-                Pi.createPayment(paymentData, {
-                    onReady: function(payment) {
-                        console.log('Ödeme hazır:', payment);
-                        setStatus('✅ Ödeme onayı için Pi cüzdanını açın...', 'info');
-                    },
-                    onComplete: function(payment) {
-                        console.log('Ödeme tamamlandı:', payment);
-                        setStatus('✅ ' + name + ' satın alındı!');
-                        alert('🎉 ' + name + ' satın alındı!\n' +
-                            '💰 Ödenen: ' + price + ' Pi\n' +
-                            '💎 GCV: 1 Pi = 314.159 $\n' +
-                            '✅ İşlem başarılı!');
-                        buttons.forEach(b => b.disabled = false);
-                    },
-                    onError: function(error) {
-                        console.error('Ödeme hatası:', error);
-                        setStatus('❌ Ödeme hatası: ' + error.message, 'error');
-                        alert('❌ Ödeme başarısız: ' + error.message);
-                        buttons.forEach(b => b.disabled = false);
-                    }
-                }).then(function(payment) {
-                    console.log('Ödeme nesnesi:', payment);
-                }).catch(function(error) {
-                    console.error('Ödeme catch hatası:', error);
-                    setStatus('❌ ' + error.message, 'error');
-                    alert('❌ Ödeme başlatılamadı: ' + error.message);
-                    buttons.forEach(b => b.disabled = false);
-                });
+            langSelect.addEventListener('change', function() {
+                applyLanguage(this.value);
+            });
+
+            try {
+                await Pi.init({ version: '2.0' });
+                loginBtn.addEventListener('click', handleLogin);
+                await authenticateWithPi();
+            } catch (error) {
+                console.warn('Pi SDK load fail:', error);
+                setStatus(translations[currentLang].sdkError, 'error');
+                loginBtn.disabled = false;
+            }
+        });
+
+        window.buyProduct = function(name, price) {
+            if (!currentUser) {
+                alert(translations[currentLang].pleaseLogin);
+                return;
+            }
+
+            const buttons = document.querySelectorAll('.buy-btn');
+            buttons.forEach(b => b.disabled = true);
+
+            const paymentData = {
+                amount: price,
+                memo: name + ' purchase',
+                metadata: { product: name }
             };
 
-            console.log('Pi Trust Protocol v1.0 | GCV: 1 Pi = 314.159 $');
-            console.log('Pi Payments aktif - Resmi SDK örneği kullanılıyor.');
-        })();
-    </script>
+            Pi.createPayment(paymentData, {
+                onReady: function(paymentId) {
+                    console.log('Payment ID Ready:', paymentId);
+                    setStatus(translations[currentLang].payReady, 'info');
+                },
+                onComplete: function(paymentResult) {
+                    console.log('Payment Completed:', paymentResult);
+                    setStatus(translations[currentLang].paySuccess, 'success');
+                    alert(translations[currentLang].paySuccess + "\n" + name + " - " + price + " Pi");
+                    buttons.forEach(b => b.disabled = false);
+                },
+                onCancel: function(paymentId) {
+                    console.log('Payment Canceled ID:', paymentId);
+                    setStatus(translations[currentLang].payCancel, 'info');
+                    buttons.forEach(b => b.disabled = false);
+                },
+                onError: function(error, payment) {
+                    console.error('Payment Error:', error);
+                    setStatus(translations[currentLang].payFail + error.message, 'error');
+                    buttons.forEach(b => b.disabled = false);
+                }
+            }).catch(function(err) {
+                console.error('Payment Catch Error:', err);
+                buttons.forEach(b => b.disabled = false);
+            });
+        };
 
+    })();
+    </script>
 </body>
 </html>
