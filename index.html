@@ -3,230 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pi Trust Protocol | Luxury GCV Marketplace</title>
+    <title>Pi Network | GCV Luxury Market</title>
     <!-- Pi Network SDK -->
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
     <!-- Tailwind CSS ve FontAwesome İkonları -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .luxury-gradient { background: linear-gradient(135deg, #0d0415 0%, #150727 50%, #1a0933 100%); }
-        .pi-btn-gradient { background: linear-gradient(90deg, #f5bc47 0%, #d4921b 100%); }
+        body { background-color: #0d0d0d; }
+        .pi-cart-btn { background-color: #f1b34a; transition: all 0.2s ease; }
+        .pi-cart-btn:hover { background-color: #d99a36; }
         .hidden-el { display: none; }
         .visible { display: block !important; }
     </style>
 </head>
-<body class="luxury-gradient text-gray-100 font-sans min-h-screen pb-24">
+<body class="text-gray-100 font-sans min-h-screen pb-24 selection:bg-amber-500 selection:text-black">
 
-    <!-- Üst Bar / Navbar -->
-    <header class="bg-[#090210]/90 border-b border-purple-950/60 sticky top-0 z-50 backdrop-blur-md shadow-2xl">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+    <!-- Üst Menü / Navbar -->
+    <header class="bg-[#050505] border-b border-neutral-900 sticky top-0 z-50 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="bg-amber-400 w-11 h-11 rounded-xl text-gray-950 flex items-center justify-center shadow-lg shadow-amber-500/10">
-                    <i class="fa-solid fa-pi text-2xl"></i>
+                <div class="bg-[#f1b34a] w-10 h-10 rounded-xl text-black flex items-center justify-center font-bold shadow-lg shadow-amber-500/10">
+                    <i class="fa-solid fa-pi text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-black tracking-wider text-amber-400 uppercase">Pi Trust Protocol</h1>
-                    <p class="text-[11px] text-purple-400 font-medium tracking-widest uppercase">Premium GCV $314,159 dApp</p>
+                    <h1 class="text-base font-black tracking-wider text-[#f1b34a] uppercase">PI MARKET</h1>
+                    <p class="text-[9px] text-neutral-500 font-mono tracking-widest uppercase">GCV Consensus Platform</p>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-3">
-                <select id="lang-select" class="bg-purple-950/40 border border-purple-500/20 text-xs text-purple-200 rounded-xl px-2.5 py-2 outline-none font-semibold cursor-pointer">
+            <div class="flex items-center space-x-2">
+                <select id="lang-select" class="bg-neutral-900 border border-neutral-800 text-[11px] text-neutral-300 rounded-lg px-2 py-1.5 outline-none font-semibold cursor-pointer">
                     <option value="tr">TR</option>
                     <option value="en">EN</option>
                 </select>
-                <button id="login-btn" class="bg-amber-500 hover:bg-amber-400 text-gray-950 text-xs font-bold px-5 py-2.5 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer">
+                <button id="login-btn" class="bg-[#f1b34a] text-black text-[11px] font-bold px-4 py-1.5 rounded-lg transition-all active:scale-95 cursor-pointer">
                     Bağlan / Connect
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- Ana Gövde -->
-    <main class="max-w-6xl mx-auto px-4 mt-8">
+    <!-- Ana İçerik -->
+    <main class="max-w-7xl mx-auto px-4 mt-6">
         
-        <!-- GCV Bilgi Şeridi -->
-        <div id="user-info-div" class="hidden-el bg-purple-950/10 border border-purple-500/20 rounded-2xl p-4 mb-8 backdrop-blur-sm shadow-inner">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
+        <!-- Üst Bilgi Şeridi -->
+        <div id="user-info-div" class="hidden-el bg-neutral-950 border border-neutral-900 rounded-2xl p-4 mb-6">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-2">
                 <div class="flex items-center space-x-2">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="user-status-text" class="text-xs text-purple-300">Cüzdan Bağlantısı Aktif:</span>
-                    <span id="username-span" class="text-sm font-bold text-amber-400"></span>
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="user-status-text" class="text-xs text-neutral-400">Cüzdan Bağlantısı Aktif:</span>
+                    <span id="username-span" class="text-xs font-bold text-[#f1b34a]"></span>
                 </div>
-                <div class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-4 py-1 rounded-xl font-mono font-bold shadow-sm">
-                    Global Consensus Value: 1 Pi = $314,159
+                <div class="text-[11px] bg-neutral-900 text-neutral-400 border border-neutral-800 px-3 py-1 rounded-lg font-mono">
+                    Sabit Kur: 1 Pi = $314,159
                 </div>
             </div>
         </div>
 
-        <!-- KATEGORİ MENÜSÜ -->
-        <div class="mb-8 overflow-x-auto pb-2 flex space-x-3">
-            <button onclick="filterCategory('all')" class="cat-btn bg-amber-500 text-gray-950 text-xs font-bold px-5 py-2.5 rounded-xl transition-all cursor-pointer shadow-lg shadow-amber-500/5">Tümü</button>
-            <button onclick="filterCategory('tech')" class="cat-btn bg-gray-900/60 border border-gray-800 text-gray-400 hover:text-gray-100 text-xs font-bold px-5 py-2.5 rounded-xl transition-all cursor-pointer">Teknoloji (Telefon/PC)</button>
-            <button onclick="filterCategory('auto')" class="cat-btn bg-gray-900/60 border border-gray-800 text-gray-400 hover:text-gray-100 text-xs font-bold px-5 py-2.5 rounded-xl transition-all cursor-pointer">Lüks Araçlar</button>
-            <button onclick="filterCategory('estate')" class="cat-btn bg-gray-900/60 border border-gray-800 text-gray-400 hover:text-gray-100 text-xs font-bold px-5 py-2.5 rounded-xl transition-all cursor-pointer">Emlak (Bölge Bölge)</button>
+        <!-- FOTOĞRAFTAKİ KATEGORİ MENÜSÜ -->
+        <div class="mb-8 overflow-x-auto pb-2 flex space-x-2 scrollbar-none">
+            <button onclick="filterCategory('all')" class="cat-btn bg-[#f1b34a] text-black text-xs font-bold px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap">Tümü (All)</button>
+            <button onclick="filterCategory('auto')" class="cat-btn bg-neutral-900 text-neutral-400 text-xs font-bold px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap"><i class="fa-solid fa-car mr-1.5"></i>Lüks Araçlar</button>
+            <button onclick="filterCategory('tech')" class="cat-btn bg-neutral-900 text-neutral-400 text-xs font-bold px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap"><i class="fa-solid fa-laptop mr-1.5"></i>Teknoloji & PC</button>
+            <button onclick="filterCategory('estate')" class="cat-btn bg-neutral-900 text-neutral-400 text-xs font-bold px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap"><i class="fa-solid fa-building mr-1.5"></i>Global Emlak</button>
         </div>
 
-        <!-- ÜRÜN VİTRİNİ -->
-        <div id="product-grid" class="hidden-el grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- TIKTOK STİLİ İKİLİ/ÜÇLÜ GRID SİSTEMİ -->
+        <div id="product-grid" class="hidden-el grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             
-            <!-- Ürün 1: Telefon -->
-            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="tech">
-                <div>
-                    <div class="relative h-48 w-full bg-gray-950">
-                        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=600&q=80" alt="Smartphone" class="w-full h-full object-cover opacity-90">
-                        <span class="absolute top-4 right-4 text-[10px] bg-blue-500 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Telefon</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Flagship Akıllı Telefon 512GB" data-en="Flagship Smartphone 512GB">Flagship Akıllı Telefon 512GB</h3>
-                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Yüksek çözünürlüklü kamera sistemi, yapay zeka işlemcili, premium titanyum kasa akıllı cihaz." data-en="High-resolution camera system, AI-powered processor, premium titanium chassis smart device.">Yüksek çözünürlüklü kamera sistemi, yapay zeka işlemcili, premium titanyum kasa akıllı cihaz.</p>
-                    </div>
+            <!-- MERCEDES G-WAGON (Görsel 1'deki İlk Ürün) -->
+            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
+                <div class="relative aspect-[4/3] w-full bg-neutral-950">
+                    <img src="https://images.unsplash.com/photo-1520050206274-a1ae446cb3cc?auto=format&fit=crop&w=500&q=80" alt="G-Wagon" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2025</span>
                 </div>
-                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
-                    <div>
-                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
-                            <i class="fa-solid fa-pi text-xs"></i><span>0.00381972 Pi</span>
-                        </div>
-                        <span class="text-[10px] text-gray-500 font-mono">Değer: $1,200.00</span>
-                    </div>
-                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Flagship Smartphone" data-usd="1200.00">Satın Al</button>
+                <div class="p-3 pb-4">
+                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">G63 AMG</span>
+                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Mercedes G-Wagon" data-en="Mercedes G-Wagon">Mercedes G-Wagon</h3>
+                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,789409 π</div>
                 </div>
+                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Mercedes G-Wagon" data-usd="248000">
+                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
+                </button>
             </div>
 
-            <!-- Ürün 2: Bilgisayar -->
-            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="tech">
-                <div>
-                    <div class="relative h-48 w-full bg-gray-950">
-                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80" alt="Laptop" class="w-full h-full object-cover opacity-90">
-                        <span class="absolute top-4 right-4 text-[10px] bg-blue-500 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Bilgisayar</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Ultra-Slim Profesyonel Laptop" data-en="Ultra-Slim Professional Laptop">Ultra-Slim Profesyonel Laptop</h3>
-                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Yazılım geliştiriciler ve profesyoneller için yüksek performanslı mimari, 32GB RAM ve harika ekran." data-en="High-performance architecture for software developers and professionals, 32GB RAM and stunning display.">Yazılım geliştiriciler ve profesyoneller için yüksek performanslı mimari, 32GB RAM ve harika ekran.</p>
-                    </div>
+            <!-- LAND CRUISER V8 (Görsel 1'deki İkinci Ürün) -->
+            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
+                <div class="relative aspect-[4/3] w-full bg-neutral-950">
+                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=500&q=80" alt="Land Cruiser" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2024</span>
                 </div>
-                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
-                    <div>
-                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
-                            <i class="fa-solid fa-pi text-xs"></i><span>0.00795775 Pi</span>
-                        </div>
-                        <span class="text-[10px] text-gray-500 font-mono">Değer: $2,500.00</span>
-                    </div>
-                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Professional Laptop" data-usd="2500.00">Satın Al</button>
+                <div class="p-3 pb-4">
+                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">VX-R</span>
+                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Land Cruiser V8" data-en="Land Cruiser V8">Land Cruiser V8</h3>
+                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,445634 π</div>
                 </div>
+                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Land Cruiser V8" data-usd="140000">
+                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
+                </button>
             </div>
 
-            <!-- Ürün 3: Araba (Premium SUV) -->
-            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="auto">
-                <div>
-                    <div class="relative h-48 w-full bg-gray-950">
-                        <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="Luxury SUV" class="w-full h-full object-cover opacity-90">
-                        <span class="absolute top-4 right-4 text-[10px] bg-red-500 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Araç</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Lüks Elektrikli SUV (2026)" data-en="Luxury Electric SUV (2026)">Lüks Elektrikli SUV (2026)</h3>
-                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Otonom sürüş destekli, 600km menzilli, premium iç dizayna sahip akıllı elektrikli arazi aracı." data-en="Autonomous driving support, 600km range, smart electric SUV with premium interior design.">Otonom sürüş destekli, 600km menzilli, premium iç dizayna sahip akıllı elektrikli arazi aracı.</p>
-                    </div>
+            <!-- RANGE ROVER (Görsel 2'deki Ürün) -->
+            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
+                <div class="relative aspect-[4/3] w-full bg-neutral-950">
+                    <img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?auto=format&fit=crop&w=500&q=80" alt="Range Rover" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2025</span>
                 </div>
-                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
-                    <div>
-                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
-                            <i class="fa-solid fa-pi text-xs"></i><span>0.27056363 Pi</span>
-                        </div>
-                        <span class="text-[10px] text-gray-500 font-mono">Değer: $85,000.00</span>
-                    </div>
-                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Luxury Electric SUV" data-usd="85000.00">Satın Al</button>
+                <div class="p-3 pb-4">
+                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">AUTOBIOGRAPHY</span>
+                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Range Rover" data-en="Range Rover">Range Rover</h3>
+                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,690733 π</div>
                 </div>
+                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Range Rover" data-usd="217000">
+                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
+                </button>
             </div>
 
-            <!-- Ürün 4: Araba (Spor Model) -->
-            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="auto">
-                <div>
-                    <div class="relative h-48 w-full bg-gray-950">
-                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" alt="Sport Car" class="w-full h-full object-cover opacity-90">
-                        <span class="absolute top-4 right-4 text-[10px] bg-red-500 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Araç</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Yüksek Performans Spor Otomobil" data-en="High-Performance Sports Car">Yüksek Performans Spor Otomobil</h3>
-                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Aerodinamik aerokit gövde, üstün yol tutuşu ve safkan sürüş dinamiği sunan lüks coupe." data-en="Aerodynamic body, superior handling and pure driving dynamics luxury coupe.">Aerodinamik aerokit gövde, üstün yol tutuşu ve safkan sürüş dinamiği sunan lüks coupe.</p>
-                    </div>
+            <!-- TESLA MODEL S (Görsel 5'teki Ürün) -->
+            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
+                <div class="relative aspect-[4/3] w-full bg-neutral-950">
+                    <img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=500&q=80" alt="Tesla S" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2025</span>
                 </div>
-                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
-                    <div>
-                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
-                            <i class="fa-solid fa-pi text-xs"></i><span>0.42971871 Pi</span>
-                        </div>
-                        <span class="text-[10px] text-gray-500 font-mono">Değer: $135,000.00</span>
-                    </div>
-                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Sports Car" data-usd="135000.00">Satın Al</button>
+                <div class="p-3 pb-4">
+                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">PLAID</span>
+                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Tesla Model S" data-en="Tesla Model S">Tesla Model S</h3>
+                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,302395 π</div>
                 </div>
+                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Tesla Model S" data-usd="95000">
+                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
+                </button>
             </div>
 
-            <!-- Ürün 5: Emlak (Bölge 1) -->
-            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="estate">
-                <div>
-                    <div class="relative h-48 w-full bg-gray-950">
-                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80" alt="Villa" class="w-full h-full object-cover opacity-90">
-                        <span class="absolute top-4 right-4 text-[10px] bg-purple-600 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Emlak - Sahil Şeridi</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Deniz Manzaralı Akıllı Villa" data-en="Sea View Smart Villa">Deniz Manzaralı Akıllı Villa</h3>
-                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Bölge: Sahil Konakları. 5+2, müstakil havuzlu, geniş bahçeli ve tam entegre otomasyonlu akıllı malikane." data-en="Region: Coastal Villas. 5+2, private pool, large garden and fully integrated automation smart mansion.">Bölge: Sahil Konakları. 5+2, müstakil havuzlu, geniş bahçeli ve tam entegre otomasyonlu akıllı malikane.</p>
-                    </div>
+            <!-- TOGG T10X -->
+            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
+                <div class="relative aspect-[4/3] w-full bg-neutral-950">
+                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=500&q=80" alt="TOGG" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2024</span>
                 </div>
-                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
-                    <div>
-                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
-                            <i class="fa-solid fa-pi text-xs"></i><span>1.43239570 Pi</span>
-                        </div>
-                        <span class="text-[10px] text-gray-500 font-mono">Değer: $450,000.00</span>
-                    </div>
-                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Sea View Smart Villa" data-usd="450000.00">Satın Al</button>
+                <div class="p-3 pb-4">
+                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">LONG RANGE</span>
+                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="TOGG T10X Smart" data-en="TOGG T10X Smart">TOGG T10X Smart</h3>
+                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,143239 π</div>
                 </div>
+                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="TOGG T10X" data-usd="45000">
+                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
+                </button>
             </div>
 
-            <!-- Ürün 6: Emlak (Bölge 2) -->
-            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="estate">
-                <div>
-                    <div class="relative h-48 w-full bg-gray-950">
-                        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80" alt="Penthouse" class="w-full h-full object-cover opacity-90">
-                        <span class="absolute top-4 right-4 text-[10px] bg-purple-600 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Emlak - Merkez</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Luxury Sky Penthouse" data-en="Luxury Sky Penthouse">Luxury Sky Penthouse</h3>
-                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Bölge: Rezidans Kuleleri. Şehrin merkezinde, 360 derece panoramik manzaralı, geniş teraslı ultra lüks çatı katı." data-en="Region: Residence Towers. Center of the city, 360 panoramic view, ultra-luxury penthouse with large terrace.">Bölge: Rezidans Kuleleri. Şehrin merkezinde, 360 derece panoramik manzaralı, geniş teraslı ultra lüks çatı katı.</p>
-                    </div>
+            <!-- BYD CHINESE EV -->
+            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
+                <div class="relative aspect-[4/3] w-full bg-neutral-950">
+                    <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=500&q=80" alt="BYD" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2025</span>
                 </div>
-                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
-                    <div>
-                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
-                            <i class="fa-solid fa-pi text-xs"></i><span>0.93901528 Pi</span>
-                        </div>
-                        <span class="text-[10px] text-gray-500 font-mono">Değer: $295,000.00</span>
-                    </div>
-                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Luxury Sky Penthouse" data-usd="295000.00">Satın Al</button>
+                <div class="p-3 pb-4">
+                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">SEAL PERFORMANCE</span>
+                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="BYD Seal Premium" data-en="BYD Seal Premium">BYD Seal Premium</h3>
+                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,152788 π</div>
                 </div>
+                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="BYD Seal" data-usd="48000">
+                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
+                </button>
+            </div>
+
+            <!-- MEGA GAMING PC -->
+            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="tech">
+                <div class="relative aspect-[4/3] w-full bg-neutral-950">
+                    <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=500&q=80" alt="Gaming PC" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">PRO</span>
+                </div>
+                <div class="p-3 pb-4">
+                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">RTX STATION</span>
+                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Render & Oyuncu PC" data-en="Render & Gaming PC">Render & Oyuncu PC</h3>
+                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,012732 π</div>
+                </div>
+                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Ultimate Gaming PC" data-usd="4000">
+                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
+                </button>
+            </div>
+
+            <!-- GLOBAL REAL ESTATE -->
+            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="estate">
+                <div class="relative aspect-[4/3] w-full bg-neutral-950">
+                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=500&q=80" alt="Mansion" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">LUX</span>
+                </div>
+                <div class="p-3 pb-4">
+                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">REAL ESTATE</span>
+                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Lüks Sahil Konakları" data-en="Bosphorus Ocean Villa">Lüks Sahil Konakları</h3>
+                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">3,023946 π</div>
+                </div>
+                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Bosphorus Villa" data-usd="950000">
+                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
+                </button>
             </div>
 
         </div>
 
-        <!-- Terminal / Sistem Log Paneli -->
-        <div class="mt-12 bg-[#05010a] border border-purple-950/80 rounded-2xl p-5 shadow-2xl">
-            <span id="log-title" class="text-xs font-bold text-purple-400 tracking-widest uppercase block mb-3"><i class="fa-solid fa-terminal mr-2"></i>Sistem Konsolu</span>
-            <div id="status-console" class="text-xs font-mono text-amber-400/80 space-y-1.5 max-h-32 overflow-y-auto">
-                <div>> Luxury GCV Engine initialized (1 Pi = $314,159)...</div>
+        <!-- Konsol Paneli -->
+        <div class="mt-8 bg-neutral-950 border border-neutral-900 rounded-xl p-4">
+            <span class="text-[10px] font-bold text-neutral-500 tracking-wider uppercase block mb-2"><i class="fa-solid fa-terminal mr-1"></i>Sistem Konsolu</span>
+            <div id="status-console" class="text-[11px] font-mono text-amber-400/80 space-y-1 max-h-24 overflow-y-auto">
+                <div>> dApp yükleniyor...</div>
             </div>
         </div>
 
     </main>
 
-    <!-- Footer -->
-    <footer class="text-center text-xs text-purple-500/40 mt-20 mb-8 tracking-wide">
-        &copy; 2026 Pi Trust Protocol | Global Consensus Value Premium Ecosystem
-    </footer>
-
-    <!-- JAVASCRIPT HESAPLAMA VE INTERAKSİYON MOTORU -->
+    <!-- JAVASCRIPT MOTORU -->
     <script>
     (function() {
         const GCV_VALUE = 314159; 
@@ -245,39 +231,37 @@
                 connecting: "Pi Cüzdan doğrulaması yapılıyor...",
                 loginActive: "Bağlantı Kuruldu",
                 loginBtn: "Cüzdanı Bağla",
-                loginSuccess: "Giriş başarılı! Premium GCV vitrini yüklenmiştir.",
+                loginSuccess: "Giriş başarılı! Ürün kataloğu senkronize edildi.",
                 authCancel: "Bağlantı kullanıcı tarafından reddedildi.",
                 authFail: "Kimlik doğrulaması tamamlanamadı.",
-                sdkError: "Pi Browser dışından erişim tespit edildi. Lütfen Pi Browser ile girin.",
-                pleaseLogin: "Lütfen önce sağ üstten cüzdanınızı bağlayın!",
-                payReady: "Lüks ödeme emri hesaplandı, Pi Wallet onay ekranı açılıyor...",
-                paySuccess: "🎉 Tebrikler! Ödeme GCV oranına göre blockchain ağında tescillendi.",
+                sdkError: "Pi Browser dışından erişim tespit edildi.",
+                pleaseLogin: "Lütfen önce cüzdanınızı bağlayın!",
+                payReady: "Ödeme emri tescil ediliyor, Pi Wallet ekranı açılıyor...",
+                paySuccess: "🎉 Tebrikler! Satın alım GCV standardıyla blokzincirde onaylandı.",
                 payCancel: "Ödeme işlemi iptal edildi.",
                 payFail: "Blockchain ödeme hatası: ",
-                userActiveText: "Cüzdan Bağlantısı Aktif:",
-                buyBtnText: "Satın Al"
+                userActiveText: "Cüzdan Bağlantısı Aktif:"
             },
             en: {
                 connecting: "Verifying Pi Wallet link...",
                 loginActive: "Wallet Connected",
                 loginBtn: "Connect Wallet",
-                loginSuccess: "Login successful! Premium GCV catalog updated.",
+                loginSuccess: "Login successful! Product catalog synchronized.",
                 authCancel: "Connection rejected by user.",
                 authFail: "Authentication failed.",
-                sdkError: "External browser detected. Please launch inside Pi Browser.",
-                pleaseLogin: "Please connect your wallet first from the top right!",
-                payReady: "Luxury payment calculated, pulling up Pi Wallet confirmation...",
-                paySuccess: "🎉 Success! Transaction confirmed via GCV valuation on Pi Blockchain.",
+                sdkError: "External browser detected.",
+                pleaseLogin: "Please connect your wallet first!",
+                payReady: "Payment computed, pulling up Pi Wallet...",
+                paySuccess: "🎉 Success! Transaction confirmed via GCV valuation.",
                 payCancel: "Payment cancelled.",
                 payFail: "Blockchain payment error: ",
-                userActiveText: "Wallet Link Active:",
-                buyBtnText: "Buy Now"
+                userActiveText: "Wallet Link Active:"
             }
         };
 
         function setStatus(message, type) {
             const newLog = document.createElement('div');
-            newLog.innerHTML = `> <span class="${type === 'success' ? 'text-emerald-400' : type === 'error' ? 'text-rose-400' : 'text-purple-300'}">[${type.toUpperCase()}]</span> ${message}`;
+            newLog.innerHTML = `> <span class="${type === 'success' ? 'text-emerald-400' : type === 'error' ? 'text-rose-400' : 'text-neutral-500'}">[${type.toUpperCase()}]</span> ${message}`;
             statusConsole.appendChild(newLog);
             statusConsole.scrollTop = statusConsole.scrollHeight;
         }
@@ -287,11 +271,11 @@
             const buttons = document.querySelectorAll('.cat-btn');
             
             buttons.forEach(btn => {
-                btn.classList.remove('bg-amber-500', 'text-gray-950');
-                btn.classList.add('bg-gray-900/60', 'text-gray-400', 'border-gray-800');
+                btn.classList.remove('bg-[#f1b34a]', 'text-black');
+                btn.classList.add('bg-neutral-900', 'text-neutral-400');
             });
-            event.target.classList.remove('bg-gray-900/60', 'text-gray-400', 'border-gray-800');
-            event.target.classList.add('bg-amber-500', 'text-gray-950');
+            event.target.classList.remove('bg-neutral-900', 'text-neutral-400');
+            event.target.classList.add('bg-[#f1b34a]', 'text-black');
 
             cards.forEach(card => {
                 if (cat === 'all' || card.getAttribute('data-cat') === cat) {
@@ -304,12 +288,9 @@
 
         function applyLanguage(lang) {
             document.getElementById('user-status-text').textContent = translations[lang].userActiveText;
-            document.querySelectorAll('.buy-btn').forEach(btn => btn.textContent = translations[lang].buyBtnText);
-            
             document.querySelectorAll('[data-tr]').forEach(el => {
                 el.textContent = lang === 'tr' ? el.getAttribute('data-tr') : el.getAttribute('data-en');
             });
-
             loginBtn.textContent = currentUser ? translations[lang].loginActive : translations[lang].loginBtn;
         }
 
@@ -346,7 +327,7 @@
         window.addEventListener('load', async function() {
             try {
                 await Pi.init({ version: '2.0', sandbox: true });
-                setStatus("Pi Core Engine loaded safely in premium mode.", "success");
+                setStatus("Pi Luxury Grid UI initiated.", "success");
                 
                 loginBtn.addEventListener('click', async () => {
                     loginBtn.disabled = true;
@@ -366,7 +347,7 @@
             document.querySelectorAll('.buy-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const usdValue = parseFloat(this.getAttribute('data-usd'));
-                    const calculatedPiPrice = parseFloat((usdValue / GCV_VALUE).toFixed(8));
+                    const calculatedPiPrice = parseFloat((usdValue / GCV_VALUE).toFixed(6));
                     window.executePayment(this.getAttribute('data-name'), calculatedPiPrice, usdValue);
                 });
             });
@@ -380,19 +361,19 @@
             
             const buttons = document.querySelectorAll('.buy-btn');
             buttons.forEach(b => b.disabled = true);
-            setStatus(`${translations[currentLang].payReady} ($${usdValue} -> ${piPrice} Pi)`, 'info');
+            setStatus(`${translations[currentLang].payReady} (${piPrice} Pi)`, 'info');
 
             Pi.createPayment({
                 amount: piPrice,
-                memo: `GCV Premium Purchase: ${name} ($${usdValue})`,
-                metadata: { item: name, gcv_rate: GCV_VALUE, base_usd: usdValue }
+                memo: `GCV Order: ${name}`,
+                metadata: { item: name, rate: GCV_VALUE }
             }, {
                 onReadyForServerApproval: function(paymentId) {
-                    console.log('App Studio Luxury Auto-Approve:', paymentId);
+                    console.log('Auto-Approve ID:', paymentId);
                 },
                 onReadyForServerCompletion: function(paymentId, txid) {
                     setStatus(translations[currentLang].paySuccess, 'success');
-                    alert(`${translations[currentLang].paySuccess}\n\nItem: ${name}\nGCV Premium Price: ${piPrice} Pi ($${usdValue})`);
+                    alert(`${translations[currentLang].paySuccess}\n\n${name} -> ${piPrice} Pi`);
                     buttons.forEach(b => b.disabled = false);
                 },
                 onCancel: function(paymentId) {
@@ -403,7 +384,7 @@
                     setStatus(translations[currentLang].payFail + error.message, 'error');
                     buttons.forEach(b => b.disabled = false);
                 }
-            }).catch(function(err) {
+            }).catch(function() {
                 buttons.forEach(b => b.disabled = false);
             });
         };
