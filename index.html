@@ -3,40 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pi Trust Protocol | GCV Marketplace</title>
+    <title>Pi Trust Protocol | Luxury GCV Marketplace</title>
     <!-- Pi Network SDK -->
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
     <!-- Tailwind CSS ve FontAwesome İkonları -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .pi-gradient { background: linear-gradient(135deg, #120626 0%, #220d3d 100%); }
-        .pi-btn-gradient { background: linear-gradient(90deg, #f5bc47 0%, #e6a629 100%); }
+        .luxury-gradient { background: linear-gradient(135deg, #0d0415 0%, #150727 50%, #1a0933 100%); }
+        .pi-btn-gradient { background: linear-gradient(90deg, #f5bc47 0%, #d4921b 100%); }
         .hidden-el { display: none; }
         .visible { display: block !important; }
     </style>
 </head>
-<body class="bg-[#0b0314] text-gray-100 font-sans min-h-screen pb-24">
+<body class="luxury-gradient text-gray-100 font-sans min-h-screen pb-24">
 
     <!-- Üst Bar / Navbar -->
-    <header class="pi-gradient border-b border-purple-900/40 sticky top-0 z-50 backdrop-blur-md bg-opacity-95 shadow-xl">
-        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+    <header class="bg-[#090210]/90 border-b border-purple-950/60 sticky top-0 z-50 backdrop-blur-md shadow-2xl">
+        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
-                <div class="bg-amber-400 w-10 h-10 rounded-xl text-gray-900 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                <div class="bg-amber-400 w-11 h-11 rounded-xl text-gray-950 flex items-center justify-center shadow-lg shadow-amber-500/10">
                     <i class="fa-solid fa-pi text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-black tracking-wide text-amber-400 uppercase">Pi Trust Protocol</h1>
-                    <p class="text-[11px] text-purple-300 font-medium">GCV $314,159 Dağıtık Pazaryeri</p>
+                    <h1 class="text-xl font-black tracking-wider text-amber-400 uppercase">Pi Trust Protocol</h1>
+                    <p class="text-[11px] text-purple-400 font-medium tracking-widest uppercase">Premium GCV $314,159 dApp</p>
                 </div>
             </div>
 
             <div class="flex items-center space-x-3">
-                <select id="lang-select" class="bg-purple-950/60 border border-purple-500/30 text-xs text-purple-200 rounded-lg px-2 py-1.5 outline-none font-semibold cursor-pointer">
+                <select id="lang-select" class="bg-purple-950/40 border border-purple-500/20 text-xs text-purple-200 rounded-xl px-2.5 py-2 outline-none font-semibold cursor-pointer">
                     <option value="tr">TR</option>
                     <option value="en">EN</option>
                 </select>
-                <button id="login-btn" class="bg-amber-500 hover:bg-amber-400 text-gray-900 text-xs font-bold px-4 py-2 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer">
+                <button id="login-btn" class="bg-amber-500 hover:bg-amber-400 text-gray-950 text-xs font-bold px-5 py-2.5 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer">
                     Bağlan / Connect
                 </button>
             </div>
@@ -44,173 +44,195 @@
     </header>
 
     <!-- Ana Gövde -->
-    <main class="max-w-5xl mx-auto px-4 mt-6">
+    <main class="max-w-6xl mx-auto px-4 mt-8">
         
-        <!-- Kullanıcı Durum Şeridi -->
-        <div id="user-info-div" class="hidden-el bg-purple-950/20 border border-purple-500/20 rounded-2xl p-4 mb-6 backdrop-blur-sm">
-            <div class="flex justify-between items-center">
+        <!-- GCV Bilgi Şeridi -->
+        <div id="user-info-div" class="hidden-el bg-purple-950/10 border border-purple-500/20 rounded-2xl p-4 mb-8 backdrop-blur-sm shadow-inner">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-3">
                 <div class="flex items-center space-x-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span id="user-status-text" class="text-xs text-purple-200">Cüzdan Bağlantısı Aktif:</span>
+                    <span id="user-status-text" class="text-xs text-purple-300">Cüzdan Bağlantısı Aktif:</span>
                     <span id="username-span" class="text-sm font-bold text-amber-400"></span>
                 </div>
-                <div class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full font-mono font-bold">
-                    1 Pi = $314,159 (GCV)
+                <div class="text-xs bg-amber-500/10 text-amber-400 border border-amber-500/20 px-4 py-1 rounded-xl font-mono font-bold shadow-sm">
+                    Global Consensus Value: 1 Pi = $314,159
                 </div>
             </div>
         </div>
 
         <!-- KATEGORİ MENÜSÜ -->
-        <div class="mb-8 overflow-x-auto pb-2 flex space-x-2">
-            <button onclick="filterCategory('all')" class="cat-btn bg-amber-500 text-gray-900 text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer shadow-md">Tümü</button>
-            <button onclick="filterCategory('digital')" class="cat-btn bg-gray-900 text-gray-400 hover:text-gray-100 text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">Dijital Ürünler</button>
-            <button onclick="filterCategory('tools')" class="cat-btn bg-gray-900 text-gray-400 hover:text-gray-100 text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">Normal Araçlar</button>
-            <button onclick="filterCategory('gaming')" class="cat-btn bg-gray-900 text-gray-400 hover:text-gray-100 text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">Oyun & Roblox</button>
+        <div class="mb-8 overflow-x-auto pb-2 flex space-x-3">
+            <button onclick="filterCategory('all')" class="cat-btn bg-amber-500 text-gray-950 text-xs font-bold px-5 py-2.5 rounded-xl transition-all cursor-pointer shadow-lg shadow-amber-500/5">Tümü</button>
+            <button onclick="filterCategory('tech')" class="cat-btn bg-gray-900/60 border border-gray-800 text-gray-400 hover:text-gray-100 text-xs font-bold px-5 py-2.5 rounded-xl transition-all cursor-pointer">Teknoloji (Telefon/PC)</button>
+            <button onclick="filterCategory('auto')" class="cat-btn bg-gray-900/60 border border-gray-800 text-gray-400 hover:text-gray-100 text-xs font-bold px-5 py-2.5 rounded-xl transition-all cursor-pointer">Lüks Araçlar</button>
+            <button onclick="filterCategory('estate')" class="cat-btn bg-gray-900/60 border border-gray-800 text-gray-400 hover:text-gray-100 text-xs font-bold px-5 py-2.5 rounded-xl transition-all cursor-pointer">Emlak (Bölge Bölge)</button>
         </div>
 
-        <!-- ÜRÜN VİTRİNİ (GCV FİYATLANDIRMALI) -->
-        <div id="product-grid" class="hidden-el grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- ÜRÜN VİTRİNİ -->
+        <div id="product-grid" class="hidden-el grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             
-            <!-- Ürün 1: Premium Web Hosting -->
-            <div class="prod-card bg-gray-900/40 border border-gray-800 rounded-3xl overflow-hidden shadow-lg hover:border-purple-500/30 transition-all flex flex-col justify-between" data-cat="digital">
-                <div class="p-5">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-code"></i>
-                        </div>
-                        <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Dijital</span>
+            <!-- Ürün 1: Telefon -->
+            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="tech">
+                <div>
+                    <div class="relative h-48 w-full bg-gray-950">
+                        <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=600&q=80" alt="Smartphone" class="w-full h-full object-cover opacity-90">
+                        <span class="absolute top-4 right-4 text-[10px] bg-blue-500 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Telefon</span>
                     </div>
-                    <h3 class="font-bold text-gray-100 text-base" data-tr="Premium Web Hosting (1 Yıllık)" data-en="Premium Web Hosting (1 Year)">Premium Web Hosting (1 Yıllık)</h3>
-                    <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Sınırsız trafik, ücretsiz SSL ve %99.9 uptime garantili GCV uyumlu bulut sunucu lisansı." data-en="Unlimited traffic, free SSL, and 99.9% uptime guaranteed GCV compliant cloud server license.">Sınırsız trafik, ücretsiz SSL ve %99.9 uptime garantili GCV uyumlu bulut sunucu lisansı.</p>
+                    <div class="p-6">
+                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Flagship Akıllı Telefon 512GB" data-en="Flagship Smartphone 512GB">Flagship Akıllı Telefon 512GB</h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Yüksek çözünürlüklü kamera sistemi, yapay zeka işlemcili, premium titanyum kasa akıllı cihaz." data-en="High-resolution camera system, AI-powered processor, premium titanium chassis smart device.">Yüksek çözünürlüklü kamera sistemi, yapay zeka işlemcili, premium titanyum kasa akıllı cihaz.</p>
+                    </div>
                 </div>
-                <div class="p-5 pt-0 border-t border-gray-800/50 mt-4 flex items-center justify-between">
+                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
                     <div>
-                        <div class="flex items-center space-x-1 text-amber-400 font-black text-sm">
-                            <i class="fa-solid fa-pi text-[11px]"></i><span>0.00047746 Pi</span>
+                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
+                            <i class="fa-solid fa-pi text-xs"></i><span>0.00381972 Pi</span>
                         </div>
-                        <span class="text-[10px] text-gray-500 font-mono">Değer: $150.00</span>
+                        <span class="text-[10px] text-gray-500 font-mono">Değer: $1,200.00</span>
                     </div>
-                    <button class="buy-btn py-2 px-5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Premium Web Hosting" data-usd="150.00">Satın Al</button>
+                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Flagship Smartphone" data-usd="1200.00">Satın Al</button>
                 </div>
             </div>
 
-            <!-- Ürün 2: Antivirüs Pro -->
-            <div class="prod-card bg-gray-900/40 border border-gray-800 rounded-3xl overflow-hidden shadow-lg hover:border-purple-500/30 transition-all flex flex-col justify-between" data-cat="digital">
-                <div class="p-5">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-shield-halved"></i>
-                        </div>
-                        <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Dijital</span>
+            <!-- Ürün 2: Bilgisayar -->
+            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="tech">
+                <div>
+                    <div class="relative h-48 w-full bg-gray-950">
+                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80" alt="Laptop" class="w-full h-full object-cover opacity-90">
+                        <span class="absolute top-4 right-4 text-[10px] bg-blue-500 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Bilgisayar</span>
                     </div>
-                    <h3 class="font-bold text-gray-100 text-base" data-tr="Antivirüs Pro Lisans Anahtarı" data-en="Antivirus Pro License Key">Antivirüs Pro Lisans Anahtarı</h3>
-                    <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Tam koruma sağlayan 1 kullanıcı uyumlu orijinal küresel aktivasyon kodu." data-en="Original global activation code compatible with 1 user, providing full protection.">Tam koruma sağlayan 1 kullanıcı uyumlu orijinal küresel aktivasyon kodu.</p>
+                    <div class="p-6">
+                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Ultra-Slim Profesyonel Laptop" data-en="Ultra-Slim Professional Laptop">Ultra-Slim Profesyonel Laptop</h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Yazılım geliştiriciler ve profesyoneller için yüksek performanslı mimari, 32GB RAM ve harika ekran." data-en="High-performance architecture for software developers and professionals, 32GB RAM and stunning display.">Yazılım geliştiriciler ve profesyoneller için yüksek performanslı mimari, 32GB RAM ve harika ekran.</p>
+                    </div>
                 </div>
-                <div class="p-5 pt-0 border-t border-gray-800/50 mt-4 flex items-center justify-between">
+                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
                     <div>
-                        <div class="flex items-center space-x-1 text-amber-400 font-black text-sm">
-                            <i class="fa-solid fa-pi text-[11px]"></i><span>0.00015915 Pi</span>
+                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
+                            <i class="fa-solid fa-pi text-xs"></i><span>0.00795775 Pi</span>
                         </div>
-                        <span class="text-[10px] text-gray-500 font-mono">Değer: $50.00</span>
+                        <span class="text-[10px] text-gray-500 font-mono">Değer: $2,500.00</span>
                     </div>
-                    <button class="buy-btn py-2 px-5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Antivirus Pro License" data-usd="50.00">Satın Al</button>
+                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Professional Laptop" data-usd="2500.00">Satın Al</button>
                 </div>
             </div>
 
-            <!-- Ürün 3: Telefon Sabitleyici -->
-            <div class="prod-card bg-gray-900/40 border border-gray-800 rounded-3xl overflow-hidden shadow-lg hover:border-purple-500/30 transition-all flex flex-col justify-between" data-cat="tools">
-                <div class="p-5">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-bolt"></i>
-                        </div>
-                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Araçlar</span>
+            <!-- Ürün 3: Araba (Premium SUV) -->
+            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="auto">
+                <div>
+                    <div class="relative h-48 w-full bg-gray-950">
+                        <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80" alt="Luxury SUV" class="w-full h-full object-cover opacity-90">
+                        <span class="absolute top-4 right-4 text-[10px] bg-red-500 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Araç</span>
                     </div>
-                    <h3 class="font-bold text-gray-100 text-base" data-tr="Akıllı Telefon Sabitleyici (Tripod)" data-en="Smartphone Tripod Stabilizer">Akıllı Telefon Sabitleyici (Tripod)</h3>
-                    <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Bluetooth kumandalı, 360 derece dönebilen profesyonel hafif tripod standı." data-en="Professional lightweight tripod stand with bluetooth remote, rotating 360 degrees.">Bluetooth kumandalı, 360 derece dönebilen profesyonel hafif tripod standı.</p>
+                    <div class="p-6">
+                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Lüks Elektrikli SUV (2026)" data-en="Luxury Electric SUV (2026)">Lüks Elektrikli SUV (2026)</h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Otonom sürüş destekli, 600km menzilli, premium iç dizayna sahip akıllı elektrikli arazi aracı." data-en="Autonomous driving support, 600km range, smart electric SUV with premium interior design.">Otonom sürüş destekli, 600km menzilli, premium iç dizayna sahip akıllı elektrikli arazi aracı.</p>
+                    </div>
                 </div>
-                <div class="p-5 pt-0 border-t border-gray-800/50 mt-4 flex items-center justify-between">
+                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
                     <div>
-                        <div class="flex items-center space-x-1 text-amber-400 font-black text-sm">
-                            <i class="fa-solid fa-pi text-[11px]"></i><span>0.00023873 Pi</span>
+                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
+                            <i class="fa-solid fa-pi text-xs"></i><span>0.27056363 Pi</span>
                         </div>
-                        <span class="text-[10px] text-gray-500 font-mono">Değer: $75.00</span>
+                        <span class="text-[10px] text-gray-500 font-mono">Değer: $85,000.00</span>
                     </div>
-                    <button class="buy-btn py-2 px-5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Smartphone Tripod" data-usd="75.00">Satın Al</button>
+                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Luxury Electric SUV" data-usd="85000.00">Satın Al</button>
                 </div>
             </div>
 
-            <!-- Ürün 4: Laptop Standı -->
-            <div class="prod-card bg-gray-900/40 border border-gray-800 rounded-3xl overflow-hidden shadow-lg hover:border-purple-500/30 transition-all flex flex-col justify-between" data-cat="tools">
-                <div class="p-5">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-laptop"></i>
-                        </div>
-                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Araçlar</span>
+            <!-- Ürün 4: Araba (Spor Model) -->
+            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="auto">
+                <div>
+                    <div class="relative h-48 w-full bg-gray-950">
+                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" alt="Sport Car" class="w-full h-full object-cover opacity-90">
+                        <span class="absolute top-4 right-4 text-[10px] bg-red-500 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Araç</span>
                     </div>
-                    <h3 class="font-bold text-gray-100 text-base" data-tr="Alüminyum Laptop Standı" data-en="Aluminum Laptop Stand">Alüminyum Laptop Standı</h3>
-                    <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Isı dağılımını destekleyen, yüksekliği ayarlanabilir ergonomik katlanabilir stand." data-en="Adjustable height ergonomic foldable stand supporting heat dissipation.">Isı dağılımını destekleyen, yüksekliği ayarlanabilir ergonomik katlanabilir stand.</p>
+                    <div class="p-6">
+                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Yüksek Performans Spor Otomobil" data-en="High-Performance Sports Car">Yüksek Performans Spor Otomobil</h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Aerodinamik aerokit gövde, üstün yol tutuşu ve safkan sürüş dinamiği sunan lüks coupe." data-en="Aerodynamic body, superior handling and pure driving dynamics luxury coupe.">Aerodinamik aerokit gövde, üstün yol tutuşu ve safkan sürüş dinamiği sunan lüks coupe.</p>
+                    </div>
                 </div>
-                <div class="p-5 pt-0 border-t border-gray-800/50 mt-4 flex items-center justify-between">
+                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
                     <div>
-                        <div class="flex items-center space-x-1 text-amber-400 font-black text-sm">
-                            <i class="fa-solid fa-pi text-[11px]"></i><span>0.00019098 Pi</span>
+                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
+                            <i class="fa-solid fa-pi text-xs"></i><span>0.42971871 Pi</span>
                         </div>
-                        <span class="text-[10px] text-gray-500 font-mono">Değer: $60.00</span>
+                        <span class="text-[10px] text-gray-500 font-mono">Değer: $135,000.00</span>
                     </div>
-                    <button class="buy-btn py-2 px-5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Aluminum Laptop Stand" data-usd="60.00">Satın Al</button>
+                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Sports Car" data-usd="135000.00">Satın Al</button>
                 </div>
             </div>
 
-            <!-- Ürün 5: Roblox Donation Pack -->
-            <div class="prod-card bg-gray-900/40 border border-gray-800 rounded-3xl overflow-hidden shadow-lg hover:border-purple-500/30 transition-all flex flex-col justify-between" data-cat="gaming">
-                <div class="p-5">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="w-12 h-12 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-2xl flex items-center justify-center text-xl">
-                            <i class="fa-solid fa-gamepad"></i>
-                        </div>
-                        <span class="text-[10px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Oyun</span>
+            <!-- Ürün 5: Emlak (Bölge 1) -->
+            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="estate">
+                <div>
+                    <div class="relative h-48 w-full bg-gray-950">
+                        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80" alt="Villa" class="w-full h-full object-cover opacity-90">
+                        <span class="absolute top-4 right-4 text-[10px] bg-purple-600 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Emlak - Sahil Şeridi</span>
                     </div>
-                    <h3 class="font-bold text-gray-100 text-base" data-tr="Roblox Donation Pack (500 Robux)" data-en="Roblox Donation Pack (500 Robux)">Roblox Donation Pack (500 Robux)</h3>
-                    <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="'Pls Donate' modları için özel entegreli VIP pazar pass kart yükleme paketi." data-en="Custom integrated VIP marketplace pass pack optimized for 'Pls Donate' modes.">'Pls Donate' modları için özel entegreli VIP pazar pass kart yükleme paketi.</p>
+                    <div class="p-6">
+                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Deniz Manzaralı Akıllı Villa" data-en="Sea View Smart Villa">Deniz Manzaralı Akıllı Villa</h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Bölge: Sahil Konakları. 5+2, müstakil havuzlu, geniş bahçeli ve tam entegre otomasyonlu akıllı malikane." data-en="Region: Coastal Villas. 5+2, private pool, large garden and fully integrated automation smart mansion.">Bölge: Sahil Konakları. 5+2, müstakil havuzlu, geniş bahçeli ve tam entegre otomasyonlu akıllı malikane.</p>
+                    </div>
                 </div>
-                <div class="p-5 pt-0 border-t border-gray-800/50 mt-4 flex items-center justify-between">
+                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
                     <div>
-                        <div class="flex items-center space-x-1 text-amber-400 font-black text-sm">
-                            <i class="fa-solid fa-pi text-[11px]"></i><span>0.00003183 Pi</span>
+                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
+                            <i class="fa-solid fa-pi text-xs"></i><span>1.43239570 Pi</span>
                         </div>
-                        <span class="text-[10px] text-gray-500 font-mono">Değer: $10.00</span>
+                        <span class="text-[10px] text-gray-500 font-mono">Değer: $450,000.00</span>
                     </div>
-                    <button class="buy-btn py-2 px-5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="500 Robux Pack" data-usd="10.00">Satın Al</button>
+                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Sea View Smart Villa" data-usd="450000.00">Satın Al</button>
+                </div>
+            </div>
+
+            <!-- Ürün 6: Emlak (Bölge 2) -->
+            <div class="prod-card bg-gray-900/20 border border-gray-800/80 rounded-3xl overflow-hidden shadow-2xl hover:border-amber-500/20 transition-all flex flex-col justify-between" data-cat="estate">
+                <div>
+                    <div class="relative h-48 w-full bg-gray-950">
+                        <img src="https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80" alt="Penthouse" class="w-full h-full object-cover opacity-90">
+                        <span class="absolute top-4 right-4 text-[10px] bg-purple-600 text-white px-3 py-1 rounded-full font-bold uppercase tracking-wider shadow-md">Emlak - Merkez</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-gray-100 text-lg tracking-wide" data-tr="Luxury Sky Penthouse" data-en="Luxury Sky Penthouse">Luxury Sky Penthouse</h3>
+                        <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Bölge: Rezidans Kuleleri. Şehrin merkezinde, 360 derece panoramik manzaralı, geniş teraslı ultra lüks çatı katı." data-en="Region: Residence Towers. Center of the city, 360 panoramic view, ultra-luxury penthouse with large terrace.">Bölge: Rezidans Kuleleri. Şehrin merkezinde, 360 derece panoramik manzaralı, geniş teraslı ultra lüks çatı katı.</p>
+                    </div>
+                </div>
+                <div class="p-6 pt-0 border-t border-gray-800/40 mt-2 flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-amber-400 font-black text-base">
+                            <i class="fa-solid fa-pi text-xs"></i><span>0.93901528 Pi</span>
+                        </div>
+                        <span class="text-[10px] text-gray-500 font-mono">Değer: $295,000.00</span>
+                    </div>
+                    <button class="buy-btn py-2.5 px-5 rounded-xl pi-btn-gradient text-gray-950 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Luxury Sky Penthouse" data-usd="295000.00">Satın Al</button>
                 </div>
             </div>
 
         </div>
 
-        <!-- İşlem Konsolu / Loglar -->
-        <div class="mt-8 bg-[#020005] border border-purple-950/80 rounded-2xl p-4 shadow-2xl">
-            <span id="log-title" class="text-xs font-bold text-purple-400 tracking-wider uppercase block mb-2"><i class="fa-solid fa-terminal mr-2"></i>Sistem Konsolu</span>
-            <div id="status-console" class="text-xs font-mono text-amber-400/80 space-y-1 max-h-32 overflow-y-auto">
-                <div>> dApp başlatıldı. GCV Modülü aktif (1 Pi = $314,159)...</div>
+        <!-- Terminal / Sistem Log Paneli -->
+        <div class="mt-12 bg-[#05010a] border border-purple-950/80 rounded-2xl p-5 shadow-2xl">
+            <span id="log-title" class="text-xs font-bold text-purple-400 tracking-widest uppercase block mb-3"><i class="fa-solid fa-terminal mr-2"></i>Sistem Konsolu</span>
+            <div id="status-console" class="text-xs font-mono text-amber-400/80 space-y-1.5 max-h-32 overflow-y-auto">
+                <div>> Luxury GCV Engine initialized (1 Pi = $314,159)...</div>
             </div>
         </div>
 
     </main>
 
-    <!-- Alt Bilgi / Footer -->
-    <footer class="text-center text-xs text-purple-500/60 mt-16 mb-6">
-        &copy; 2026 Pi Trust Protocol | Dağıtık Akıllı Sözleşme Arayüzü (GCV Standartları)
+    <!-- Footer -->
+    <footer class="text-center text-xs text-purple-500/40 mt-20 mb-8 tracking-wide">
+        &copy; 2026 Pi Trust Protocol | Global Consensus Value Premium Ecosystem
     </footer>
 
-    <!-- JAVASCRIPT MOTORU -->
+    <!-- JAVASCRIPT HESAPLAMA VE INTERAKSİYON MOTORU -->
     <script>
     (function() {
-        const GCV_VALUE = 314159; // Global Consensus Value Sabiti
+        const GCV_VALUE = 314159; 
         let currentLang = 'tr';
         let currentUser = null;
 
-        // Dom Elementleri
         const langSelect = document.getElementById('lang-select');
         const loginBtn = document.getElementById('login-btn');
         const userInfoDiv = document.getElementById('user-info-div');
@@ -223,13 +245,13 @@
                 connecting: "Pi Cüzdan doğrulaması yapılıyor...",
                 loginActive: "Bağlantı Kuruldu",
                 loginBtn: "Cüzdanı Bağla",
-                loginSuccess: "Giriş başarılı! GCV bazlı ürün vitrini aktif edildi.",
+                loginSuccess: "Giriş başarılı! Premium GCV vitrini yüklenmiştir.",
                 authCancel: "Bağlantı kullanıcı tarafından reddedildi.",
                 authFail: "Kimlik doğrulaması tamamlanamadı.",
                 sdkError: "Pi Browser dışından erişim tespit edildi. Lütfen Pi Browser ile girin.",
                 pleaseLogin: "Lütfen önce sağ üstten cüzdanınızı bağlayın!",
-                payReady: "GCV Ödeme emri hesaplandı, Pi Wallet onay ekranı açılıyor...",
-                paySuccess: "🎉 İşlem Başarılı! Ödeme GCV oranına göre Blockchain ağında onaylandı.",
+                payReady: "Lüks ödeme emri hesaplandı, Pi Wallet onay ekranı açılıyor...",
+                paySuccess: "🎉 Tebrikler! Ödeme GCV oranına göre blockchain ağında tescillendi.",
                 payCancel: "Ödeme işlemi iptal edildi.",
                 payFail: "Blockchain ödeme hatası: ",
                 userActiveText: "Cüzdan Bağlantısı Aktif:",
@@ -239,12 +261,12 @@
                 connecting: "Verifying Pi Wallet link...",
                 loginActive: "Wallet Connected",
                 loginBtn: "Connect Wallet",
-                loginSuccess: "Login successful! GCV marketplace synced successfully.",
+                loginSuccess: "Login successful! Premium GCV catalog updated.",
                 authCancel: "Connection rejected by user.",
                 authFail: "Authentication failed.",
                 sdkError: "External browser detected. Please launch inside Pi Browser.",
                 pleaseLogin: "Please connect your wallet first from the top right!",
-                payReady: "GCV Payment calculated, pulling up Pi Wallet confirmation...",
+                payReady: "Luxury payment calculated, pulling up Pi Wallet confirmation...",
                 paySuccess: "🎉 Success! Transaction confirmed via GCV valuation on Pi Blockchain.",
                 payCancel: "Payment cancelled.",
                 payFail: "Blockchain payment error: ",
@@ -265,11 +287,11 @@
             const buttons = document.querySelectorAll('.cat-btn');
             
             buttons.forEach(btn => {
-                btn.classList.remove('bg-amber-500', 'text-gray-900');
-                btn.classList.add('bg-gray-900', 'text-gray-400');
+                btn.classList.remove('bg-amber-500', 'text-gray-950');
+                btn.classList.add('bg-gray-900/60', 'text-gray-400', 'border-gray-800');
             });
-            event.target.classList.remove('bg-gray-900', 'text-gray-400');
-            event.target.classList.add('bg-amber-500', 'text-gray-900');
+            event.target.classList.remove('bg-gray-900/60', 'text-gray-400', 'border-gray-800');
+            event.target.classList.add('bg-amber-500', 'text-gray-950');
 
             cards.forEach(card => {
                 if (cat === 'all' || card.getAttribute('data-cat') === cat) {
@@ -324,7 +346,7 @@
         window.addEventListener('load', async function() {
             try {
                 await Pi.init({ version: '2.0', sandbox: true });
-                setStatus("Pi Core Engine başarıyla bağlandı. GCV doğrulaması tamam.", "success");
+                setStatus("Pi Core Engine loaded safely in premium mode.", "success");
                 
                 loginBtn.addEventListener('click', async () => {
                     loginBtn.disabled = true;
@@ -344,14 +366,12 @@
             document.querySelectorAll('.buy-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const usdValue = parseFloat(this.getAttribute('data-usd'));
-                    // GCV Hesaplama Dinamiği: USD Değeri / GCV Sabiti (8 basamağa yuvarlanır)
                     const calculatedPiPrice = parseFloat((usdValue / GCV_VALUE).toFixed(8));
                     window.executePayment(this.getAttribute('data-name'), calculatedPiPrice, usdValue);
                 });
             });
         });
 
-        // App Studio Sunucusuz Anlık GCV Ödeme İletimi
         window.executePayment = function(name, piPrice, usdValue) {
             if (!currentUser) {
                 alert(translations[currentLang].pleaseLogin);
@@ -364,15 +384,15 @@
 
             Pi.createPayment({
                 amount: piPrice,
-                memo: `GCV Purchase: ${name} ($${usdValue})`,
+                memo: `GCV Premium Purchase: ${name} ($${usdValue})`,
                 metadata: { item: name, gcv_rate: GCV_VALUE, base_usd: usdValue }
             }, {
                 onReadyForServerApproval: function(paymentId) {
-                    console.log('App Studio GCV Auto-Approve:', paymentId);
+                    console.log('App Studio Luxury Auto-Approve:', paymentId);
                 },
                 onReadyForServerCompletion: function(paymentId, txid) {
                     setStatus(translations[currentLang].paySuccess, 'success');
-                    alert(`${translations[currentLang].paySuccess}\n\nItem: ${name}\nGCV Price: ${piPrice} Pi ($${usdValue})`);
+                    alert(`${translations[currentLang].paySuccess}\n\nItem: ${name}\nGCV Premium Price: ${piPrice} Pi ($${usdValue})`);
                     buttons.forEach(b => b.disabled = false);
                 },
                 onCancel: function(paymentId) {
