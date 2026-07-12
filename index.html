@@ -1,496 +1,230 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pi Trust Protocol</title>
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0b1120;
-            color: #e8edf5;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-        }
-        .container {
-            max-width: 520px;
-            width: 100%;
-            background: linear-gradient(145deg, #141c2f, #1a243b);
-            border-radius: 32px;
-            padding: 28px 24px 40px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            position: relative;
-        }
-        .header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-        .app-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-        .app-logo {
-            width: 54px;
-            height: 54px;
-            border-radius: 14px;
-            object-fit: cover;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-            flex-shrink: 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .app-title {
-            font-size: 24px;
-            font-weight: 700;
-            background: linear-gradient(to right, #ffffff, #b0c7e7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .lang-selector {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #e8edf5;
-            padding: 6px 10px;
-            border-radius: 10px;
-            font-size: 13px;
-            cursor: pointer;
-            outline: none;
-        }
-        .lang-selector option {
-            background: #141c2f;
-            color: #e8edf5;
-        }
-        .app-sub {
-            font-size: 13px;
-            color: #8899bb;
-            margin-top: -4px;
-            margin-left: 68px;
-            margin-bottom: 20px;
-        }
-        .user-info {
-            background: rgba(46, 125, 50, 0.15);
-            border: 1px solid rgba(76, 175, 80, 0.25);
-            padding: 12px 16px;
-            border-radius: 14px;
-            font-size: 14px;
-            color: #81c784;
-            display: none;
-            margin-bottom: 18px;
-            align-items: center;
-            gap: 8px;
-        }
-        .user-info.visible { display: flex; }
-        .user-info .name { font-weight: 600; color: #a5d6a7; }
-        button {
-            background: linear-gradient(135deg, #2a3f6e, #1d2d4f);
-            color: white;
-            padding: 14px 18px;
-            border: none;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            transition: all 0.25s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-            opacity: 0.95;
-        }
-        button:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-        .wallet-btn {
-            background: linear-gradient(135deg, #f7931a, #e67e22);
-            color: #0b1120;
-            font-weight: 700;
-            margin-bottom: 14px;
-            box-shadow: 0 4px 20px rgba(247, 147, 26, 0.25);
-        }
-        .buy-btn {
-            background: linear-gradient(135deg, #00b894, #00a381);
-            width: auto;
-            padding: 10px 24px;
-            font-size: 13px;
-            border-radius: 40px;
-            font-weight: 600;
-            box-shadow: 0 4px 14px rgba(0, 184, 148, 0.2);
-        }
-        .buy-btn:hover { box-shadow: 0 6px 24px rgba(0, 184, 148, 0.35); }
-        .status {
-            background: rgba(46, 125, 50, 0.12);
-            padding: 10px 14px;
-            border-radius: 12px;
-            margin: 12px 0 18px;
-            display: none;
-            font-size: 14px;
-            border-left: 3px solid #4caf50;
-            color: #b0d4b0;
-        }
-        .status.error { background: rgba(198, 40, 40, 0.12); border-left-color: #c62828; color: #ef9a9a; }
-        .status.info { background: rgba(247, 147, 26, 0.12); border-left-color: #f7931a; color: #f0c27a; }
-        #productSection { display: none; margin-top: 18px; }
-        #productSection.visible { display: block; }
-        .section-title { font-size: 22px; font-weight: 700; color: #e8edf5; margin-bottom: 4px; }
-        .section-sub { font-size: 13px; color: #8899bb; margin-bottom: 20px; }
-        .gcv-note {
-            background: rgba(247, 147, 26, 0.08);
-            border: 1px solid rgba(247, 147, 26, 0.15);
-            padding: 12px 16px;
-            border-radius: 14px;
-            margin-bottom: 22px;
-            font-size: 13px;
-            color: #f0c27a;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .gcv-note strong { color: #f7931a; font-size: 15px; }
-        .category { margin: 28px 0 14px; }
-        .category h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #b0c7e7;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-        .product {
-            background: rgba(255, 255, 255, 0.04);
-            margin: 16px 0;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            overflow: hidden;
-            transition: all 0.2s;
-            display: flex;
-            flex-direction: column;
-        }
-        .product:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.08);
-            transform: translateY(-1px);
-        }
-        .product-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            background: #141c2f;
-        }
-        .product-body { padding: 16px; }
-        .product h4 { font-size: 17px; font-weight: 600; color: #e8edf5; margin-bottom: 4px; }
-        .product .price-row {
-            display: flex;
-            align-items: baseline;
-            margin-bottom: 6px;
-        }
-        .product .price-pi { font-size: 20px; font-weight: 700; color: #f7931a; }
-        .product .price-usd { font-size: 13px; color: #8899bb; margin-left: 6px; }
-        .product .desc { font-size: 13px; color: #8899bb; line-height: 1.4; margin-bottom: 14px; }
-        .product .buy-row { display: flex; justify-content: flex-end; }
-        .footer {
-            margin-top: 36px;
-            padding-top: 18px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            font-size: 12px;
-            color: #556688;
-            text-align: center;
-        }
-        .footer strong { color: #8899bb; }
-        @media (max-width: 480px) {
-            .container { padding: 18px 14px 30px; }
-            .app-title { font-size: 20px; }
-            .product-img { height: 150px; }
-        }
+        .pi-theme { background-color: #e5a93b; }
+        .pi-text { color: #e5a93b; }
+        .pi-gradient { background: linear-gradient(135deg, #1a0933 0%, #2a144d 100%); }
+        .pi-btn-gradient { background: linear-gradient(90deg, #f2b842 0%, #e5a93b 100%); }
+        .hidden-el { display: none; }
+        .visible { display: block !important; }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="header-row">
-            <div class="app-header">
-                <img class="app-logo" src="https://raw.githubusercontent.com/nemes08/pi-trust-protocol/main/1000312286.png" alt="Pi Trust Logo">
+<body class="bg-gray-900 text-gray-100 font-sans min-h-screen pb-20">
+
+    <header class="pi-gradient shadow-lg border-b border-purple-900/30 sticky top-0 z-50">
+        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <div class="bg-amber-400 p-2 rounded-full text-gray-900 flex items-center justify-center shadow-md animate-pulse">
+                    <i class="fa-solid fa-pi text-xl"></i>
+                </div>
                 <div>
-                    <div class="app-title">Pi Trust</div>
+                    <h1 class="text-xl font-extrabold tracking-wide text-amber-400">Pi Trust Protocol</h1>
+                    <p class="text-xs text-purple-300">Güvenli Pi Alışverişi</p>
                 </div>
             </div>
-            <select id="langSelect" class="lang-selector">
-                <option value="en">English</option>
-                <option value="tr">Türkçe</option>
-                <option value="zh">中文</option>
-                <option value="vi">Tiếng Việt</option>
-            </select>
+
+            <div class="flex items-center space-x-2">
+                <select id="lang-select" class="bg-purple-950/80 border border-purple-500/30 text-xs text-purple-200 rounded-lg px-2 py-1 outline-none">
+                    <option value="tr">TR</option>
+                    <option value="en">EN</option>
+                </select>
+                <button id="login-btn" class="bg-amber-500 text-gray-900 text-xs font-bold px-3 py-1.5 rounded-lg shadow hover:bg-amber-400 transition-all cursor-pointer">
+                    Giriş Yap / Login
+                </button>
+            </div>
         </div>
+    </header>
+
+    <main class="max-w-md mx-auto px-4 mt-6">
         
-        <div class="app-sub" id="txtAppSub">Güvenli ticaretin yeni adresi</div>
-        
-        <div id="userInfo" class="user-info">
-            <span>✅</span> <span id="txtWelcome">Hoş geldin,</span> <span class="name" id="usernameDisplay"></span>!
+        <div id="user-info-div" class="hidden-el bg-purple-950/30 border border-purple-500/20 rounded-2xl p-4 mb-4 shadow-xl">
+            <div class="flex items-center space-x-2">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
+                <span class="text-xs text-purple-200 font-medium">Aktif Kullanıcı:</span>
+                <span id="username-span" class="text-sm font-bold text-amber-400"></span>
+            </div>
         </div>
-        
-        <button id="loginBtn" class="wallet-btn">🔗 Pi ile Giriş Yap</button>
-        <div id="status" class="status"></div>
-        
-        <div id="productSection">
-            <div class="section-title" id="txtGlobalMarket">🌍 Global Pazar Yeri</div>
-            <div class="section-sub" id="txtGcvSub">GCV bazlı gerçek fiyatlar</div>
-            
-            <div class="gcv-note">
-                💎 <strong>1 Pi = 314.159 $</strong> (GCV) 
-                <span style="color:#8899bb; margin-left:auto;" id="txtItemCount">• 18+ ürün</span>
+
+        <div class="bg-gradient-to-r from-purple-950/40 to-indigo-950/40 border border-purple-500/20 rounded-2xl p-4 mb-6 shadow-xl backdrop-blur-sm">
+            <div class="flex items-start space-x-3">
+                <i class="fa-solid fa-shield-halved text-amber-400 text-xl mt-0.5"></i>
+                <div>
+                    <h3 id="info-title" class="text-sm font-bold text-gray-200">Protokol Nasıl Çalışır?</h3>
+                    <p id="info-desc" class="text-xs text-gray-400 mt-1 leading-relaxed">
+                        Beğendiğiniz ürünü seçip "Satın Al" butonuna basın. App Studio entegrasyonu sayesinde ödemeniz Pi cüzdanınız üzerinden güvenle tamamlanır.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="product-section" class="hidden-el space-y-4">
+            <div class="flex items-center justify-between mb-2 px-1">
+                <h2 id="products-heading" class="text-base font-bold tracking-wide text-gray-300 uppercase">Mevcut Ürünler</h2>
+                <span class="bg-gray-800 text-gray-400 text-xs px-2 py-0.5 rounded-md">2 Adet</span>
             </div>
             
-            <div id="catalogContainer"></div>
+            <div class="bg-gray-800/60 border border-gray-700/50 rounded-2xl overflow-hidden shadow-lg transition-all hover:border-purple-500/30">
+                <div class="p-4 flex justify-between items-start">
+                    <div class="flex space-x-4">
+                        <div class="w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/10 border border-amber-400/30 rounded-xl flex items-center justify-center text-amber-400 text-2xl shadow-inner">
+                            <i class="fa-solid fa-gem"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-100 text-base product-name-1">VIP Bronz Üyelik</h3>
+                            <p class="text-xs text-gray-400 mt-1 product-desc-1">1 Aylık premium ekosistem erişimi ve özel rozet.</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="flex items-center space-x-1 justify-end text-amber-400 font-black text-lg">
+                            <i class="fa-solid fa-pi text-sm"></i>
+                            <span>1</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-4 pb-4">
+                    <button class="buy-btn w-full py-2.5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-sm shadow-md hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center space-x-2 cursor-pointer" data-name="VIP Bronze Membership" data-price="1.0">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="buy-text">Satın Al</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-gray-800/60 border border-gray-700/50 rounded-2xl overflow-hidden shadow-lg transition-all hover:border-purple-500/30">
+                <div class="p-4 flex justify-between items-start">
+                    <div class="flex space-x-4">
+                        <div class="w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/10 border border-amber-400/30 rounded-xl flex items-center justify-center text-amber-400 text-2xl shadow-inner">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-gray-100 text-base product-name-2">VIP Altın Üyelik</h3>
+                            <p class="text-xs text-gray-400 mt-1 product-desc-2">6 Aylık sınırsız ekosistem hakkı ve öncelikli destek.</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <div class="flex items-center space-x-1 justify-end text-amber-400 font-black text-lg">
+                            <i class="fa-solid fa-pi text-sm"></i>
+                            <span>5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="px-4 pb-4">
+                    <button class="buy-btn w-full py-2.5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-sm shadow-md hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center space-x-2 cursor-pointer" data-name="VIP Gold Membership" data-price="5.0">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="buy-text">Satın Al</span>
+                    </button>
+                </div>
+            </div>
         </div>
-        
-        <div class="footer">
-            <strong>Pi Trust Protocol</strong> v1.0 &nbsp;•&nbsp; GCV: 1 Pi = 314.159 $
+
+        <div class="mt-6 bg-black/40 border border-gray-800 rounded-2xl p-4">
+            <span id="log-title" class="text-xs font-bold text-gray-400 tracking-wider uppercase block mb-2">İşlem Günlüğü</span>
+            <div id="status-console" class="text-xs font-mono text-amber-400/80 space-y-1 max-h-32 overflow-y-auto">
+                <div>> Pi SDK bekleniyor...</div>
+            </div>
         </div>
-    </div>
+
+    </main>
+
+    <footer class="text-center text-[11px] text-gray-600 mt-12 mb-6">
+        &copy; 2026 Pi Trust Protocol dApp. Tüm hakları saklıdır.
+    </footer>
 
     <script>
     (function() {
-        'use strict';
+        let currentLang = 'tr';
+        let currentUser = null;
 
+        // Elementler
+        const langSelect = document.getElementById('lang-select');
+        const loginBtn = document.getElementById('login-btn');
+        const userInfoDiv = document.getElementById('user-info-div');
+        const usernameSpan = document.getElementById('username-span');
+        const productSection = document.getElementById('product-section');
+        const statusConsole = document.getElementById('status-console');
+
+        // Dil Çevirileri
         const translations = {
-            en: {
-                appSub: "The new address of secure trade",
-                welcome: "Welcome,",
-                loginBtn: "🔗 Login with Pi",
-                loginActive: "✅ Logged In",
-                globalMarket: "🌍 Global Marketplace",
-                gcvSub: "Real prices based on GCV",
-                itemCount: "• 18+ items",
-                buy: "Buy Now",
-                sdkError: "⚠️ Pi SDK could not be initialized. Please open in Pi Browser.",
-                connecting: "⏳ Connecting to Pi Browser...",
-                authCancel: "⚠️ Login canceled.",
-                authFail: "❌ Authentication failed.",
-                loginSuccess: "✅ Successfully logged in!",
-                init: "⏳ Initializing...",
-                pleaseLogin: "⚠️ Please login with Pi first!",
-                payReady: "✅ Open Pi wallet to approve payment...",
-                payCancel: "⚠️ Payment canceled by user.",
-                paySuccess: "🎉 Purchase successful!",
-                payFail: "❌ Payment failed: "
-            },
             tr: {
-                appSub: "Güvenli ticaretin yeni adresi",
-                welcome: "Hoş geldin,",
-                loginBtn: "🔗 Pi ile Giriş Yap",
-                loginActive: "✅ Oturum Açık",
-                globalMarket: "🌍 Global Pazar Yeri",
-                gcvSub: "GCV bazlı gerçek fiyatlar",
-                itemCount: "• 18+ ürün",
-                buy: "Satın Al",
-                sdkError: "⚠️ Pi SDK başlatılamadı. Lütfen Pi Browser'da açın.",
-                connecting: "⏳ Pi Browser ile bağlantı kuruluyor...",
-                authCancel: "⚠️ Giriş iptal edildi.",
-                authFail: "❌ Kimlik doğrulama başarısız.",
-                loginSuccess: "✅ Giriş başarıyla tamamlandı!",
-                init: "⏳ Başlatılıyor...",
-                pleaseLogin: "⚠️ Lütfen önce Pi ile giriş yapın!",
-                payReady: "✅ Ödeme onayı için Pi cüzdanını açın...",
-                payCancel: "⚠️ Ödeme kullanıcı tarafından iptal edildi.",
-                paySuccess: "🎉 Satın alma başarılı!",
-                payFail: "❌ Ödeme hatası: "
+                init: "Sistem başlatılıyor...",
+                connecting: "Pi Ağına bağlanılıyor...",
+                loginActive: "Giriş Yapıldı",
+                loginBtn: "Giriş Yap",
+                loginSuccess: "Giriş başarılı! Ürünler yüklendi.",
+                authCancel: "Giriş iptal edildi.",
+                authFail: "Kimlik doğrulama başarısız.",
+                sdkError: "Pi SDK yükleme hatası. Lütfen Pi Browser kullanın.",
+                pleaseLogin: "Lütfen önce giriş yapın!",
+                payReady: "Ödeme hazırlandı, cüzdan onayı bekleniyor...",
+                paySuccess: "Tebrikler! Ödeme blockchain üzerinde doğrulandı.",
+                payCancel: "Ödeme kullanıcı tarafından iptal edildi.",
+                payFail: "Ödeme hatası: ",
+                infoTitle: "Protokol Nasıl Çalışır?",
+                infoDesc: "Beğendiğiniz ürünü seçip \"Satın Al\" butonuna basın. App Studio entegrasyonu sayesinde ödemeniz Pi cüzdanınız üzerinden güvenle tamamlanır.",
+                productsHead: "Mevcut Ürünler",
+                logHead: "İŞLEM GÜNLÜĞÜ",
+                pName1: "VIP Bronz Üyelik",
+                pDesc1: "1 Aylık premium ekosistem erişimi ve özel rozet.",
+                pName2: "VIP Altın Üyelik",
+                pDesc2: "6 Aylık sınırsız ekosistem hakkı ve öncelikli destek.",
+                buyBtn: "Satın Al"
             },
-            zh: {
-                appSub: "安全交易的新选择",
-                welcome: "欢迎，",
-                loginBtn: "🔗 使用 Pi 登录",
-                loginActive: "✅ 已登录",
-                globalMarket: "🌍 全球生态商城",
-                gcvSub: "基于物价共识(GCV)的真实价格",
-                itemCount: "• 18+ 商品",
-                buy: "立即购买",
-                sdkError: "⚠️ Pi SDK 初始化失败。请在 Pi 浏览器中打开。",
-                connecting: "⏳ 正在连接 Pi 浏览器...",
-                authCancel: "⚠️ 登录已取消。",
-                authFail: "❌ 身份验证失败。",
-                loginSuccess: "✅ 登录成功！",
-                init: "⏳ 正在初始化...",
-                pleaseLogin: "⚠️ 请先使用 Pi 登录！",
-                payReady: "✅ 请打开 Pi 钱包以确认支付...",
-                payCancel: "⚠️ 用户取消了支付。",
-                paySuccess: "🎉 购买成功！",
-                payFail: "❌ 支付失败: "
-            },
-            vi: {
-                appSub: "Địa chỉ mới cho giao dịch an toàn",
-                welcome: "Chào mừng,",
-                loginBtn: "🔗 Đăng nhập bằng Pi",
-                loginActive: "✅ Đã đăng nhập",
-                globalMarket: "🌍 Chợ toàn cầu",
-                gcvSub: "Giá thực tế dựa trên GCV",
-                itemCount: "• 18+ sản phẩm",
-                buy: "Mua ngay",
-                sdkError: "⚠️ Không thể khởi tạo Pi SDK. Vui lòng mở trong Pi Browser.",
-                connecting: "⏳ Đang kết nối với Pi Browser...",
-                authCancel: "⚠️ Đăng nhập bị hủy.",
-                authFail: "❌ Xác thực thất bại.",
-                loginSuccess: "✅ Đăng nhập thành công!",
-                init: "⏳ Đang khởi tạo...",
-                pleaseLogin: "⚠️ Vui lòng đăng nhập bằng Pi trước!",
-                payReady: "Mở ví Pi để phê duyệt thanh toán...",
-                payCancel: "⚠️ Thanh toán đã bị hủy bởi người dùng.",
-                paySuccess: "🎉 Mua hàng thành công!",
-                payFail: "Lỗi thanh toán: "
+            en: {
+                init: "Initializing system...",
+                connecting: "Connecting to Pi Network...",
+                loginActive: "Logged In",
+                loginBtn: "Login",
+                loginSuccess: "Login successful! Products loaded.",
+                authCancel: "Login canceled.",
+                authFail: "Authentication failed.",
+                sdkError: "Pi SDK load failure. Please use Pi Browser.",
+                pleaseLogin: "Please login first!",
+                payReady: "Payment initialized, awaiting wallet approval...",
+                paySuccess: "Congratulations! Payment verified on blockchain.",
+                payCancel: "Payment canceled by user.",
+                payFail: "Payment error: ",
+                infoTitle: "How Protocol Works?",
+                infoDesc: "Select the product you like and press \"Buy\". Thanks to App Studio integration, your payment is securely processed via your Pi wallet.",
+                productsHead: "Available Products",
+                logHead: "TRANSACTION LOG",
+                pName1: "VIP Bronze Membership",
+                pDesc1: "1-month premium ecosystem access and special badge.",
+                pName2: "VIP Gold Membership",
+                pDesc2: "6-month unlimited ecosystem access and priority support.",
+                buyBtn: "Buy Now"
             }
         };
 
-        const catalogData = [
-            {
-                category: { tr: "🚗 Araçlar", en: "🚗 Vehicles", zh: "🚗 车辆", vi: "🚗 Phương tiện" },
-                items: [
-                    { 
-                        name: "Tesla Model 3 (2024)", 
-                        pi: 0.133, 
-                        usd: 42000, 
-                        img: "https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=600&q=80",
-                        desc: { tr: "Sıfır, elektrikli, otomatik pilot", en: "Brand new, electric, autopilot", zh: "全新、纯电动、自动驾驶", vi: "Mới 100%, thuần điện, tự lái" } 
-                    },
-                    { 
-                        name: "TOGG T10X (2024)", 
-                        pi: 0.111, 
-                        usd: 35000, 
-                        img: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=600&q=80",
-                        desc: { tr: "Yerli üretim, modern elektrikli SUV", en: "Domestic production, modern electric SUV", zh: "国产、现代纯电动 SUV", vi: "Sản xuất nội địa, SUV điện hiện đại" } 
-                    },
-                    { 
-                        name: "BMW iX (2023)", 
-                        pi: 0.120, 
-                        usd: 38000, 
-                        img: "https://images.unsplash.com/photo-1555215695-3004980ad54e?auto=format&fit=crop&w=600&q=80",
-                        desc: { tr: "Elektrikli, lüks SUV konforu", en: "Electric, luxury SUV comfort", zh: "纯电动、豪华 SUV 体验", vi: "SUV điện sang trọng, tiện nghi" } 
-                    }
-                ]
-            },
-            {
-                category: { tr: "🏠 Emlak", en: "🏠 Real Estate", zh: "🏠 房地产", vi: "🏠 Bất động sản" },
-                items: [
-                    { 
-                        name: "Şehir Merkezi Daire", 
-                        pi: 0.477, 
-                        usd: 150000, 
-                        img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80",
-                        desc: { tr: "3+1, 140 m², havuzlu lüks site", en: "3+1, 140 m², luxury complex with pool", zh: "3房1厅，140平米，带泳池高级公寓", vi: "3+1, 140 m², khu phức hợp cao cấp có hồ bơi" } 
-                    },
-                    { 
-                        name: "Deniz Manzaralı Villa", 
-                        pi: 1.273, 
-                        usd: 400000, 
-                        img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80",
-                        desc: { tr: "5+2, 300 m², özel havuzlu lüks villa", en: "5+2, 300 m², luxury villa with private pool", zh: "5房2厅，300平米，独栋私家泳池豪宅", vi: "5+2, 300 m², biệt thự sang trọng có hồ bơi riêng" } 
-                    }
-                ]
-            },
-            {
-                category: { tr: "📱 Elektronik", en: "📱 Electronics", zh: "📱 电子产品", vi: "📱 Điện tử" },
-                items: [
-                    { 
-                        name: "iPhone 16 Pro Max", 
-                        pi: 0.0038, 
-                        usd: 1200, 
-                        img: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=600&q=80",
-                        desc: { tr: "512GB, güçlü titanyum kasa", en: "512GB, strong titanium design", zh: "512GB，坚固钛金属机身", vi: "512GB, vỏ titan bền bỉ" } 
-                    },
-                    { 
-                        name: "MacBook Pro M3", 
-                        pi: 0.0070, 
-                        usd: 2200, 
-                        img: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80",
-                        desc: { tr: "16GB RAM, 512GB SSD yüksek performans", en: "16GB RAM, 512GB SSD high performance", zh: "16GB 内存，512GB 固态高性能", vi: "16GB RAM, 512GB SSD hiệu năng cao" } 
-                    }
-                ]
-            }
-        ];
-
-        let currentLang = 'en';
-        let currentUser = null;
-
-        const loginBtn = document.getElementById('loginBtn');
-        const statusDiv = document.getElementById('status');
-        const userInfoDiv = document.getElementById('userInfo');
-        const usernameSpan = document.getElementById('usernameDisplay');
-        const productSection = document.getElementById('productSection');
-        const langSelect = document.getElementById('langSelect');
-        const catalogContainer = document.getElementById('catalogContainer');
-
-        function setStatus(msg, type) {
-            statusDiv.style.display = 'block';
-            statusDiv.textContent = msg;
-            statusDiv.className = 'status' + (type ? ' ' + type : '');
-        }
-
-        function hideStatus() {
-            statusDiv.style.display = 'none';
+        function setStatus(message, type) {
+            const newLog = document.createElement('div');
+            newLog.innerText = `> [${type.toUpperCase()}] ${message}`;
+            statusConsole.appendChild(newLog);
+            statusConsole.scrollTop = statusConsole.scrollHeight;
         }
 
         function applyLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
+            document.getElementById('info-title').textContent = translations[lang].infoTitle;
+            document.getElementById('info-desc').textContent = translations[lang].infoDesc;
+            document.getElementById('products-heading').textContent = translations[lang].productsHead;
+            document.getElementById('log-title').textContent = translations[lang].logHead;
             
-            document.getElementById('txtAppSub').textContent = t.appSub;
-            document.getElementById('txtWelcome').textContent = t.welcome;
-            document.getElementById('txtGlobalMarket').textContent = t.globalMarket;
-            document.getElementById('txtGcvSub').textContent = t.gcvSub;
-            document.getElementById('txtItemCount').textContent = t.itemCount;
+            document.querySelector('.product-name-1').textContent = translations[lang].pName1;
+            document.querySelector('.product-desc-1').textContent = translations[lang].pDesc1;
+            document.querySelector('.product-name-2').textContent = translations[lang].pName2;
+            document.querySelector('.product-desc-2').textContent = translations[lang].pDesc2;
             
+            document.querySelectorAll('.buy-text').forEach(el => el.textContent = translations[lang].buyBtn);
             if (!currentUser) {
-                loginBtn.textContent = t.loginBtn;
+                loginBtn.textContent = translations[lang].loginBtn;
             } else {
-                loginBtn.textContent = t.loginActive;
+                loginBtn.textContent = translations[lang].loginActive;
             }
-
-            renderCatalog();
-        }
-
-        function renderCatalog() {
-            catalogContainer.innerHTML = '';
-            catalogData.forEach(cat => {
-                const catHeader = document.createElement('div');
-                catHeader.className = 'category';
-                catHeader.innerHTML = `<h3>${cat.category[currentLang] || cat.category['en']}</h3>`;
-                catalogContainer.appendChild(catHeader);
-
-                cat.items.forEach(item => {
-                    const prodDiv = document.createElement('div');
-                    prodDiv.className = 'product';
-                    prodDiv.innerHTML = `
-                        <img class="product-img" src="${item.img}" alt="${item.name}" loading="lazy">
-                        <div class="product-body">
-                            <h4>${item.name}</h4>
-                            <div class="price-row">
-                                <span class="price-pi">${item.pi} Pi</span> 
-                                <span class="price-usd">• ${item.usd.toLocaleString()} $</span>
-                            </div>
-                            <div class="desc">${item.desc[currentLang] || item.desc['en']}</div>
-                            <div class="buy-row">
-                                <button class="buy-btn" data-name="${item.name}" data-price="${item.pi}">
-                                    ${translations[currentLang].buy}
-                                </button>
-                            </div>
-                        </div>
-                    `;
-                    catalogContainer.appendChild(prodDiv);
-                });
-            });
-
-            document.querySelectorAll('.buy-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    buyProduct(this.getAttribute('data-name'), parseFloat(this.getAttribute('data-price')));
-                });
-            });
         }
 
         function updateUI(user) {
@@ -501,37 +235,26 @@
                 productSection.classList.add('visible');
                 loginBtn.textContent = translations[currentLang].loginActive;
                 loginBtn.disabled = true;
-                hideStatus();
             } else {
                 currentUser = null;
                 userInfoDiv.classList.remove('visible');
                 productSection.classList.remove('visible');
-                loginBtn.textContent = translations[currentLang].loginBtn;
                 loginBtn.disabled = false;
             }
-        }
-
-        async function verifyOnBackend(accessToken) {
-            console.log('Access Token Verifying:', accessToken);
-            return true; 
         }
 
         async function authenticateWithPi() {
             setStatus(translations[currentLang].connecting, 'info');
             try {
-                await Pi.init({ version: '2.0' });
                 const authResult = await Pi.authenticate(['username', 'payments'], function(error) {
                     console.warn('Auth error:', error);
                     setStatus(translations[currentLang].authCancel, 'error');
                     loginBtn.disabled = false;
                 });
 
-                if (!authResult || !authResult.accessToken || !authResult.user) {
+                if (!authResult || !authResult.user) {
                     throw new Error(translations[currentLang].authFail);
                 }
-
-                const isValid = await verifyOnBackend(authResult.accessToken);
-                if (!isValid) throw new Error("Backend validation failed.");
 
                 updateUI(authResult.user);
                 setStatus(translations[currentLang].loginSuccess, 'success');
@@ -548,6 +271,7 @@
             await authenticateWithPi();
         }
 
+        // Sayfa Yüklendiğinde Başlatma
         window.addEventListener('load', async function() {
             const navLang = navigator.language || navigator.userLanguage;
             const shortLang = navLang.substring(0, 2);
@@ -558,32 +282,44 @@
             applyLanguage(currentLang);
 
             langSelect.addEventListener('change', function() {
-                applyLanguage(this.value);
+                currentLang = this.value;
+                applyLanguage(currentLang);
             });
 
             try {
-                await Pi.init({ version: '2.0' });
+                // Sandbox true kalarak App Studio test ortamında çalıştırılır
+                await Pi.init({ version: '2.0', sandbox: true });
+                setStatus("Pi SDK yüklendi.", "success");
+                
                 loginBtn.addEventListener('click', handleLogin);
+                
+                // Otomatik giriş tetikleme
                 await authenticateWithPi();
             } catch (error) {
                 console.warn('Pi SDK load fail:', error);
                 setStatus(translations[currentLang].sdkError, 'error');
                 loginBtn.disabled = false;
             }
+
+            // Satın Alma Butonları Dinleyicisi
+            document.querySelectorAll('.buy-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const name = this.getAttribute('data-name');
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    window.buyProduct(name, price);
+                });
+            });
         });
 
+        // App Studio Uyumlu Ödeme Motoru
         window.buyProduct = function(name, price) {
             if (!currentUser) {
                 alert(translations[currentLang].pleaseLogin);
                 return;
             }
-
+            
             const buttons = document.querySelectorAll('.buy-btn');
             buttons.forEach(b => b.disabled = true);
-
-            // ⚠️ ADIM 2'DE CANLIYA ALACAĞIMIZ SUNUCU ADRESİ BURAYA GELECEK
-            
-            const BACKEND_URL = "https://pi-trust-protocol-1.onrender.com";
 
             const paymentData = {
                 amount: price,
@@ -592,39 +328,18 @@
             };
 
             Pi.createPayment(paymentData, {
-                onReady: async function(paymentId) {
-                    console.log('Ödeme ID alındı, backend onayına gönderiliyor:', paymentId);
+                // Adım 1: Cüzdan açıldı ve ödeme kaydı hazırlandı
+                onReadyForServerApproval: function(paymentId) {
+                    console.log('Ödeme ID alındı:', paymentId);
                     setStatus(translations[currentLang].payReady, 'info');
-                    
-                    try {
-                        await fetch(`${BACKEND_URL}/api/payments/approve`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ paymentId })
-                        });
-                        console.log('Backend ödemeyi onayladı (Approved).');
-                    } catch (err) {
-                        console.error('Backend onay hatası:', err);
-                    }
+                    // App Studio altyapısı onay aşamasını arka planda otomatik üstlenir.
                 },
-                onComplete: async function(paymentResult) {
-                    console.log('Ödeme cüzdanda bitti, blockchain txid:', paymentResult.txid);
+                // Adım 2: Kullanıcı şifresini girdi ve blockchain transferi bitti
+                onReadyForServerCompletion: function(paymentId, txid) {
+                    console.log('Ödeme blockchain üzerinde bitti. Txid:', txid);
                     setStatus(translations[currentLang].paySuccess, 'success');
                     
-                    try {
-                        await fetch(`${BACKEND_URL}/api/payments/complete`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ 
-                                paymentId: paymentResult.identifier, 
-                                txid: paymentResult.txid 
-                            })
-                        });
-                        alert(translations[currentLang].paySuccess + "\n" + name + " - " + price + " Pi");
-                    } catch (err) {
-                        console.error('Backend tamamlama hatası:', err);
-                    }
-                    
+                    alert(translations[currentLang].paySuccess + "\n" + name + " - " + price + " Pi");
                     buttons.forEach(b => b.disabled = false);
                 },
                 onCancel: function(paymentId) {
@@ -642,7 +357,6 @@
                 buttons.forEach(b => b.disabled = false);
             });
         };
-
     })();
     </script>
 </body>
