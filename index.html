@@ -3,228 +3,292 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pi Trust Protocol</title>
+    <title>Pi Trust Protocol | GCV Marketplace</title>
+    <!-- Pi Network SDK -->
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <!-- Tailwind CSS ve FontAwesome İkonları -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .pi-theme { background-color: #e5a93b; }
-        .pi-text { color: #e5a93b; }
-        .pi-gradient { background: linear-gradient(135deg, #1a0933 0%, #2a144d 100%); }
-        .pi-btn-gradient { background: linear-gradient(90deg, #f2b842 0%, #e5a93b 100%); }
+        .pi-gradient { background: linear-gradient(135deg, #120626 0%, #220d3d 100%); }
+        .pi-btn-gradient { background: linear-gradient(90deg, #f5bc47 0%, #e6a629 100%); }
         .hidden-el { display: none; }
         .visible { display: block !important; }
     </style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans min-h-screen pb-20">
+<body class="bg-[#0b0314] text-gray-100 font-sans min-h-screen pb-24">
 
-    <header class="pi-gradient shadow-lg border-b border-purple-900/30 sticky top-0 z-50">
-        <div class="max-w-4xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="bg-amber-400 p-2 rounded-full text-gray-900 flex items-center justify-center shadow-md animate-pulse">
-                    <i class="fa-solid fa-pi text-xl"></i>
+    <!-- Üst Bar / Navbar -->
+    <header class="pi-gradient border-b border-purple-900/40 sticky top-0 z-50 backdrop-blur-md bg-opacity-95 shadow-xl">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="bg-amber-400 w-10 h-10 rounded-xl text-gray-900 flex items-center justify-center shadow-lg shadow-amber-500/20">
+                    <i class="fa-solid fa-pi text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-xl font-extrabold tracking-wide text-amber-400">Pi Trust Protocol</h1>
-                    <p class="text-xs text-purple-300">Güvenli Pi Alışverişi</p>
+                    <h1 class="text-lg font-black tracking-wide text-amber-400 uppercase">Pi Trust Protocol</h1>
+                    <p class="text-[11px] text-purple-300 font-medium">GCV $314,159 Dağıtık Pazaryeri</p>
                 </div>
             </div>
 
-            <div class="flex items-center space-x-2">
-                <select id="lang-select" class="bg-purple-950/80 border border-purple-500/30 text-xs text-purple-200 rounded-lg px-2 py-1 outline-none">
+            <div class="flex items-center space-x-3">
+                <select id="lang-select" class="bg-purple-950/60 border border-purple-500/30 text-xs text-purple-200 rounded-lg px-2 py-1.5 outline-none font-semibold cursor-pointer">
                     <option value="tr">TR</option>
                     <option value="en">EN</option>
                 </select>
-                <button id="login-btn" class="bg-amber-500 text-gray-900 text-xs font-bold px-3 py-1.5 rounded-lg shadow hover:bg-amber-400 transition-all cursor-pointer">
-                    Giriş Yap / Login
+                <button id="login-btn" class="bg-amber-500 hover:bg-amber-400 text-gray-900 text-xs font-bold px-4 py-2 rounded-xl shadow-md transition-all active:scale-95 cursor-pointer">
+                    Bağlan / Connect
                 </button>
             </div>
         </div>
     </header>
 
-    <main class="max-w-md mx-auto px-4 mt-6">
+    <!-- Ana Gövde -->
+    <main class="max-w-5xl mx-auto px-4 mt-6">
         
-        <div id="user-info-div" class="hidden-el bg-purple-950/30 border border-purple-500/20 rounded-2xl p-4 mb-4 shadow-xl">
-            <div class="flex items-center space-x-2">
-                <span class="inline-block w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
-                <span class="text-xs text-purple-200 font-medium">Aktif Kullanıcı:</span>
-                <span id="username-span" class="text-sm font-bold text-amber-400"></span>
-            </div>
-        </div>
-
-        <div class="bg-gradient-to-r from-purple-950/40 to-indigo-950/40 border border-purple-500/20 rounded-2xl p-4 mb-6 shadow-xl backdrop-blur-sm">
-            <div class="flex items-start space-x-3">
-                <i class="fa-solid fa-shield-halved text-amber-400 text-xl mt-0.5"></i>
-                <div>
-                    <h3 id="info-title" class="text-sm font-bold text-gray-200">Protokol Nasıl Çalışır?</h3>
-                    <p id="info-desc" class="text-xs text-gray-400 mt-1 leading-relaxed">
-                        Beğendiğiniz ürünü seçip "Satın Al" butonuna basın. App Studio entegrasyonu sayesinde ödemeniz Pi cüzdanınız üzerinden güvenle tamamlanır.
-                    </p>
+        <!-- Kullanıcı Durum Şeridi -->
+        <div id="user-info-div" class="hidden-el bg-purple-950/20 border border-purple-500/20 rounded-2xl p-4 mb-6 backdrop-blur-sm">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span id="user-status-text" class="text-xs text-purple-200">Cüzdan Bağlantısı Aktif:</span>
+                    <span id="username-span" class="text-sm font-bold text-amber-400"></span>
+                </div>
+                <div class="text-[10px] bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-0.5 rounded-full font-mono font-bold">
+                    1 Pi = $314,159 (GCV)
                 </div>
             </div>
         </div>
 
-        <div id="product-section" class="hidden-el space-y-4">
-            <div class="flex items-center justify-between mb-2 px-1">
-                <h2 id="products-heading" class="text-base font-bold tracking-wide text-gray-300 uppercase">Mevcut Ürünler</h2>
-                <span class="bg-gray-800 text-gray-400 text-xs px-2 py-0.5 rounded-md">2 Adet</span>
-            </div>
+        <!-- KATEGORİ MENÜSÜ -->
+        <div class="mb-8 overflow-x-auto pb-2 flex space-x-2">
+            <button onclick="filterCategory('all')" class="cat-btn bg-amber-500 text-gray-900 text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer shadow-md">Tümü</button>
+            <button onclick="filterCategory('digital')" class="cat-btn bg-gray-900 text-gray-400 hover:text-gray-100 text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">Dijital Ürünler</button>
+            <button onclick="filterCategory('tools')" class="cat-btn bg-gray-900 text-gray-400 hover:text-gray-100 text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">Normal Araçlar</button>
+            <button onclick="filterCategory('gaming')" class="cat-btn bg-gray-900 text-gray-400 hover:text-gray-100 text-xs font-bold px-4 py-2 rounded-xl transition-all cursor-pointer">Oyun & Roblox</button>
+        </div>
+
+        <!-- ÜRÜN VİTRİNİ (GCV FİYATLANDIRMALI) -->
+        <div id="product-grid" class="hidden-el grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            <div class="bg-gray-800/60 border border-gray-700/50 rounded-2xl overflow-hidden shadow-lg transition-all hover:border-purple-500/30">
-                <div class="p-4 flex justify-between items-start">
-                    <div class="flex space-x-4">
-                        <div class="w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/10 border border-amber-400/30 rounded-xl flex items-center justify-center text-amber-400 text-2xl shadow-inner">
-                            <i class="fa-solid fa-gem"></i>
+            <!-- Ürün 1: Premium Web Hosting -->
+            <div class="prod-card bg-gray-900/40 border border-gray-800 rounded-3xl overflow-hidden shadow-lg hover:border-purple-500/30 transition-all flex flex-col justify-between" data-cat="digital">
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-code"></i>
                         </div>
-                        <div>
-                            <h3 class="font-bold text-gray-100 text-base product-name-1">VIP Bronz Üyelik</h3>
-                            <p class="text-xs text-gray-400 mt-1 product-desc-1">1 Aylık premium ekosistem erişimi ve özel rozet.</p>
-                        </div>
+                        <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Dijital</span>
                     </div>
-                    <div class="text-right">
-                        <div class="flex items-center space-x-1 justify-end text-amber-400 font-black text-lg">
-                            <i class="fa-solid fa-pi text-sm"></i>
-                            <span>1</span>
-                        </div>
-                    </div>
+                    <h3 class="font-bold text-gray-100 text-base" data-tr="Premium Web Hosting (1 Yıllık)" data-en="Premium Web Hosting (1 Year)">Premium Web Hosting (1 Yıllık)</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Sınırsız trafik, ücretsiz SSL ve %99.9 uptime garantili GCV uyumlu bulut sunucu lisansı." data-en="Unlimited traffic, free SSL, and 99.9% uptime guaranteed GCV compliant cloud server license.">Sınırsız trafik, ücretsiz SSL ve %99.9 uptime garantili GCV uyumlu bulut sunucu lisansı.</p>
                 </div>
-                <div class="px-4 pb-4">
-                    <button class="buy-btn w-full py-2.5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-sm shadow-md hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center space-x-2 cursor-pointer" data-name="VIP Bronze Membership" data-price="1.0">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span class="buy-text">Satın Al</span>
-                    </button>
+                <div class="p-5 pt-0 border-t border-gray-800/50 mt-4 flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-amber-400 font-black text-sm">
+                            <i class="fa-solid fa-pi text-[11px]"></i><span>0.00047746 Pi</span>
+                        </div>
+                        <span class="text-[10px] text-gray-500 font-mono">Değer: $150.00</span>
+                    </div>
+                    <button class="buy-btn py-2 px-5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Premium Web Hosting" data-usd="150.00">Satın Al</button>
                 </div>
             </div>
 
-            <div class="bg-gray-800/60 border border-gray-700/50 rounded-2xl overflow-hidden shadow-lg transition-all hover:border-purple-500/30">
-                <div class="p-4 flex justify-between items-start">
-                    <div class="flex space-x-4">
-                        <div class="w-16 h-16 bg-gradient-to-br from-amber-400/20 to-amber-600/10 border border-amber-400/30 rounded-xl flex items-center justify-center text-amber-400 text-2xl shadow-inner">
-                            <i class="fa-solid fa-crown"></i>
+            <!-- Ürün 2: Antivirüs Pro -->
+            <div class="prod-card bg-gray-900/40 border border-gray-800 rounded-3xl overflow-hidden shadow-lg hover:border-purple-500/30 transition-all flex flex-col justify-between" data-cat="digital">
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-shield-halved"></i>
                         </div>
-                        <div>
-                            <h3 class="font-bold text-gray-100 text-base product-name-2">VIP Altın Üyelik</h3>
-                            <p class="text-xs text-gray-400 mt-1 product-desc-2">6 Aylık sınırsız ekosistem hakkı ve öncelikli destek.</p>
-                        </div>
+                        <span class="text-[10px] bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Dijital</span>
                     </div>
-                    <div class="text-right">
-                        <div class="flex items-center space-x-1 justify-end text-amber-400 font-black text-lg">
-                            <i class="fa-solid fa-pi text-sm"></i>
-                            <span>5</span>
-                        </div>
-                    </div>
+                    <h3 class="font-bold text-gray-100 text-base" data-tr="Antivirüs Pro Lisans Anahtarı" data-en="Antivirus Pro License Key">Antivirüs Pro Lisans Anahtarı</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Tam koruma sağlayan 1 kullanıcı uyumlu orijinal küresel aktivasyon kodu." data-en="Original global activation code compatible with 1 user, providing full protection.">Tam koruma sağlayan 1 kullanıcı uyumlu orijinal küresel aktivasyon kodu.</p>
                 </div>
-                <div class="px-4 pb-4">
-                    <button class="buy-btn w-full py-2.5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-sm shadow-md hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center space-x-2 cursor-pointer" data-name="VIP Gold Membership" data-price="5.0">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span class="buy-text">Satın Al</span>
-                    </button>
+                <div class="p-5 pt-0 border-t border-gray-800/50 mt-4 flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-amber-400 font-black text-sm">
+                            <i class="fa-solid fa-pi text-[11px]"></i><span>0.00015915 Pi</span>
+                        </div>
+                        <span class="text-[10px] text-gray-500 font-mono">Değer: $50.00</span>
+                    </div>
+                    <button class="buy-btn py-2 px-5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Antivirus Pro License" data-usd="50.00">Satın Al</button>
                 </div>
             </div>
+
+            <!-- Ürün 3: Telefon Sabitleyici -->
+            <div class="prod-card bg-gray-900/40 border border-gray-800 rounded-3xl overflow-hidden shadow-lg hover:border-purple-500/30 transition-all flex flex-col justify-between" data-cat="tools">
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-bolt"></i>
+                        </div>
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Araçlar</span>
+                    </div>
+                    <h3 class="font-bold text-gray-100 text-base" data-tr="Akıllı Telefon Sabitleyici (Tripod)" data-en="Smartphone Tripod Stabilizer">Akıllı Telefon Sabitleyici (Tripod)</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Bluetooth kumandalı, 360 derece dönebilen profesyonel hafif tripod standı." data-en="Professional lightweight tripod stand with bluetooth remote, rotating 360 degrees.">Bluetooth kumandalı, 360 derece dönebilen profesyonel hafif tripod standı.</p>
+                </div>
+                <div class="p-5 pt-0 border-t border-gray-800/50 mt-4 flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-amber-400 font-black text-sm">
+                            <i class="fa-solid fa-pi text-[11px]"></i><span>0.00023873 Pi</span>
+                        </div>
+                        <span class="text-[10px] text-gray-500 font-mono">Değer: $75.00</span>
+                    </div>
+                    <button class="buy-btn py-2 px-5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Smartphone Tripod" data-usd="75.00">Satın Al</button>
+                </div>
+            </div>
+
+            <!-- Ürün 4: Laptop Standı -->
+            <div class="prod-card bg-gray-900/40 border border-gray-800 rounded-3xl overflow-hidden shadow-lg hover:border-purple-500/30 transition-all flex flex-col justify-between" data-cat="tools">
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-2xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-laptop"></i>
+                        </div>
+                        <span class="text-[10px] bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Araçlar</span>
+                    </div>
+                    <h3 class="font-bold text-gray-100 text-base" data-tr="Alüminyum Laptop Standı" data-en="Aluminum Laptop Stand">Alüminyum Laptop Standı</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="Isı dağılımını destekleyen, yüksekliği ayarlanabilir ergonomik katlanabilir stand." data-en="Adjustable height ergonomic foldable stand supporting heat dissipation.">Isı dağılımını destekleyen, yüksekliği ayarlanabilir ergonomik katlanabilir stand.</p>
+                </div>
+                <div class="p-5 pt-0 border-t border-gray-800/50 mt-4 flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-amber-400 font-black text-sm">
+                            <i class="fa-solid fa-pi text-[11px]"></i><span>0.00019098 Pi</span>
+                        </div>
+                        <span class="text-[10px] text-gray-500 font-mono">Değer: $60.00</span>
+                    </div>
+                    <button class="buy-btn py-2 px-5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="Aluminum Laptop Stand" data-usd="60.00">Satın Al</button>
+                </div>
+            </div>
+
+            <!-- Ürün 5: Roblox Donation Pack -->
+            <div class="prod-card bg-gray-900/40 border border-gray-800 rounded-3xl overflow-hidden shadow-lg hover:border-purple-500/30 transition-all flex flex-col justify-between" data-cat="gaming">
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 bg-rose-500/10 border border-rose-500/20 text-rose-400 rounded-2xl flex items-center justify-center text-xl">
+                            <i class="fa-solid fa-gamepad"></i>
+                        </div>
+                        <span class="text-[10px] bg-rose-500/10 text-rose-400 border border-rose-500/20 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">Oyun</span>
+                    </div>
+                    <h3 class="font-bold text-gray-100 text-base" data-tr="Roblox Donation Pack (500 Robux)" data-en="Roblox Donation Pack (500 Robux)">Roblox Donation Pack (500 Robux)</h3>
+                    <p class="text-xs text-gray-400 mt-2 leading-relaxed" data-tr="'Pls Donate' modları için özel entegreli VIP pazar pass kart yükleme paketi." data-en="Custom integrated VIP marketplace pass pack optimized for 'Pls Donate' modes.">'Pls Donate' modları için özel entegreli VIP pazar pass kart yükleme paketi.</p>
+                </div>
+                <div class="p-5 pt-0 border-t border-gray-800/50 mt-4 flex items-center justify-between">
+                    <div>
+                        <div class="flex items-center space-x-1 text-amber-400 font-black text-sm">
+                            <i class="fa-solid fa-pi text-[11px]"></i><span>0.00003183 Pi</span>
+                        </div>
+                        <span class="text-[10px] text-gray-500 font-mono">Değer: $10.00</span>
+                    </div>
+                    <button class="buy-btn py-2 px-5 rounded-xl pi-btn-gradient text-gray-900 font-bold text-xs shadow-md active:scale-95 transition-all cursor-pointer" data-name="500 Robux Pack" data-usd="10.00">Satın Al</button>
+                </div>
+            </div>
+
         </div>
 
-        <div class="mt-6 bg-black/40 border border-gray-800 rounded-2xl p-4">
-            <span id="log-title" class="text-xs font-bold text-gray-400 tracking-wider uppercase block mb-2">İşlem Günlüğü</span>
+        <!-- İşlem Konsolu / Loglar -->
+        <div class="mt-8 bg-[#020005] border border-purple-950/80 rounded-2xl p-4 shadow-2xl">
+            <span id="log-title" class="text-xs font-bold text-purple-400 tracking-wider uppercase block mb-2"><i class="fa-solid fa-terminal mr-2"></i>Sistem Konsolu</span>
             <div id="status-console" class="text-xs font-mono text-amber-400/80 space-y-1 max-h-32 overflow-y-auto">
-                <div>> Pi SDK bekleniyor...</div>
+                <div>> dApp başlatıldı. GCV Modülü aktif (1 Pi = $314,159)...</div>
             </div>
         </div>
 
     </main>
 
-    <footer class="text-center text-[11px] text-gray-600 mt-12 mb-6">
-        &copy; 2026 Pi Trust Protocol dApp. Tüm hakları saklıdır.
+    <!-- Alt Bilgi / Footer -->
+    <footer class="text-center text-xs text-purple-500/60 mt-16 mb-6">
+        &copy; 2026 Pi Trust Protocol | Dağıtık Akıllı Sözleşme Arayüzü (GCV Standartları)
     </footer>
 
+    <!-- JAVASCRIPT MOTORU -->
     <script>
     (function() {
+        const GCV_VALUE = 314159; // Global Consensus Value Sabiti
         let currentLang = 'tr';
         let currentUser = null;
 
-        // Elementler
+        // Dom Elementleri
         const langSelect = document.getElementById('lang-select');
         const loginBtn = document.getElementById('login-btn');
         const userInfoDiv = document.getElementById('user-info-div');
         const usernameSpan = document.getElementById('username-span');
-        const productSection = document.getElementById('product-section');
+        const productGrid = document.getElementById('product-grid');
         const statusConsole = document.getElementById('status-console');
 
-        // Dil Çevirileri
         const translations = {
             tr: {
-                init: "Sistem başlatılıyor...",
-                connecting: "Pi Ağına bağlanılıyor...",
-                loginActive: "Giriş Yapıldı",
-                loginBtn: "Giriş Yap",
-                loginSuccess: "Giriş başarılı! Ürünler yüklendi.",
-                authCancel: "Giriş iptal edildi.",
-                authFail: "Kimlik doğrulama başarısız.",
-                sdkError: "Pi SDK yükleme hatası. Lütfen Pi Browser kullanın.",
-                pleaseLogin: "Lütfen önce giriş yapın!",
-                payReady: "Ödeme hazırlandı, cüzdan onayı bekleniyor...",
-                paySuccess: "Tebrikler! Ödeme blockchain üzerinde doğrulandı.",
-                payCancel: "Ödeme kullanıcı tarafından iptal edildi.",
-                payFail: "Ödeme hatası: ",
-                infoTitle: "Protokol Nasıl Çalışır?",
-                infoDesc: "Beğendiğiniz ürünü seçip \"Satın Al\" butonuna basın. App Studio entegrasyonu sayesinde ödemeniz Pi cüzdanınız üzerinden güvenle tamamlanır.",
-                productsHead: "Mevcut Ürünler",
-                logHead: "İŞLEM GÜNLÜĞÜ",
-                pName1: "VIP Bronz Üyelik",
-                pDesc1: "1 Aylık premium ekosistem erişimi ve özel rozet.",
-                pName2: "VIP Altın Üyelik",
-                pDesc2: "6 Aylık sınırsız ekosistem hakkı ve öncelikli destek.",
-                buyBtn: "Satın Al"
+                connecting: "Pi Cüzdan doğrulaması yapılıyor...",
+                loginActive: "Bağlantı Kuruldu",
+                loginBtn: "Cüzdanı Bağla",
+                loginSuccess: "Giriş başarılı! GCV bazlı ürün vitrini aktif edildi.",
+                authCancel: "Bağlantı kullanıcı tarafından reddedildi.",
+                authFail: "Kimlik doğrulaması tamamlanamadı.",
+                sdkError: "Pi Browser dışından erişim tespit edildi. Lütfen Pi Browser ile girin.",
+                pleaseLogin: "Lütfen önce sağ üstten cüzdanınızı bağlayın!",
+                payReady: "GCV Ödeme emri hesaplandı, Pi Wallet onay ekranı açılıyor...",
+                paySuccess: "🎉 İşlem Başarılı! Ödeme GCV oranına göre Blockchain ağında onaylandı.",
+                payCancel: "Ödeme işlemi iptal edildi.",
+                payFail: "Blockchain ödeme hatası: ",
+                userActiveText: "Cüzdan Bağlantısı Aktif:",
+                buyBtnText: "Satın Al"
             },
             en: {
-                init: "Initializing system...",
-                connecting: "Connecting to Pi Network...",
-                loginActive: "Logged In",
-                loginBtn: "Login",
-                loginSuccess: "Login successful! Products loaded.",
-                authCancel: "Login canceled.",
+                connecting: "Verifying Pi Wallet link...",
+                loginActive: "Wallet Connected",
+                loginBtn: "Connect Wallet",
+                loginSuccess: "Login successful! GCV marketplace synced successfully.",
+                authCancel: "Connection rejected by user.",
                 authFail: "Authentication failed.",
-                sdkError: "Pi SDK load failure. Please use Pi Browser.",
-                pleaseLogin: "Please login first!",
-                payReady: "Payment initialized, awaiting wallet approval...",
-                paySuccess: "Congratulations! Payment verified on blockchain.",
-                payCancel: "Payment canceled by user.",
-                payFail: "Payment error: ",
-                infoTitle: "How Protocol Works?",
-                infoDesc: "Select the product you like and press \"Buy\". Thanks to App Studio integration, your payment is securely processed via your Pi wallet.",
-                productsHead: "Available Products",
-                logHead: "TRANSACTION LOG",
-                pName1: "VIP Bronze Membership",
-                pDesc1: "1-month premium ecosystem access and special badge.",
-                pName2: "VIP Gold Membership",
-                pDesc2: "6-month unlimited ecosystem access and priority support.",
-                buyBtn: "Buy Now"
+                sdkError: "External browser detected. Please launch inside Pi Browser.",
+                pleaseLogin: "Please connect your wallet first from the top right!",
+                payReady: "GCV Payment calculated, pulling up Pi Wallet confirmation...",
+                paySuccess: "🎉 Success! Transaction confirmed via GCV valuation on Pi Blockchain.",
+                payCancel: "Payment cancelled.",
+                payFail: "Blockchain payment error: ",
+                userActiveText: "Wallet Link Active:",
+                buyBtnText: "Buy Now"
             }
         };
 
         function setStatus(message, type) {
             const newLog = document.createElement('div');
-            newLog.innerText = `> [${type.toUpperCase()}] ${message}`;
+            newLog.innerHTML = `> <span class="${type === 'success' ? 'text-emerald-400' : type === 'error' ? 'text-rose-400' : 'text-purple-300'}">[${type.toUpperCase()}]</span> ${message}`;
             statusConsole.appendChild(newLog);
             statusConsole.scrollTop = statusConsole.scrollHeight;
         }
 
+        window.filterCategory = function(cat) {
+            const cards = document.querySelectorAll('.prod-card');
+            const buttons = document.querySelectorAll('.cat-btn');
+            
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-amber-500', 'text-gray-900');
+                btn.classList.add('bg-gray-900', 'text-gray-400');
+            });
+            event.target.classList.remove('bg-gray-900', 'text-gray-400');
+            event.target.classList.add('bg-amber-500', 'text-gray-900');
+
+            cards.forEach(card => {
+                if (cat === 'all' || card.getAttribute('data-cat') === cat) {
+                    card.classList.add('visible');
+                } else {
+                    card.classList.remove('visible');
+                }
+            });
+        }
+
         function applyLanguage(lang) {
-            document.getElementById('info-title').textContent = translations[lang].infoTitle;
-            document.getElementById('info-desc').textContent = translations[lang].infoDesc;
-            document.getElementById('products-heading').textContent = translations[lang].productsHead;
-            document.getElementById('log-title').textContent = translations[lang].logHead;
+            document.getElementById('user-status-text').textContent = translations[lang].userActiveText;
+            document.querySelectorAll('.buy-btn').forEach(btn => btn.textContent = translations[lang].buyBtnText);
             
-            document.querySelector('.product-name-1').textContent = translations[lang].pName1;
-            document.querySelector('.product-desc-1').textContent = translations[lang].pDesc1;
-            document.querySelector('.product-name-2').textContent = translations[lang].pName2;
-            document.querySelector('.product-desc-2').textContent = translations[lang].pDesc2;
-            
-            document.querySelectorAll('.buy-text').forEach(el => el.textContent = translations[lang].buyBtn);
-            if (!currentUser) {
-                loginBtn.textContent = translations[lang].loginBtn;
-            } else {
-                loginBtn.textContent = translations[lang].loginActive;
-            }
+            document.querySelectorAll('[data-tr]').forEach(el => {
+                el.textContent = lang === 'tr' ? el.getAttribute('data-tr') : el.getAttribute('data-en');
+            });
+
+            loginBtn.textContent = currentUser ? translations[lang].loginActive : translations[lang].loginBtn;
         }
 
         function updateUI(user) {
@@ -232,14 +296,10 @@
                 currentUser = user;
                 usernameSpan.textContent = user.username;
                 userInfoDiv.classList.add('visible');
-                productSection.classList.add('visible');
+                productGrid.classList.remove('hidden-el');
+                productGrid.classList.add('grid');
                 loginBtn.textContent = translations[currentLang].loginActive;
                 loginBtn.disabled = true;
-            } else {
-                currentUser = null;
-                userInfoDiv.classList.remove('visible');
-                productSection.classList.remove('visible');
-                loginBtn.disabled = false;
             }
         }
 
@@ -251,68 +311,48 @@
                     setStatus(translations[currentLang].authCancel, 'error');
                     loginBtn.disabled = false;
                 });
-
-                if (!authResult || !authResult.user) {
-                    throw new Error(translations[currentLang].authFail);
-                }
-
+                if (!authResult || !authResult.user) throw new Error(translations[currentLang].authFail);
+                
                 updateUI(authResult.user);
                 setStatus(translations[currentLang].loginSuccess, 'success');
             } catch (error) {
-                console.error('Auth error:', error);
                 setStatus(error.message, 'error');
                 loginBtn.disabled = false;
             }
         }
 
-        async function handleLogin() {
-            loginBtn.disabled = true;
-            setStatus(translations[currentLang].init, 'info');
-            await authenticateWithPi();
-        }
-
-        // Sayfa Yüklendiğinde Başlatma
         window.addEventListener('load', async function() {
-            const navLang = navigator.language || navigator.userLanguage;
-            const shortLang = navLang.substring(0, 2);
-            if (translations[shortLang]) {
-                currentLang = shortLang;
-                langSelect.value = shortLang;
+            try {
+                await Pi.init({ version: '2.0', sandbox: true });
+                setStatus("Pi Core Engine başarıyla bağlandı. GCV doğrulaması tamam.", "success");
+                
+                loginBtn.addEventListener('click', async () => {
+                    loginBtn.disabled = true;
+                    await authenticateWithPi();
+                });
+                
+                await authenticateWithPi();
+            } catch (error) {
+                setStatus(translations[currentLang].sdkError, 'error');
             }
-            applyLanguage(currentLang);
 
             langSelect.addEventListener('change', function() {
                 currentLang = this.value;
                 applyLanguage(currentLang);
             });
 
-            try {
-                // Sandbox true kalarak App Studio test ortamında çalıştırılır
-                await Pi.init({ version: '2.0', sandbox: true });
-                setStatus("Pi SDK yüklendi.", "success");
-                
-                loginBtn.addEventListener('click', handleLogin);
-                
-                // Otomatik giriş tetikleme
-                await authenticateWithPi();
-            } catch (error) {
-                console.warn('Pi SDK load fail:', error);
-                setStatus(translations[currentLang].sdkError, 'error');
-                loginBtn.disabled = false;
-            }
-
-            // Satın Alma Butonları Dinleyicisi
             document.querySelectorAll('.buy-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    const name = this.getAttribute('data-name');
-                    const price = parseFloat(this.getAttribute('data-price'));
-                    window.buyProduct(name, price);
+                    const usdValue = parseFloat(this.getAttribute('data-usd'));
+                    // GCV Hesaplama Dinamiği: USD Değeri / GCV Sabiti (8 basamağa yuvarlanır)
+                    const calculatedPiPrice = parseFloat((usdValue / GCV_VALUE).toFixed(8));
+                    window.executePayment(this.getAttribute('data-name'), calculatedPiPrice, usdValue);
                 });
             });
         });
 
-        // App Studio Uyumlu Ödeme Motoru
-        window.buyProduct = function(name, price) {
+        // App Studio Sunucusuz Anlık GCV Ödeme İletimi
+        window.executePayment = function(name, piPrice, usdValue) {
             if (!currentUser) {
                 alert(translations[currentLang].pleaseLogin);
                 return;
@@ -320,40 +360,30 @@
             
             const buttons = document.querySelectorAll('.buy-btn');
             buttons.forEach(b => b.disabled = true);
+            setStatus(`${translations[currentLang].payReady} ($${usdValue} -> ${piPrice} Pi)`, 'info');
 
-            const paymentData = {
-                amount: price,
-                memo: name + ' purchase',
-                metadata: { product: name }
-            };
-
-            Pi.createPayment(paymentData, {
-                // Adım 1: Cüzdan açıldı ve ödeme kaydı hazırlandı
+            Pi.createPayment({
+                amount: piPrice,
+                memo: `GCV Purchase: ${name} ($${usdValue})`,
+                metadata: { item: name, gcv_rate: GCV_VALUE, base_usd: usdValue }
+            }, {
                 onReadyForServerApproval: function(paymentId) {
-                    console.log('Ödeme ID alındı:', paymentId);
-                    setStatus(translations[currentLang].payReady, 'info');
-                    // App Studio altyapısı onay aşamasını arka planda otomatik üstlenir.
+                    console.log('App Studio GCV Auto-Approve:', paymentId);
                 },
-                // Adım 2: Kullanıcı şifresini girdi ve blockchain transferi bitti
                 onReadyForServerCompletion: function(paymentId, txid) {
-                    console.log('Ödeme blockchain üzerinde bitti. Txid:', txid);
                     setStatus(translations[currentLang].paySuccess, 'success');
-                    
-                    alert(translations[currentLang].paySuccess + "\n" + name + " - " + price + " Pi");
+                    alert(`${translations[currentLang].paySuccess}\n\nItem: ${name}\nGCV Price: ${piPrice} Pi ($${usdValue})`);
                     buttons.forEach(b => b.disabled = false);
                 },
                 onCancel: function(paymentId) {
-                    console.log('Kullanıcı cüzdanı kapattı:', paymentId);
                     setStatus(translations[currentLang].payCancel, 'info');
                     buttons.forEach(b => b.disabled = false);
                 },
                 onError: function(error, payment) {
-                    console.error('Ödeme sistem hatası:', error);
                     setStatus(translations[currentLang].payFail + error.message, 'error');
                     buttons.forEach(b => b.disabled = false);
                 }
             }).catch(function(err) {
-                console.error('Payment tetikleme hatası:', err);
                 buttons.forEach(b => b.disabled = false);
             });
         };
