@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,7 +37,7 @@
     <header class="p-4 sticky top-0 bg-[#060609]/95 backdrop-blur-xl z-50 border-b border-white/5 space-y-3">
         <div class="flex justify-between items-center">
             <div class="flex flex-col">
-                <span class="text-[9px] tracking-[0.3em] text-gray-500 font-bold uppercase" data-i18n="sub-logo">GCV PROTOCOL NODE</span>
+                <span class="text-[9px] tracking-[0.3em] text-gray-500 font-bold uppercase" id="subLogo">GCV GÜVENCELİ ÖDEME PROTOKOLÜ</span>
                 <span class="text-xl font-black tracking-wider text-[#d4a359] italic">𝚷𝚳 GLOBAL</span>
             </div>
             
@@ -56,14 +56,14 @@
 
         <div class="flex justify-between items-center pt-1">
             <div class="flex items-center space-x-2">
-                <button id="btnConnect" class="bg-[#d4a359] hover:bg-[#b88a44] text-black font-black text-[11px] px-4 py-2 rounded-full transition-all active:scale-95" data-i18n="connect-wallet">
+                <button id="btnConnect" class="bg-[#d4a359] hover:bg-[#b88a44] text-black font-black text-[11px] px-4 py-2 rounded-full transition-all active:scale-95">
                     Cüzdanı Bağla
                 </button>
                 <div id="walletBadge" class="hidden px-2 py-1 bg-green-500/10 border border-green-500/20 text-green-400 rounded-md text-[9px] font-mono">CONNECTED</div>
             </div>
             
             <div class="text-right text-xs bg-[#111116] border border-white/5 rounded-xl px-3 py-1.5 flex items-center space-x-2">
-                <span class="text-gray-400">🛒 <span data-i18n="cart">Sepet</span>:</span>
+                <span class="text-gray-400">🛒 <span id="cartLabel">Sepet</span>:</span>
                 <span id="cartCount" class="font-bold text-[#d4a359]">0</span>
                 <span id="cartTotal" class="font-mono text-gray-300 ml-1">0.00 𝚷</span>
             </div>
@@ -72,130 +72,104 @@
 
     <div class="px-4 pt-2">
         <div id="terminalLog" class="p-3 bg-black/60 rounded-xl border border-white/5 font-mono text-[9px] text-gray-400 space-y-0.5 max-h-20 overflow-y-auto">
-            <p class="text-[#d4a359]">> [SYSTEM] GCV Eco-System Framework Engine initialized v3.0.</p>
-            <p id="sdkStatus">> Verifying Pi Blockchain handshake...</p>
+            <p class="text-[#d4a359]">> [SYSTEM] GCV Eco-System Engine v3.5 online.</p>
+            <p id="sdkStatus">> Pi Blockchain bağlantısı denetleniyor...</p>
         </div>
     </div>
 
     <main class="flex-1 p-4">
         
         <div class="mb-6 bg-gradient-to-r from-[#111116] to-[#161622] p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
-            <span class="text-gray-400" data-i18n="consensus-rate">Konsensüs Değeri (GCV):</span>
+            <span class="text-gray-400" id="gcvLabel">Konsensüs Değeri (GCV):</span>
             <span class="font-mono text-[#d4a359] font-bold">1 𝚷 = $314,159</span>
         </div>
 
         <div class="flex space-x-6 border-b border-white/5 mb-6 overflow-x-auto pb-2 text-xs font-bold text-gray-500 whitespace-nowrap">
-            <button class="active-tab pb-2 px-1 category-btn" onclick="filterCategory('all', this)" data-i18n="cat-all">Tüm Ürünler</button>
-            <button class="pb-2 px-1 category-btn" onclick="filterCategory('vehicles', this)" data-i18n="cat-vehicles">Lüks Araçlar</button>
-            <button class="pb-2 px-1 category-btn" onclick="filterCategory('digital', this)" data-i18n="cat-digital">Dijital / Teknoloji</button>
-            <button class="pb-2 px-1 category-btn" onclick="filterCategory('realestate', this)" data-i18n="cat-realestate">Emlak / Arsa</button>
+            <button class="active-tab pb-2 px-1 category-btn" onclick="filterCategory('all', this)" id="cat-all">Tüm Ürünler</button>
+            <button class="pb-2 px-1 category-btn" onclick="filterCategory('vehicles', this)" id="cat-vehicles">Lüks Araçlar</button>
+            <button class="pb-2 px-1 category-btn" onclick="filterCategory('digital', this)" id="cat-digital">Dijital Dünyası</button>
+            <button class="pb-2 px-1 category-btn" onclick="filterCategory('realestate', this)" id="cat-realestate">Emlak & Arsa</button>
         </div>
 
         <div id="productGrid" class="space-y-4">
             
-            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="vehicles" data-pi="0.789409">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-48 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-gray-500 font-bold">
-                    <span class="text-lg text-[#d4a359]">Mercedes-AMG G 63</span>
-                </div>
+            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="vehicles" data-pi="0.789409" data-name-tr="Mercedes-AMG G 63" data-name-en="Mercedes-AMG G 63" data-desc-tr="Edition 55 Küresel Özel Seri Dağıtımı" data-desc-en="Edition 55 Global Exclusive Fleet Allocation">
+                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center text-xl font-bold border border-white/5 text-[#d4a359]">Mercedes-AMG G 63</div>
                 <div class="flex justify-between items-end mb-3">
-                    <div>
-                        <h3 class="font-bold text-base text-white">Mercedes-AMG G 63</h3>
-                        <p class="text-xs text-gray-500" data-i18n="m1">Edition 55 Global Dağıtım</p>
-                    </div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm">0.789409 𝚷</p></div>
+                    <div><h3 class="font-bold text-base text-white p-name">Mercedes-AMG G 63</h3><p class="text-xs text-gray-500 p-desc"></p></div>
+                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
                 </div>
-                <button data-amount="0.789409" data-name="Mercedes G63" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95" data-i18n="pay-btn">Güvenceli Ödemeyi Başlat</button>
+                <button data-amount="0.789409" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
             </div>
 
-            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="vehicles" data-pi="0.280113">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-48 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-gray-500 font-bold">
-                    <span class="text-lg text-[#d4a359]">BMW M4 Competition</span>
-                </div>
+            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="vehicles" data-pi="0.407437" data-name-tr="BMW i7 xDrive60" data-name-en="BMW i7 xDrive60" data-desc-tr="M卓越 Ultra Lüks Elektrikli Sedan" data-desc-en="M-Sport Ultra Luxury Electric Sedan">
+                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center text-xl font-bold border border-white/5 text-[#d4a359]">BMW i7 xDrive60</div>
                 <div class="flex justify-between items-end mb-3">
-                    <div>
-                        <h3 class="font-bold text-base text-white">BMW M4 Competition</h3>
-                        <p class="text-xs text-gray-500" data-i18n="m2">M TwinPower Turbo Track Performance</p>
-                    </div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm">0.280113 𝚷</p></div>
+                    <div><h3 class="font-bold text-base text-white p-name">BMW i7 xDrive60</h3><p class="text-xs text-gray-500 p-desc"></p></div>
+                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
                 </div>
-                <button data-amount="0.280113" data-name="BMW M4" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95" data-i18n="pay-btn">Güvenceli Ödemeyi Başlat</button>
+                <button data-amount="0.407437" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
             </div>
 
-            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="vehicles" data-pi="0.302395">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-48 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-gray-500 font-bold">
-                    <span class="text-lg text-[#d4a359]">Tesla Model S Plaid</span>
-                </div>
+            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="vehicles" data-pi="0.302395" data-name-tr="Tesla Model S Plaid" data-name-en="Tesla Model S Plaid" data-desc-tr="1020 Beygir Üç Motorlu Pist Canavarı" data-desc-en="1020 HP Tri-Motor Track Monster">
+                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center text-xl font-bold border border-white/5 text-[#d4a359]">Tesla Model S Plaid</div>
                 <div class="flex justify-between items-end mb-3">
-                    <div>
-                        <h3 class="font-bold text-base text-white">Tesla Model S Plaid</h3>
-                        <p class="text-xs text-gray-500" data-i18n="m3">1020 HP Üç Motorlu Elektrikli Canavar</p>
-                    </div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm">0.302395 𝚷</p></div>
+                    <div><h3 class="font-bold text-base text-white p-name">Tesla Model S Plaid</h3><p class="text-xs text-gray-500 p-desc"></p></div>
+                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
                 </div>
-                <button data-amount="0.302395" data-name="Tesla Model S" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95" data-i18n="pay-btn">Güvenceli Ödemeyi Başlat</button>
+                <button data-amount="0.302395" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
             </div>
 
-            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="vehicles" data-pi="0.145000">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-48 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-gray-500 font-bold">
-                    <span class="text-lg text-[#d4a359]">Togg T10X AWD</span>
-                </div>
+            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="vehicles" data-pi="0.145000" data-name-tr="Togg T10X AWD Long Range" data-name-en="Togg T10X AWD Long Range" data-desc-tr="Çift Motorlu Akıllı Üst Segment C-SUV" data-desc-en="Dual Motor Intelligent C-SUV Smart Device">
+                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center text-xl font-bold border border-white/5 text-[#d4a359]">Togg T10X Premium</div>
                 <div class="flex justify-between items-end mb-3">
-                    <div>
-                        <h3 class="font-bold text-base text-white">Togg T10X Premium</h3>
-                        <p class="text-xs text-gray-500" data-i18n="m4">Çift Motorlu Akıllı C-SUV Akıllı Cihaz</p>
-                    </div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm">0.145000 𝚷</p></div>
+                    <div><h3 class="font-bold text-base text-white p-name">Togg T10X Premium</h3><p class="text-xs text-gray-500 p-desc"></p></div>
+                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
                 </div>
-                <button data-amount="0.145000" data-name="Togg T10X" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95" data-i18n="pay-btn">Güvenceli Ödemeyi Başlat</button>
+                <button data-amount="0.145000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
             </div>
 
-            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="vehicles" data-pi="0.750000">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-48 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-gray-500 font-bold">
-                    <span class="text-lg text-[#d4a359]">BYD Yangwang U9</span>
-                </div>
+            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="vehicles" data-pi="0.750000" data-name-tr="BYD Yangwang U9" data-name-en="BYD Yangwang U9" data-desc-tr="Dört Motorlu Teknolojik Çin Süper Spor Arabası" data-desc-en="Quad-Motor High-Tech Chinese Supercar">
+                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center text-xl font-bold border border-white/5 text-[#d4a359]">BYD Yangwang U9</div>
                 <div class="flex justify-between items-end mb-3">
-                    <div>
-                        <h3 class="font-bold text-base text-white">BYD Yangwang U9</h3>
-                        <p class="text-xs text-gray-500" data-i18n="m5">Çin Yapımı Elektrikli Supercar Pist Lideri</p>
-                    </div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm">0.750000 𝚷</p></div>
+                    <div><h3 class="font-bold text-base text-white p-name">BYD Yangwang U9</h3><p class="text-xs text-gray-500 p-desc"></p></div>
+                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
                 </div>
-                <button data-amount="0.750000" data-name="BYD Yangwang U9" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95" data-i18n="pay-btn">Güvenceli Ödemeyi Başlat</button>
+                <button data-amount="0.750000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
             </div>
 
-            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="digital" data-pi="0.015000">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-48 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-gray-500 font-bold">
-                    <span class="text-lg text-[#d4a359]">Quantum Node Server Cluster</span>
-                </div>
+            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="vehicles" data-pi="0.365000" data-name-tr="Xiaomi SU7 Ultra" data-name-en="Xiaomi SU7 Ultra" data-desc-tr="Nürburgring Pist Rekortmeni Karbon Gövde Devrim" data-desc-en="Nürburgring Record Holder Carbon Fiber Revolution">
+                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center text-xl font-bold border border-white/5 text-[#d4a359]">Xiaomi SU7 Ultra</div>
                 <div class="flex justify-between items-end mb-3">
-                    <div>
-                        <h3 class="font-bold text-base text-white">Quantum Node Server Cluster</h3>
-                        <p class="text-xs text-gray-500" data-i18n="m6">Merkeziyetsiz Yapay Zeka Sunucu Dağıtımı</p>
-                    </div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm">0.015000 𝚷</p></div>
+                    <div><h3 class="font-bold text-base text-white p-name">Xiaomi SU7 Ultra</h3><p class="text-xs text-gray-500 p-desc"></p></div>
+                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
                 </div>
-                <button data-amount="0.015000" data-name="Quantum Server" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95" data-i18n="pay-btn">Güvenceli Ödemeyi Başlat</button>
+                <button data-amount="0.365000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
             </div>
 
-            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="realestate" data-pi="7.540000">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-48 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-gray-500 font-bold">
-                    <span class="text-lg text-[#d4a359]">Monaco Penthouse Sky Villa</span>
-                </div>
+            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="digital" data-pi="0.025000" data-name-tr="Yapay Zeka Sunucu Altyapısı" data-name-en="Quantum AI Node Server Instance" data-desc-tr="Özel Tahsisli Merkeziyetsiz Cluster Ağı" data-desc-en="Dedicated Decentralized Cloud Computing Cluster">
+                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center text-xl font-bold border border-white/5 text-[#d4a359]">AI Node Server</div>
                 <div class="flex justify-between items-end mb-3">
-                    <div>
-                        <h3 class="font-bold text-base text-white">Monaco Penthouse Sky Villa</h3>
-                        <p class="text-xs text-gray-500" data-i18n="m7">Akdeniz Manzaralı Ultra Lüks Malikane Rezidans</p>
-                    </div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm">7.540000 𝚷</p></div>
+                    <div><h3 class="font-bold text-base text-white p-name">AI Node Server</h3><p class="text-xs text-gray-500 p-desc"></p></div>
+                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
                 </div>
-                <button data-amount="7.540000" data-name="Monaco Penthouse" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95" data-i18n="pay-btn">Güvenceli Ödemeyi Başlat</button>
+                <button data-amount="0.025000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
+            </div>
+
+            <div class="product-item luxury-card p-4 rounded-2xl transition-all" data-category="realestate" data-pi="8.950000" data-name-tr="Monaco Sky Penthouse" data-name-en="Monaco Sky Penthouse" data-desc-tr="Akdeniz Panoramalı Helikopter Pistli Malikane Rezidans" data-desc-en="Mediterranean View Estate with Helipad Hub">
+                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-gradient-to-br from-zinc-800 to-black flex items-center justify-center text-xl font-bold border border-white/5 text-[#d4a359]">Monaco Sky Penthouse</div>
+                <div class="flex justify-between items-end mb-3">
+                    <div><h3 class="font-bold text-base text-white p-name">Monaco Sky Penthouse</h3><p class="text-xs text-gray-500 p-desc"></p></div>
+                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
+                </div>
+                <button data-amount="8.950000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
             </div>
 
         </div>
     </main>
 
     <footer class="p-4 bg-[#0a0a0f] border-t border-white/5 text-center text-[10px] text-gray-600">
-        <p>© 2026 Pi Global Luxury Protocol Inc. Secured Hub Node.</p>
+        <p>© 2026 Pi Global Luxury Protocol Inc. Multi-Cluster Deployment Node.</p>
     </footer>
 
     <script>
@@ -205,42 +179,28 @@
         let totalCartAmountPi = 0;
         let cartItemCount = 0;
 
-        const dictionary = {
+        const dynamicUI = {
             tr: {
-                "sub-logo": "GCV GÜVENCELİ ÖDEME PROTOKOLÜ",
-                "connect-wallet": "Cüzdanı Bağla",
-                "cart": "Sepet",
-                "consensus-rate": "Konsensüs Değeri (GCV):",
-                "cat-all": "Tüm Ürünler",
-                "cat-vehicles": "Lüks Araçlar",
-                "cat-digital": "Dijital / Teknoloji",
-                "cat-realestate": "Emlak / Arsa",
-                "pay-btn": "Güvenceli Ödemeyi Başlat",
-                "m1": "Edition 55 Global Dağıtım",
-                "m2": "M TwinPower Turbo Track Performance",
-                "m3": "1020 HP Üç Motorlu Elektrikli Canavar",
-                "m4": "Çift Motorlu Akıllı C-SUV Akıllı Cihaz",
-                "m5": "Çin Yapımı Elektrikli Supercar Pist Lideri",
-                "m6": "Merkeziyetsiz Yapay Zeka Sunucu Dağıtımı",
-                "m7": "Akdeniz Manzaralı Ultra Lüks Malikane Rezidans"
+                subLogo: "GCV GÜVENCELİ ÖDEME PROTOKOLÜ",
+                connectWallet: "Cüzdanı Bağla",
+                cartLabel: "Sepet",
+                gcvLabel: "Konsensüs Değeri (GCV):",
+                catAll: "Tüm Ürünler",
+                catVehicles: "Lüks Araçlar",
+                catDigital: "Dijital Dünyası",
+                catRealestate: "Emlak & Arsa",
+                payBtn: "Güvenceli Ödemeyi Başlat"
             },
             en: {
-                "sub-logo": "GCV SECURED ESCROW PROTOCOL",
-                "connect-wallet": "Connect Wallet",
-                "cart": "Cart",
-                "consensus-rate": "Global Consensus Rate (GCV):",
-                "cat-all": "All Products",
-                "cat-vehicles": "Luxury Vehicles",
-                "cat-digital": "Digital & Tech",
-                "cat-realestate": "Real Estate / Lands",
-                "pay-btn": "Initiate Secure Payment",
-                "m1": "Edition 55 Global Allocation",
-                "m2": "M TwinPower Turbo Track Performance",
-                "m3": "1020 HP Tri-Motor Electric Monster",
-                "m4": "Dual Motor Smart C-SUV Intelligent Device",
-                "m5": "Chinese High-End Electric Supercar Track Master",
-                "m6": "Decentralized AI Server Instance Deploy",
-                "m7": "Mediterranean View Ultra-Luxury Penthouse Mansion"
+                subLogo: "GCV SECURED ESCROW PROTOCOL",
+                connectWallet: "Connect Wallet",
+                cartLabel: "Cart",
+                gcvLabel: "Consensus Rate (GCV):",
+                catAll: "All Products",
+                catVehicles: "Luxury Vehicles",
+                catDigital: "Digital World",
+                catRealestate: "Real Estate & Lands",
+                payBtn: "Initiate Secure Payment"
             }
         };
 
@@ -252,13 +212,30 @@
             terminal.scrollTop = terminal.scrollHeight;
         }
 
-        function applyLanguage(lang) {
-            currentLang = lang;
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (dictionary[lang][key]) el.innerHTML = dictionary[lang][key];
+        // Dil Değişse Bile Bozulmayan Yapı
+        function syncUIVisuals() {
+            const ui = dynamicUI[currentLang];
+            document.getElementById('subLogo').innerText = ui.subLogo;
+            if(!document.getElementById('btnConnect').classList.contains('connected-user')) {
+                document.getElementById('btnConnect').innerText = ui.connectWallet;
+            }
+            document.getElementById('cartLabel').innerText = ui.cartLabel;
+            document.getElementById('gcvLabel').innerText = ui.gcvLabel;
+            document.getElementById('cat-all').innerText = ui.catAll;
+            document.getElementById('cat-vehicles').innerText = ui.catVehicles;
+            document.getElementById('cat-digital').innerText = ui.catDigital;
+            document.getElementById('cat-realestate').innerText = ui.catRealestate;
+
+            // Ürün Metinlerini Güncelle
+            document.querySelectorAll('.product-item').forEach(item => {
+                const nameText = item.getAttribute(`data-name-${currentLang}`);
+                const descText = item.getAttribute(`data-desc-${currentLang}`);
+                item.querySelector('.p-name').innerText = nameText;
+                item.querySelector('.p-desc').innerText = descText;
+                item.querySelector('.btn-pay-text').innerText = ui.payBtn;
             });
-            printLog(`Language switch validated: ${lang.toUpperCase()}`);
+            
+            updatePrices();
         }
 
         function updatePrices() {
@@ -285,36 +262,43 @@
             }
         }
 
-        document.getElementById('langSelect').addEventListener('change', (e) => applyLanguage(e.target.value));
+        document.getElementById('langSelect').addEventListener('change', (e) => {
+            currentLang = e.target.value;
+            syncUIVisuals();
+            printLog(`Dil Değiştirildi: ${currentLang.toUpperCase()}`);
+        });
+
         document.getElementById('currencySelect').addEventListener('change', (e) => {
             currentCurrency = e.target.value;
             updatePrices();
+            printLog(`Para Birimi Değiştirildi: ${currentCurrency.toUpperCase()}`);
         });
 
         try {
             if (typeof Pi !== 'undefined') {
                 Pi.init({ version: '2.0', sandbox: true });
-                document.getElementById('sdkStatus').innerHTML = '> <span class="text-green-400">[OK]</span> Pi Core Grid Link Estalished.';
+                document.getElementById('sdkStatus').innerHTML = '> <span class="text-green-400">[OK]</span> Pi Core SDK Bağlantısı Aktif.';
             } else {
-                document.getElementById('sdkStatus').innerHTML = '> <span class="text-amber-400">[WARN]</span> Standalone Sandbox active.';
+                document.getElementById('sdkStatus').innerHTML = '> <span class="text-amber-400">[WARN]</span> Sandbox Modunda Çalışıyor.';
             }
-        } catch (e) { printLog(`SDK Crash: ${e.message}`, false); }
+        } catch (e) { printLog(`SDK Hatası: ${e.message}`, false); }
 
         const btnConnect = document.getElementById('btnConnect');
         const walletBadge = document.getElementById('walletBadge');
 
         btnConnect.addEventListener('click', async () => {
             if (typeof Pi === 'undefined') {
-                alert("Fail: Open through Pi Browser App context.");
+                alert("Hata: Bu sayfayı Pi Browser uygulamasından açmalısınız.");
                 return;
             }
             try {
                 const auth = await Pi.authenticate(['username', 'payments'], (p) => {});
                 btnConnect.innerText = auth.user.username;
-                btnConnect.className = "bg-green-600 text-white font-bold text-xs px-4 py-2 rounded-full";
+                btnConnect.classList.add('connected-user');
+                btnConnect.className = "bg-green-600 text-white font-bold text-xs px-4 py-2 rounded-full connected-user";
                 walletBadge.classList.remove('hidden');
-                printLog(`User synchronized: ${auth.user.username}`);
-            } catch (err) { printLog(`Auth Fail: ${err.message}`, false); }
+                printLog(`Oturum Açıldı: ${auth.user.username}`);
+            } catch (err) { printLog(`Bağlantı Reddedildi: ${err.message}`, false); }
         });
 
         window.filterCategory = function(cat, element) {
@@ -323,6 +307,7 @@
             document.querySelectorAll('.product-item').forEach(item => {
                 item.style.display = (cat === 'all' || item.getAttribute('data-category') === cat) ? 'block' : 'none';
             });
+            printLog(`Kategori Filtrelendi: ${cat.toUpperCase()}`);
         }
 
         document.addEventListener('click', function(e) {
@@ -332,13 +317,16 @@
                 totalCartAmountPi += amt;
                 document.getElementById('cartCount').innerText = cartItemCount;
                 updatePrices();
-                startPiTransaction(amt, e.target.getAttribute('data-name'));
+                
+                const currentItem = e.target.closest('.product-item');
+                const name = currentItem.getAttribute(`data-name-${currentLang}`);
+                startPiTransaction(amt, name);
             }
         });
 
         async function startPiTransaction(amount, assetName) {
             if (typeof Pi === 'undefined') return;
-            printLog(`Streaming node transaction for: ${assetName}`);
+            printLog(`İşlem Paketi Gönderiliyor: ${assetName}`);
             try {
                 await Pi.createPayment({
                     amount: amount,
@@ -346,27 +334,28 @@
                     metadata: { asset: assetName },
                 }, {
                     onReadyForServerApproval: function(paymentId) {
-                        printLog(`TxID generated. Waiting for backend approval server connection...`);
+                        printLog(`TxID Hazır. Backend onayı bekleniyor...`);
                         fetch('https://pi-trust-protocol.onrender.com/approve', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ paymentId: paymentId })
                         }).catch(() => {
-                            printLog(`Sunucu Onayı Eksik: Arka plan sunucun (Render) henüz bağlı değil. Ödeme zaman aşımına uğrayacak.`, false);
+                            printLog(`Sunucu Onayı Eksik! Backend (Render) sunucun kapalı olduğu için işlem blockchain süresine (56sn) takılacaktır.`, false);
                         });
                     },
-                    onReadyForServerCompletion: function(p, txid) { printLog(`Success Tx: ${txid}`); },
-                    onCancel: function() { printLog(`Cancelled.`, false); },
+                    onReadyForServerCompletion: function(p, txid) { printLog(`Başarılı TxID: ${txid}`); },
+                    onCancel: function() { printLog(`İptal Edildi.`, false); },
                     onError: function(error) {
                         if (error.message.includes("approve")) {
-                            alert(currentLang === 'tr' ? "Zaman Aşımı Hatası: Arka plan sunucun onay vermediği için Pi cüzdanı işlemi iptal etti. Sunucuyu bağlamamız gerekiyor." : "Payment Expired: Backend configuration required.");
+                            alert(currentLang === 'tr' ? "Zaman Aşımı Hatası (Payment Expired): Ödemenin cüzdanda takılıp kalmasının tek sebebi, Pi Core ekosistemine onay gönderecek arka plan (Node.js) kodunun henüz hiçbir sunucuda çalışmıyor olmasıdır." : "Payment Expired: Backend configuration required.");
                         }
                     }
                 });
-            } catch (err) { printLog(`Crashed: ${err.message}`, false); }
+            } catch (err) { printLog(`Hata: ${err.message}`, false); }
         }
 
-        applyLanguage('tr');
+        // Varsayılan Ayarı Başlat
+        syncUIVisuals();
     </script>
 </body>
 </html>
