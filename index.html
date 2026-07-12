@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pi Network | GCV Luxury Market</title>
-    <!-- Pi Network SDK -->
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-    <!-- Tailwind CSS ve FontAwesome İkonları -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -19,7 +17,6 @@
 </head>
 <body class="text-gray-100 font-sans min-h-screen pb-24 selection:bg-amber-500 selection:text-black">
 
-    <!-- Üst Menü / Navbar -->
     <header class="bg-[#050505] border-b border-neutral-900 sticky top-0 z-50 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-3">
@@ -44,10 +41,8 @@
         </div>
     </header>
 
-    <!-- Ana İçerik -->
     <main class="max-w-7xl mx-auto px-4 mt-6">
         
-        <!-- Üst Bilgi Şeridi -->
         <div id="user-info-div" class="hidden-el bg-neutral-950 border border-neutral-900 rounded-2xl p-4 mb-6">
             <div class="flex flex-col sm:flex-row justify-between items-center gap-2">
                 <div class="flex items-center space-x-2">
@@ -61,7 +56,6 @@
             </div>
         </div>
 
-        <!-- FOTOĞRAFTAKİ KATEGORİ MENÜSÜ -->
         <div class="mb-8 overflow-x-auto pb-2 flex space-x-2 scrollbar-none">
             <button onclick="filterCategory('all')" class="cat-btn bg-[#f1b34a] text-black text-xs font-bold px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap">Tümü (All)</button>
             <button onclick="filterCategory('auto')" class="cat-btn bg-neutral-900 text-neutral-400 text-xs font-bold px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap"><i class="fa-solid fa-car mr-1.5"></i>Lüks Araçlar</button>
@@ -69,10 +63,8 @@
             <button onclick="filterCategory('estate')" class="cat-btn bg-neutral-900 text-neutral-400 text-xs font-bold px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap"><i class="fa-solid fa-building mr-1.5"></i>Global Emlak</button>
         </div>
 
-        <!-- TIKTOK STİLİ İKİLİ/ÜÇLÜ GRID SİSTEMİ -->
         <div id="product-grid" class="hidden-el grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             
-            <!-- MERCEDES G-WAGON (Görsel 1'deki İlk Ürün) -->
             <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
                 <div class="relative aspect-[4/3] w-full bg-neutral-950">
                     <img src="https://images.unsplash.com/photo-1520050206274-a1ae446cb3cc?auto=format&fit=crop&w=500&q=80" alt="G-Wagon" class="w-full h-full object-cover">
@@ -88,7 +80,6 @@
                 </button>
             </div>
 
-            <!-- LAND CRUISER V8 (Görsel 1'deki İkinci Ürün) -->
             <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
                 <div class="relative aspect-[4/3] w-full bg-neutral-950">
                     <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=500&q=80" alt="Land Cruiser" class="w-full h-full object-cover">
@@ -104,7 +95,6 @@
                 </button>
             </div>
 
-            <!-- RANGE ROVER (Görsel 2'deki Ürün) -->
             <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
                 <div class="relative aspect-[4/3] w-full bg-neutral-950">
                     <img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?auto=format&fit=crop&w=500&q=80" alt="Range Rover" class="w-full h-full object-cover">
@@ -120,7 +110,6 @@
                 </button>
             </div>
 
-            <!-- TESLA MODEL S (Görsel 5'teki Ürün) -->
             <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
                 <div class="relative aspect-[4/3] w-full bg-neutral-950">
                     <img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=500&q=80" alt="Tesla S" class="w-full h-full object-cover">
@@ -136,7 +125,6 @@
                 </button>
             </div>
 
-            <!-- TOGG T10X -->
             <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
                 <div class="relative aspect-[4/3] w-full bg-neutral-950">
                     <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=500&q=80" alt="TOGG" class="w-full h-full object-cover">
@@ -152,7 +140,6 @@
                 </button>
             </div>
 
-            <!-- BYD CHINESE EV -->
             <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
                 <div class="relative aspect-[4/3] w-full bg-neutral-950">
                     <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=500&q=80" alt="BYD" class="w-full h-full object-cover">
@@ -168,7 +155,6 @@
                 </button>
             </div>
 
-            <!-- MEGA GAMING PC -->
             <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="tech">
                 <div class="relative aspect-[4/3] w-full bg-neutral-950">
                     <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=500&q=80" alt="Gaming PC" class="w-full h-full object-cover">
@@ -184,7 +170,6 @@
                 </button>
             </div>
 
-            <!-- GLOBAL REAL ESTATE -->
             <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="estate">
                 <div class="relative aspect-[4/3] w-full bg-neutral-950">
                     <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=500&q=80" alt="Mansion" class="w-full h-full object-cover">
@@ -202,7 +187,6 @@
 
         </div>
 
-        <!-- Konsol Paneli -->
         <div class="mt-8 bg-neutral-950 border border-neutral-900 rounded-xl p-4">
             <span class="text-[10px] font-bold text-neutral-500 tracking-wider uppercase block mb-2"><i class="fa-solid fa-terminal mr-1"></i>Sistem Konsolu</span>
             <div id="status-console" class="text-[11px] font-mono text-amber-400/80 space-y-1 max-h-24 overflow-y-auto">
@@ -212,7 +196,6 @@
 
     </main>
 
-    <!-- JAVASCRIPT MOTORU -->
     <script>
     (function() {
         const GCV_VALUE = 314159; 
@@ -237,7 +220,7 @@
                 sdkError: "Pi Browser dışından erişim tespit edildi.",
                 pleaseLogin: "Lütfen önce cüzdanınızı bağlayın!",
                 payReady: "Ödeme emri tescil ediliyor, Pi Wallet ekranı açılıyor...",
-                paySuccess: "🎉 Tebrikler! Satın alım GCV standardıyla blokzincirde onaylandı.",
+                paySuccess: "🎉 Ödeme sunucuya bildirildi! Blokzincir onayı bekleniyor.",
                 payCancel: "Ödeme işlemi iptal edildi.",
                 payFail: "Blockchain ödeme hatası: ",
                 userActiveText: "Cüzdan Bağlantısı Aktif:"
@@ -252,7 +235,7 @@
                 sdkError: "External browser detected.",
                 pleaseLogin: "Please connect your wallet first!",
                 payReady: "Payment computed, pulling up Pi Wallet...",
-                paySuccess: "🎉 Success! Transaction confirmed via GCV valuation.",
+                paySuccess: "🎉 Payment reported to server! Awaiting blockchain confirmation.",
                 payCancel: "Payment cancelled.",
                 payFail: "Blockchain payment error: ",
                 userActiveText: "Wallet Link Active:"
@@ -369,7 +352,15 @@
                 metadata: { item: name, rate: GCV_VALUE }
             }, {
                 onReadyForServerApproval: function(paymentId) {
-                    console.log('Auto-Approve ID:', paymentId);
+                    // ADIM 1 ENTEGRASYONU: Ödeme kimliğini arka plan onay sunucumuza iletiyoruz
+                    fetch('https://senin-sunucun.onrender.com/approve', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ paymentId: paymentId })
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log('Sunucu Onay Sinyali:', data))
+                    .catch(err => console.error('Sunucu Baglanti Hatasi:', err));
                 },
                 onReadyForServerCompletion: function(paymentId, txid) {
                     setStatus(translations[currentLang].paySuccess, 'success');
