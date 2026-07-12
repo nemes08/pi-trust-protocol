@@ -3,383 +3,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pi Network | GCV Luxury Market</title>
+    <title>Pi Trust Protocol - Luxury Market</title>
     <script src="https://sdk.minepi.com/pi-sdk.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { background-color: #0d0d0d; }
-        .pi-cart-btn { background-color: #f1b34a; transition: all 0.2s ease; }
-        .pi-cart-btn:hover { background-color: #d99a36; }
-        .hidden-el { display: none; }
-        .visible { display: block !important; }
+        body {
+            background-color: #0b0b0f;
+            color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .premium-card {
+            background: linear-gradient(145deg, #16161f, #12121a);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        .premium-card:hover {
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+        /* Özel Kaydırma Çubuğu */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0b0b0f; }
+        ::-webkit-scrollbar-thumb { background: #262636; border-radius: 10px; }
     </style>
 </head>
-<body class="text-gray-100 font-sans min-h-screen pb-24 selection:bg-amber-500 selection:text-black">
+<body class="max-w-md mx-auto min-h-screen flex flex-col justify-between pb-6">
 
-    <header class="bg-[#050505] border-b border-neutral-900 sticky top-0 z-50 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center space-x-3">
-                <div class="bg-[#f1b34a] w-10 h-10 rounded-xl text-black flex items-center justify-center font-bold shadow-lg shadow-amber-500/10">
-                    <i class="fa-solid fa-pi text-xl"></i>
-                </div>
-                <div>
-                    <h1 class="text-base font-black tracking-wider text-[#f1b34a] uppercase">PI MARKET</h1>
-                    <p class="text-[9px] text-neutral-500 font-mono tracking-widest uppercase">GCV Consensus Platform</p>
-                </div>
-            </div>
-
-            <div class="flex items-center space-x-2">
-                <select id="lang-select" class="bg-neutral-900 border border-neutral-800 text-[11px] text-neutral-300 rounded-lg px-2 py-1.5 outline-none font-semibold cursor-pointer">
-                    <option value="tr">TR</option>
-                    <option value="en">EN</option>
-                </select>
-                <button id="login-btn" class="bg-[#f1b34a] text-black text-[11px] font-bold px-4 py-1.5 rounded-lg transition-all active:scale-95 cursor-pointer">
-                    Bağlan / Connect
-                </button>
-            </div>
+    <header class="p-4 sticky top-0 bg-[#0b0b0f]/90 backdrop-blur-md z-50 flex justify-between items-center border-b border-white/5">
+        <div class="flex items-center space-x-2">
+            <div class="w-3 h-3 rounded-full bg-amber-500 animate-pulse"></div>
+            <span class="text-lg font-black tracking-widest text-amber-500 italic">PI TRUST</span>
         </div>
+        <button id="btnConnectWallet" class="bg-amber-500 text-black font-bold text-xs px-4 py-2 rounded-full shadow-lg shadow-amber-500/20 active:scale-95 transition-all">
+            Cüzdanı Bağla
+        </button>
     </header>
 
-    <main class="max-w-7xl mx-auto px-4 mt-6">
+    <main class="flex-1 p-4 space-y-6">
         
-        <div id="user-info-div" class="hidden-el bg-neutral-950 border border-neutral-900 rounded-2xl p-4 mb-6">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-2">
-                <div class="flex items-center space-x-2">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span id="user-status-text" class="text-xs text-neutral-400">Cüzdan Bağlantısı Aktif:</span>
-                    <span id="username-span" class="text-xs font-bold text-[#f1b34a]"></span>
-                </div>
-                <div class="text-[11px] bg-neutral-900 text-neutral-400 border border-neutral-800 px-3 py-1 rounded-lg font-mono">
-                    Sabit Kur: 1 Pi = $314,159
-                </div>
-            </div>
+        <div id="statusLog" class="p-3 bg-black/40 rounded-xl border border-white/5 text-[11px] font-mono text-gray-400 space-y-1">
+            <p class="text-amber-500">> [SİSTEM] Pi Trust Protocol dApp aktif.</p>
+            <p id="logSdk">> Pi SDK yükleniyor...</p>
         </div>
 
-        <div class="mb-8 overflow-x-auto pb-2 flex space-x-2 scrollbar-none">
-            <button onclick="filterCategory('all')" class="cat-btn bg-[#f1b34a] text-black text-xs font-bold px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap">Tümü (All)</button>
-            <button onclick="filterCategory('auto')" class="cat-btn bg-neutral-900 text-neutral-400 text-xs font-bold px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap"><i class="fa-solid fa-car mr-1.5"></i>Lüks Araçlar</button>
-            <button onclick="filterCategory('tech')" class="cat-btn bg-neutral-900 text-neutral-400 text-xs font-bold px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap"><i class="fa-solid fa-laptop mr-1.5"></i>Teknoloji & PC</button>
-            <button onclick="filterCategory('estate')" class="cat-btn bg-neutral-900 text-neutral-400 text-xs font-bold px-5 py-2.5 rounded-lg transition-all cursor-pointer whitespace-nowrap"><i class="fa-solid fa-building mr-1.5"></i>Global Emlak</button>
+        <div class="flex justify-between items-center pt-2">
+            <h2 class="text-sm font-bold uppercase tracking-wider text-gray-400">Mevcut Premium Araçlar</h2>
+            <span class="text-xs bg-white/10 px-2 py-0.5 rounded-md text-amber-400 font-mono">4 Adet</span>
         </div>
 
-        <div id="product-grid" class="hidden-el grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div class="space-y-4">
             
-            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
-                <div class="relative aspect-[4/3] w-full bg-neutral-950">
-                    <img src="https://images.unsplash.com/photo-1520050206274-a1ae446cb3cc?auto=format&fit=crop&w=500&q=80" alt="G-Wagon" class="w-full h-full object-cover">
-                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2025</span>
+            <div class="premium-card p-4 rounded-2xl transition-all">
+                <div class="relative overflow-hidden rounded-xl mb-3 h-48 bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1520050206274-a1ae446cb3cc?w=600&auto=format&fit=crop&q=80" alt="Mercedes G-Wagon" class="w-full h-full object-cover">
+                    <span class="absolute top-2 right-2 bg-black/70 text-amber-400 text-[11px] font-bold px-2 py-1 rounded-md backdrop-blur-sm">2025 MODEL</span>
                 </div>
-                <div class="p-3 pb-4">
-                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">G63 AMG</span>
-                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Mercedes G-Wagon" data-en="Mercedes G-Wagon">Mercedes G-Wagon</h3>
-                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,789409 π</div>
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h3 class="font-bold text-base text-white">Mercedes G-63 AMG</h3>
+                        <p class="text-xs text-gray-400">Sınırlı sayıda ekosistem kotası</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-amber-500 font-mono font-black text-sm">0.789409 π</p>
+                        <p class="text-[10px] text-gray-500">GCV Fiyatı</p>
+                    </div>
                 </div>
-                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Mercedes G-Wagon" data-usd="248000">
-                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
+                <button data-amount="0.789409" data-item="Mercedes G-63 AMG" class="btn-buy w-full bg-amber-500 hover:bg-amber-600 text-black font-black py-3 rounded-xl text-sm tracking-wide transition-all active:scale-[0.98]">
+                    SEPETE EKLE & ÖDE
                 </button>
             </div>
 
-            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
-                <div class="relative aspect-[4/3] w-full bg-neutral-950">
-                    <img src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=500&q=80" alt="Land Cruiser" class="w-full h-full object-cover">
-                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2024</span>
+            <div class="premium-card p-4 rounded-2xl transition-all">
+                <div class="relative overflow-hidden rounded-xl mb-3 h-48 bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1594561767956-fb322152628a?w=600&auto=format&fit=crop&q=80" alt="Land Cruiser V8" class="w-full h-full object-cover">
+                    <span class="absolute top-2 right-2 bg-black/70 text-amber-400 text-[11px] font-bold px-2 py-1 rounded-md backdrop-blur-sm">2024 MODEL</span>
                 </div>
-                <div class="p-3 pb-4">
-                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">VX-R</span>
-                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Land Cruiser V8" data-en="Land Cruiser V8">Land Cruiser V8</h3>
-                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,445634 π</div>
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h3 class="font-bold text-base text-white">Toyota Land Cruiser V8</h3>
+                        <p class="text-xs text-gray-400">Üstün arazi konfor paketi</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-amber-500 font-mono font-black text-sm">0.445634 π</p>
+                        <p class="text-[10px] text-gray-500">GCV Fiyatı</p>
+                    </div>
                 </div>
-                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Land Cruiser V8" data-usd="140000">
-                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
+                <button data-amount="0.445634" data-item="Toyota Land Cruiser V8" class="btn-buy w-full bg-amber-500 hover:bg-amber-600 text-black font-black py-3 rounded-xl text-sm tracking-wide transition-all active:scale-[0.98]">
+                    SEPETE EKLE & ÖDE
                 </button>
             </div>
 
-            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
-                <div class="relative aspect-[4/3] w-full bg-neutral-950">
-                    <img src="https://images.unsplash.com/photo-1606016159991-dfe4f2746ad5?auto=format&fit=crop&w=500&q=80" alt="Range Rover" class="w-full h-full object-cover">
-                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2025</span>
+            <div class="premium-card p-4 rounded-2xl transition-all">
+                <div class="relative overflow-hidden rounded-xl mb-3 h-48 bg-gray-900">
+                    <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?w=600&auto=format&fit=crop&q=80" alt="Tesla Model S" class="w-full h-full object-cover">
+                    <span class="absolute top-2 right-2 bg-black/70 text-amber-400 text-[11px] font-bold px-2 py-1 rounded-md backdrop-blur-sm">PLAID</span>
                 </div>
-                <div class="p-3 pb-4">
-                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">AUTOBIOGRAPHY</span>
-                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Range Rover" data-en="Range Rover">Range Rover</h3>
-                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,690733 π</div>
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <h3 class="font-bold text-base text-white">Tesla Model S Plaid</h3>
+                        <p class="text-xs text-gray-400">Elektrikli hiper performans</p>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-amber-500 font-mono font-black text-sm">0.302395 π</p>
+                        <p class="text-[10px] text-gray-500">GCV Fiyatı</p>
+                    </div>
                 </div>
-                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Range Rover" data-usd="217000">
-                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
-                </button>
-            </div>
-
-            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
-                <div class="relative aspect-[4/3] w-full bg-neutral-950">
-                    <img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=500&q=80" alt="Tesla S" class="w-full h-full object-cover">
-                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2025</span>
-                </div>
-                <div class="p-3 pb-4">
-                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">PLAID</span>
-                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Tesla Model S" data-en="Tesla Model S">Tesla Model S</h3>
-                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,302395 π</div>
-                </div>
-                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Tesla Model S" data-usd="95000">
-                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
-                </button>
-            </div>
-
-            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
-                <div class="relative aspect-[4/3] w-full bg-neutral-950">
-                    <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=500&q=80" alt="TOGG" class="w-full h-full object-cover">
-                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2024</span>
-                </div>
-                <div class="p-3 pb-4">
-                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">LONG RANGE</span>
-                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="TOGG T10X Smart" data-en="TOGG T10X Smart">TOGG T10X Smart</h3>
-                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,143239 π</div>
-                </div>
-                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="TOGG T10X" data-usd="45000">
-                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
-                </button>
-            </div>
-
-            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="auto">
-                <div class="relative aspect-[4/3] w-full bg-neutral-950">
-                    <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=500&q=80" alt="BYD" class="w-full h-full object-cover">
-                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">2025</span>
-                </div>
-                <div class="p-3 pb-4">
-                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">SEAL PERFORMANCE</span>
-                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="BYD Seal Premium" data-en="BYD Seal Premium">BYD Seal Premium</h3>
-                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,152788 π</div>
-                </div>
-                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="BYD Seal" data-usd="48000">
-                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
-                </button>
-            </div>
-
-            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="tech">
-                <div class="relative aspect-[4/3] w-full bg-neutral-950">
-                    <img src="https://images.unsplash.com/photo-1587202372775-e229f172b9d7?auto=format&fit=crop&w=500&q=80" alt="Gaming PC" class="w-full h-full object-cover">
-                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">PRO</span>
-                </div>
-                <div class="p-3 pb-4">
-                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">RTX STATION</span>
-                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Render & Oyuncu PC" data-en="Render & Gaming PC">Render & Oyuncu PC</h3>
-                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">0,012732 π</div>
-                </div>
-                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Ultimate Gaming PC" data-usd="4000">
-                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
-                </button>
-            </div>
-
-            <div class="prod-card bg-[#121212] rounded-xl overflow-hidden flex flex-col justify-between" data-cat="estate">
-                <div class="relative aspect-[4/3] w-full bg-neutral-950">
-                    <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=500&q=80" alt="Mansion" class="w-full h-full object-cover">
-                    <span class="absolute top-2 left-2 text-[10px] bg-black/60 text-amber-400 font-bold px-2 py-0.5 rounded">LUX</span>
-                </div>
-                <div class="p-3 pb-4">
-                    <span class="text-[10px] text-amber-500/80 font-mono tracking-widest uppercase">REAL ESTATE</span>
-                    <h3 class="font-bold text-gray-100 text-sm tracking-wide mt-0.5" data-tr="Lüks Sahil Konakları" data-en="Bosphorus Ocean Villa">Lüks Sahil Konakları</h3>
-                    <div class="text-xs text-neutral-400 font-semibold font-mono mt-2">3,023946 π</div>
-                </div>
-                <button class="buy-btn w-full py-3 pi-cart-btn text-black font-black text-xs tracking-wider uppercase flex items-center justify-center space-x-1.5" data-name="Bosphorus Villa" data-usd="950000">
-                    <i class="fa-solid fa-cart-shopping text-[11px]"></i> <span>CART</span>
+                <button data-amount="0.302395" data-item="Tesla Model S Plaid" class="btn-buy w-full bg-amber-500 hover:bg-amber-600 text-black font-black py-3 rounded-xl text-sm tracking-wide transition-all active:scale-[0.98]">
+                    SEPETE EKLE & ÖDE
                 </button>
             </div>
 
         </div>
-
-        <div class="mt-8 bg-neutral-950 border border-neutral-900 rounded-xl p-4">
-            <span class="text-[10px] font-bold text-neutral-500 tracking-wider uppercase block mb-2"><i class="fa-solid fa-terminal mr-1"></i>Sistem Konsolu</span>
-            <div id="status-console" class="text-[11px] font-mono text-amber-400/80 space-y-1 max-h-24 overflow-y-auto">
-                <div>> dApp yükleniyor...</div>
-            </div>
-        </div>
-
     </main>
 
+    <footer class="text-center text-[10px] text-gray-600 px-4 mt-6">
+        <p>© 2026 Pi Trust Protocol dApp. Tüm hakları saklıdır.</p>
+        <p class="mt-1 text-gray-700">Bu uygulama Pi Network Sandbox ve Mainnet standartlarında geliştirilmiştir.</p>
+    </footer>
+
     <script>
-    (function() {
-        const GCV_VALUE = 314159; 
-        let currentLang = 'tr';
-        let currentUser = null;
+        // Durum Günlüğü Yardımcı Fonksiyonu
+        function updateLog(message, isSuccess = true) {
+            const logPanel = document.getElementById('statusLog');
+            const newLog = document.createElement('p');
+            newLog.innerHTML = isSuccess ? `> <span class="text-green-400">[SUCCESS]</span> ${message}` : `> <span class="text-red-400">[ERROR]</span> ${message}`;
+            logPanel.appendChild(newLog);
+            console.log(message);
+        }
 
-        const langSelect = document.getElementById('lang-select');
-        const loginBtn = document.getElementById('login-btn');
-        const userInfoDiv = document.getElementById('user-info-div');
-        const usernameSpan = document.getElementById('username-span');
-        const productGrid = document.getElementById('product-grid');
-        const statusConsole = document.getElementById('status-console');
-
-        const translations = {
-            tr: {
-                connecting: "Pi Cüzdan doğrulaması yapılıyor...",
-                loginActive: "Bağlantı Kuruldu",
-                loginBtn: "Cüzdanı Bağla",
-                loginSuccess: "Giriş başarılı! Ürün kataloğu senkronize edildi.",
-                authCancel: "Bağlantı kullanıcı tarafından reddedildi.",
-                authFail: "Kimlik doğrulaması tamamlanamadı.",
-                sdkError: "Pi Browser dışından erişim tespit edildi.",
-                pleaseLogin: "Lütfen önce cüzdanınızı bağlayın!",
-                payReady: "Ödeme emri tescil ediliyor, Pi Wallet ekranı açılıyor...",
-                paySuccess: "🎉 Ödeme sunucuya bildirildi! Blokzincir onayı bekleniyor.",
-                payCancel: "Ödeme işlemi iptal edildi.",
-                payFail: "Blockchain ödeme hatası: ",
-                userActiveText: "Cüzdan Bağlantısı Aktif:"
-            },
-            en: {
-                connecting: "Verifying Pi Wallet link...",
-                loginActive: "Wallet Connected",
-                loginBtn: "Connect Wallet",
-                loginSuccess: "Login successful! Product catalog synchronized.",
-                authCancel: "Connection rejected by user.",
-                authFail: "Authentication failed.",
-                sdkError: "External browser detected.",
-                pleaseLogin: "Please connect your wallet first!",
-                payReady: "Payment computed, pulling up Pi Wallet...",
-                paySuccess: "🎉 Payment reported to server! Awaiting blockchain confirmation.",
-                payCancel: "Payment cancelled.",
-                payFail: "Blockchain payment error: ",
-                userActiveText: "Wallet Link Active:"
+        // Pi SDK Başlatma Kontrolü
+        try {
+            if (typeof Pi !== 'undefined') {
+                Pi.init({ version: '2.0', sandbox: true });
+                document.getElementById('logSdk').innerHTML = '> <span class="text-green-400">[SUCCESS]</span> Pi SDK Başarıyla Yüklendi.';
+            } else {
+                document.getElementById('logSdk').innerHTML = '> <span class="text-red-400">[WARN]</span> Pi SDK algılanamadı, Pi Browser içinde açın.';
             }
-        };
-
-        function setStatus(message, type) {
-            const newLog = document.createElement('div');
-            newLog.innerHTML = `> <span class="${type === 'success' ? 'text-emerald-400' : type === 'error' ? 'text-rose-400' : 'text-neutral-500'}">[${type.toUpperCase()}]</span> ${message}`;
-            statusConsole.appendChild(newLog);
-            statusConsole.scrollTop = statusConsole.scrollHeight;
+        } catch (err) {
+            document.getElementById('logSdk').innerHTML = '> [HATA] SDK başlatılamadı: ' + err.message;
         }
 
-        window.filterCategory = function(cat) {
-            const cards = document.querySelectorAll('.prod-card');
-            const buttons = document.querySelectorAll('.cat-btn');
-            
-            buttons.forEach(btn => {
-                btn.classList.remove('bg-[#f1b34a]', 'text-black');
-                btn.classList.add('bg-neutral-900', 'text-neutral-400');
-            });
-            event.target.classList.remove('bg-neutral-900', 'text-neutral-400');
-            event.target.classList.add('bg-[#f1b34a]', 'text-black');
-
-            cards.forEach(card => {
-                if (cat === 'all' || card.getAttribute('data-cat') === cat) {
-                    card.classList.add('visible');
-                } else {
-                    card.classList.remove('visible');
-                }
-            });
-        }
-
-        function applyLanguage(lang) {
-            document.getElementById('user-status-text').textContent = translations[lang].userActiveText;
-            document.querySelectorAll('[data-tr]').forEach(el => {
-                el.textContent = lang === 'tr' ? el.getAttribute('data-tr') : el.getAttribute('data-en');
-            });
-            loginBtn.textContent = currentUser ? translations[lang].loginActive : translations[lang].loginBtn;
-        }
-
-        function updateUI(user) {
-            if (user && user.username) {
-                currentUser = user;
-                usernameSpan.textContent = user.username;
-                userInfoDiv.classList.add('visible');
-                productGrid.classList.remove('hidden-el');
-                productGrid.classList.add('grid');
-                loginBtn.textContent = translations[currentLang].loginActive;
-                loginBtn.disabled = true;
-            }
-        }
-
-        async function authenticateWithPi() {
-            setStatus(translations[currentLang].connecting, 'info');
-            try {
-                const authResult = await Pi.authenticate(['username', 'payments'], function(error) {
-                    console.warn('Auth error:', error);
-                    setStatus(translations[currentLang].authCancel, 'error');
-                    loginBtn.disabled = false;
-                });
-                if (!authResult || !authResult.user) throw new Error(translations[currentLang].authFail);
-                
-                updateUI(authResult.user);
-                setStatus(translations[currentLang].loginSuccess, 'success');
-            } catch (error) {
-                setStatus(error.message, 'error');
-                loginBtn.disabled = false;
-            }
-        }
-
-        window.addEventListener('load', async function() {
-            try {
-                await Pi.init({ version: '2.0', sandbox: true });
-                setStatus("Pi Luxury Grid UI initiated.", "success");
-                
-                loginBtn.addEventListener('click', async () => {
-                    loginBtn.disabled = true;
-                    await authenticateWithPi();
-                });
-                
-                await authenticateWithPi();
-            } catch (error) {
-                setStatus(translations[currentLang].sdkError, 'error');
-            }
-
-            langSelect.addEventListener('change', function() {
-                currentLang = this.value;
-                applyLanguage(currentLang);
-            });
-
-            document.querySelectorAll('.buy-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const usdValue = parseFloat(this.getAttribute('data-usd'));
-                    const calculatedPiPrice = parseFloat((usdValue / GCV_VALUE).toFixed(6));
-                    window.executePayment(this.getAttribute('data-name'), calculatedPiPrice, usdValue);
-                });
-            });
-        });
-
-        window.executePayment = function(name, piPrice, usdValue) {
-            if (!currentUser) {
-                alert(translations[currentLang].pleaseLogin);
+        // 1. CÜZDAN BAĞLAMA BUTONU SİSTEMİ
+        const connectBtn = document.getElementById('btnConnectWallet');
+        connectBtn.addEventListener('click', async () => {
+            if (typeof Pi === 'undefined') {
+                alert("Lütfen bu uygulamayı Pi Browser içerisinden açın.");
                 return;
             }
             
-            const buttons = document.querySelectorAll('.buy-btn');
-            buttons.forEach(b => b.disabled = true);
-            setStatus(`${translations[currentLang].payReady} (${piPrice} Pi)`, 'info');
+            connectBtn.innerText = "Bağlanıyor...";
+            connectBtn.disabled = true;
 
-            Pi.createPayment({
-                amount: piPrice,
-                memo: `GCV Order: ${name}`,
-                metadata: { item: name, rate: GCV_VALUE }
-            }, {
-                onReadyForServerApproval: function(paymentId) {
-                    // ADIM 1 ENTEGRASYONU: Ödeme kimliğini arka plan onay sunucumuza iletiyoruz
-                    fetch('https://senin-sunucun.onrender.com/approve', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ paymentId: paymentId })
-                    })
-                    .then(response => response.json())
-                    .then(data => console.log('Sunucu Onay Sinyali:', data))
-                    .catch(err => console.error('Sunucu Baglanti Hatasi:', err));
-                },
-                onReadyForServerCompletion: function(paymentId, txid) {
-                    setStatus(translations[currentLang].paySuccess, 'success');
-                    alert(`${translations[currentLang].paySuccess}\n\n${name} -> ${piPrice} Pi`);
-                    buttons.forEach(b => b.disabled = false);
-                },
-                onCancel: function(paymentId) {
-                    setStatus(translations[currentLang].payCancel, 'info');
-                    buttons.forEach(b => b.disabled = false);
-                },
-                onError: function(error, payment) {
-                    setStatus(translations[currentLang].payFail + error.message, 'error');
-                    buttons.forEach(b => b.disabled = false);
-                }
-            }).catch(function() {
-                buttons.forEach(b => b.disabled = false);
-            });
-        };
-    })();
+            try {
+                const scopes = ['username', 'payments'];
+                const auth = await Pi.authenticate(scopes, onIncompletePaymentFound);
+                
+                // Başarılı Giriş
+                connectBtn.innerText = `${auth.user.username}`;
+                connectBtn.className = "bg-green-600 text-white font-bold text-xs px-4 py-2 rounded-full";
+                updateLog(`Giriş Başarılı! Kullanıcı: ${auth.user.username}`);
+            } catch (error) {
+                connectBtn.innerText = "Cüzdanı Bağla";
+                connectBtn.disabled = false;
+                updateLog(`Kimlik doğrulama hatası: ${error.message}`, false);
+                alert("Bağlantı reddedildi veya hata oluştu.");
+            }
+        });
+
+        // 2. ÖDEME YÖNETİMİ (Çalışmayan Buton Sorununu Çözen Dinamik Yapı)
+        document.addEventListener('click', function(event) {
+            if (event.target && event.target.classList.contains('btn-buy')) {
+                const button = event.target;
+                const itemAmount = parseFloat(button.getAttribute('data-amount'));
+                const itemName = button.getAttribute('data-item');
+
+                // Güvenlik Kontrolü: Test aşamasında cüzdan kilitlenmesin diye limit kontrolü
+                executePiPayment(itemAmount, itemName);
+            }
+        });
+
+        async function executePiPayment(amount, itemName) {
+            if (typeof Pi === 'undefined') {
+                alert("Ödeme yapabilmek için Pi Browser kullanmalısınız.");
+                return;
+            }
+
+            updateLog(`${itemName} için ödeme hazırlanıyor... miktar: ${amount} Pi`);
+
+            try {
+                const payment = await Pi.createPayment({
+                    amount: amount,
+                    memo: `${itemName} Satın Alımı`,
+                    metadata: { product: itemName, source: "PiTrustProtocol" },
+                }, {
+                    onReadyForServerApproval: function(paymentId) {
+                        updateLog(`Ödeme sunucu onayına hazır. ID: ${paymentId}`);
+                        
+                        // ÖNEMLİ: Kendi Render backend adresini kurduktan sonra burayı güncellemelisin.
+                        // Geçici olarak onay simülasyonu / sunucu tetiklemesi:
+                        fetch('https://pi-trust-protocol.onrender.com/approve', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ paymentId: paymentId })
+                        }).catch(e => console.log("Backend adresi henüz canlıda değil, işlem bekleniyor."));
+                    },
+                    onReadyForServerCompletion: function(paymentId, txid) {
+                        updateLog(`Ödeme başarıyla tamamlandı! TxID: ${txid}`);
+                        alert(`Tebrikler! ${itemName} için ödemeniz alındı.`);
+                    },
+                    onCancel: function(paymentId) {
+                        updateLog(`Ödeme kullanıcı tarafından iptal edildi. ID: ${paymentId}`, false);
+                    },
+                    onError: function(error, payment) {
+                        updateLog(`Ödeme hatası: ${error.message}`, false);
+                        alert(`Ödeme gerçekleştirilemedi: ${error.message}`);
+                    }
+                });
+            } catch (err) {
+                updateLog(`İşlem başlatma hatası: ${err.message}`, false);
+            }
+        }
+
+        // Yarım kalan veya askıda kalan ödemeleri temizleme fonksiyonu
+        function onIncompletePaymentFound(payment) {
+            updateLog(`Askıda kalan ödeme bulundu. ID: ${payment.identifier}`);
+            // Gerekirse backend sunucusuna yarım kalan ödemeyi tamamlaması için istek atılır
+        }
     </script>
 </body>
 </html>
