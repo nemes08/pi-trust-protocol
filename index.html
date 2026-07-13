@@ -1,364 +1,117 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pi Global Luxury Protocol</title>
-    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Pi Trust Protocol</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
     <style>
         body {
-            background-color: #060609;
-            color: #f3f4f6;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: 'Roboto', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
-        .luxury-card {
-            background: linear-gradient(145deg, #121218, #0a0a0d);
-            border: 1px solid rgba(212, 163, 89, 0.08);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+        .light-mode {
+            background-color: #ffffff;
+            color: #1a202c;
         }
-        .luxury-card:hover {
-            border-color: rgba(212, 163, 89, 0.35);
-            box-shadow: 0 0 25px rgba(212, 163, 89, 0.1);
+        .nav-link {
+            transition: color 0.3s ease-in-out;
         }
-        .active-tab {
-            color: #d4a359;
-            border-bottom: 2px solid #d4a359;
+        .nav-link:hover {
+            color: #63B3ED;
         }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-thumb { background: #1c1c24; border-radius: 10px; }
     </style>
 </head>
-<body class="max-w-xl mx-auto min-h-screen flex flex-col justify-between bg-[#060609]">
+<body class="bg-gray-900 text-gray-200">
 
-    <header class="p-4 sticky top-0 bg-[#060609]/95 backdrop-blur-xl z-50 border-b border-white/5 space-y-3">
-        <div class="flex justify-between items-center">
-            <div class="flex flex-col">
-                <span class="text-[9px] tracking-[0.3em] text-gray-500 font-bold" id="subLogo">GCV SECURED NETWORK</span>
-                <span class="text-xl font-black tracking-wider text-[#d4a359] italic">𝚷𝚳 GLOBAL</span>
-            </div>
-            <div class="flex items-center space-x-2">
-                <select id="langSelect" class="bg-[#111116] text-xs text-gray-300 border border-white/10 rounded-md px-2 py-1 focus:outline-none">
-                    <option value="tr" selected>TR 🇹🇷</option>
-                    <option value="en">EN 🇺🇸</option>
-                </select>
-                <select id="currencySelect" class="bg-[#111116] text-xs text-gray-300 border border-white/10 rounded-md px-2 py-1 focus:outline-none">
-                    <option value="pi">𝚷𝚳 (Pi)</option>
-                    <option value="usd">USD ($)</option>
-                    <option value="eur">EUR (€)</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="flex justify-between items-center pt-1">
-            <button id="btnConnect" class="bg-[#d4a359] hover:bg-[#b88a44] text-black font-black text-[11px] px-4 py-2 rounded-full transition-all active:scale-95">
-                Cüzdanı Bağla
-            </button>
-            <div class="text-right text-xs bg-[#111116] border border-white/5 rounded-xl px-3 py-1.5 flex items-center space-x-2">
-                <span class="text-gray-400">🛒 <span id="cartLabel">Sepet</span>:</span>
-                <span id="cartCount" class="font-bold text-[#d4a359]">0</span>
-                <span id="cartTotal" class="font-mono text-gray-300 ml-1">0.00 𝚷</span>
-            </div>
-        </div>
+    <header class="bg-gray-800 p-4 text-center relative shadow-lg">
+        <h1 class="text-2xl md:text-3xl font-bold text-white tracking-wide" id="header-title">🛡️ Pi Trust Protocol</h1>
     </header>
 
-    <div class="px-4 pt-2">
-        <div id="terminalLog" class="p-3 bg-black/60 rounded-xl border border-white/5 font-mono text-[9px] text-gray-400 space-y-0.5 max-h-20 overflow-y-auto">
-            <p class="text-[#d4a359]">> [SYSTEM] GCV Eco-System Engine Online.</p>
-            <p id="sdkStatus">> Pi Blockchain ağ bağlantısı kuruluyor...</p>
-        </div>
-    </div>
+    <nav class="bg-gray-900 p-4 hidden md:block border-b border-gray-800">
+        <ul class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6 text-lg">
+            <li><a href="index.html" class="nav-link"><i class="fas fa-home mr-2"></i>Home</a></li>
+            <li><a href="escrow.html" class="nav-link"><i class="fas fa-shield-alt mr-2"></i>Secure Escrow</a></li>
+            <li><a href="transactions.html" class="nav-link"><i class="fas fa-history mr-2"></i>My Transactions</a></li>
+            <li><a href="about.html" class="nav-link"><i class="fas fa-info-circle mr-2"></i>About Us</a></li>
+        </ul>
+    </nav>
 
-    <main class="flex-1 p-4">
-        <div class="mb-6 bg-gradient-to-r from-[#111116] to-[#161622] p-3 rounded-xl border border-white/5 flex justify-between items-center text-xs">
-            <span class="text-gray-400" id="gcvLabel">Konsensüs Değeri (GCV):</span>
-            <span class="font-mono text-[#d4a359] font-bold">1 𝚷 = $314,159</span>
+    <nav class="bg-gray-900 p-4 md:hidden border-b border-gray-800 text-center">
+        <ul class="flex flex-col space-y-4 text-lg">
+            <li><a href="index.html" class="nav-link">Home</a></li>
+            <li><a href="escrow.html" class="nav-link">Secure Escrow</a></li>
+            <li><a href="transactions.html" class="nav-link">My Transactions</a></li>
+            <li><a href="about.html" class="nav-link">About Us</a></li>
+        </ul>
+    </nav>
+
+    <main class="p-6 max-w-7xl mx-auto">
+        <div class="bg-gray-800 text-gray-200 p-8 rounded-xl shadow-md text-center mb-10">
+            <h1 class="text-3xl font-bold text-white mb-4">Secure Trading in Pi Network</h1>
+            <p class="text-lg text-gray-400 max-w-2xl mx-auto mb-6">
+                Pi Trust Protocol protects Pi payments with a secure escrow system between buyers and sellers. Payment is held securely until products are delivered.
+            </p>
+            <button class="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-500" onclick="alert('Connect Wallet coming soon!')">
+                <i class="fas fa-wallet mr-2"></i>Connect Pi Wallet
+            </button>
         </div>
 
-        <div class="flex space-x-6 border-b border-white/5 mb-6 overflow-x-auto pb-2 text-xs font-bold text-gray-500 whitespace-nowrap">
-            <button class="active-tab pb-2 px-1 category-btn" onclick="filterCategory('all', this)" id="cat-all">Tüm Ürünler</button>
-            <button class="pb-2 px-1 category-btn" onclick="filterCategory('vehicles', this)" id="cat-vehicles">Lüks Araçlar</button>
-            <button class="pb-2 px-1 category-btn" onclick="filterCategory('realestate', this)" id="cat-realestate">Emlak & Arsa</button>
-            <button class="pb-2 px-1 category-btn" onclick="filterCategory('digital', this)" id="cat-digital">Dijital Cihazlar</button>
+        <div class="bg-gray-800 p-6 rounded-xl shadow-md mb-10">
+            <h2 class="text-xl font-bold mb-4">Track Escrow ID</h2>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <input type="text" placeholder="Enter Escrow TxID #..." class="w-full p-3 rounded bg-gray-700 text-gray-200 placeholder-gray-400 focus:outline-none">
+                <button class="px-6 py-3 bg-blue-500 text-white font-bold rounded hover:bg-blue-600" onclick="alert('Searching...')">Search</button>
+            </div>
         </div>
 
-        <div id="productGrid" class="space-y-4">
+        <h2 class="text-2xl font-bold mb-6"><i class="fas fa-exchange-alt mr-2 text-blue-500"></i>Active Escrow Pools</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             
-            <div class="product-item luxury-card p-4 rounded-2xl" data-category="vehicles" data-pi="0.789409" data-name-tr="Mercedes-AMG G 63" data-name-en="Mercedes-AMG G 63" data-desc-tr="Edition 55 GCV Özel Filo Dağıtımı" data-desc-en="Edition 55 GCV Global Allocation">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-zinc-900 flex flex-col items-center justify-center border border-white/5">
-                    <svg class="w-16 h-16 text-[#d4a359]/40 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10 M13 16h4l4-4V9a1 1 0 00-1-1h-7z"></path></svg>
-                    <span class="text-sm font-bold text-zinc-400">Mercedes-AMG G 63</span>
+            <div class="border border-gray-700 p-5 bg-gray-800 rounded-xl">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold px-2 py-1 bg-yellow-600 text-white rounded">🔒 In Escrow</span>
+                    <span class="text-sm font-bold text-blue-400">150 Pi</span>
                 </div>
-                <div class="flex justify-between items-end mb-3">
-                    <div><h3 class="font-bold text-base text-white p-name"></h3><p class="text-xs text-gray-500 p-desc"></p></div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
-                </div>
-                <button data-amount="0.789409" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
+                <h3 class="text-lg font-bold mb-1">Escrow Pool #1042</h3>
+                <p class="text-sm text-gray-400">Buyer: G3a9...b060<br>Seller: X810...4715</p>
             </div>
 
-            <div class="product-item luxury-card p-4 rounded-2xl" data-category="vehicles" data-pi="0.458000" data-name-tr="BMW i7 xDrive60" data-name-en="BMW i7 xDrive60" data-desc-tr="Ultra Lüks Elektrikli Sedan" data-desc-en="Ultra Luxury Electric Executive Sedan">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-zinc-900 flex flex-col items-center justify-center border border-white/5">
-                    <svg class="w-16 h-16 text-[#d4a359]/40 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10 M13 16h4l4-4V9a1 1 0 00-1-1h-7z"></path></svg>
-                    <span class="text-sm font-bold text-zinc-400">BMW i7 xDrive60</span>
+            <div class="border border-gray-700 p-5 bg-gray-800 rounded-xl">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold px-2 py-1 bg-green-600 text-white rounded">✅ Released</span>
+                    <span class="text-sm font-bold text-green-400">45 Pi</span>
                 </div>
-                <div class="flex justify-between items-end mb-3">
-                    <div><h3 class="font-bold text-base text-white p-name"></h3><p class="text-xs text-gray-500 p-desc"></p></div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
-                </div>
-                <button data-amount="0.458000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
+                <h3 class="text-lg font-bold mb-1">Escrow Pool #1041</h3>
+                <p class="text-sm text-gray-400">Buyer: K772...e862<br>Seller: Z552...aa15</p>
             </div>
 
-            <div class="product-item luxury-card p-4 rounded-2xl" data-category="vehicles" data-pi="0.302395" data-name-tr="Tesla Model S Plaid" data-name-en="Tesla Model S Plaid" data-desc-tr="1020 HP Üç Motorlu Güç" data-desc-en="1020 HP Tri-Motor Electric Power">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-zinc-900 flex flex-col items-center justify-center border border-white/5">
-                    <svg class="w-16 h-16 text-[#d4a359]/40 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    <span class="text-sm font-bold text-zinc-400">Tesla Model S Plaid</span>
+            <div class="border border-gray-700 p-5 bg-gray-800 rounded-xl">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold px-2 py-1 bg-yellow-600 text-white rounded">🔒 In Escrow</span>
+                    <span class="text-sm font-bold text-blue-400">750 Pi</span>
                 </div>
-                <div class="flex justify-between items-end mb-3">
-                    <div><h3 class="font-bold text-base text-white p-name"></h3><p class="text-xs text-gray-500 p-desc"></p></div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
-                </div>
-                <button data-amount="0.302395" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
+                <h3 class="text-lg font-bold mb-1">Escrow Pool #1040</h3>
+                <p class="text-sm text-gray-400">Buyer: M36b...bad6<br>Seller: N5ce...1ead</p>
             </div>
 
-            <div class="product-item luxury-card p-4 rounded-2xl" data-category="vehicles" data-pi="0.145000" data-name-tr="Togg T10X AWD" data-name-en="Togg T10X AWD" data-desc-tr="Çift Motorlu Akıllı Akıllı SUV" data-desc-en="Dual Motor Intelligent Smart Device SUV">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-zinc-900 flex flex-col items-center justify-center border border-white/5">
-                    <svg class="w-16 h-16 text-[#d4a359]/40 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
-                    <span class="text-sm font-bold text-zinc-400">Togg T10X AWD</span>
+            <div class="border border-gray-700 p-5 bg-gray-800 rounded-xl">
+                <div class="flex justify-between items-center mb-3">
+                    <span class="text-xs font-bold px-2 py-1 bg-red-600 text-white rounded">❌ Disputed</span>
+                    <span class="text-sm font-bold text-red-400">120 Pi</span>
                 </div>
-                <div class="flex justify-between items-end mb-3">
-                    <div><h3 class="font-bold text-base text-white p-name"></h3><p class="text-xs text-gray-500 p-desc"></p></div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
-                </div>
-                <button data-amount="0.145000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
-            </div>
-
-            <div class="product-item luxury-card p-4 rounded-2xl" data-category="vehicles" data-pi="0.115000" data-name-tr="Chery Tiggo 8 Pro Max" data-name-en="Chery Tiggo 8 Pro Max" data-desc-tr="7 Koltuklu Akıllı Teknoloji SUV" data-desc-en="7-Seater Intelligent Technology SUV">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-zinc-900 flex flex-col items-center justify-center border border-white/5">
-                    <span class="text-2xl mb-1">🚗</span>
-                    <span class="text-sm font-bold text-zinc-400">Chery Tiggo 8 Pro Max</span>
-                </div>
-                <div class="flex justify-between items-end mb-3">
-                    <div><h3 class="font-bold text-base text-white p-name"></h3><p class="text-xs text-gray-500 p-desc"></p></div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
-                </div>
-                <button data-amount="0.115000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
-            </div>
-
-            <div class="product-item luxury-card p-4 rounded-2xl" data-category="vehicles" data-pi="0.750000" data-name-tr="BYD Yangwang U9" data-name-en="BYD Yangwang U9" data-desc-tr="Çinli Elektrikli Supercar" data-desc-en="High-End Chinese Electric Supercar">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-zinc-900 flex flex-col items-center justify-center border border-white/5">
-                    <span class="text-2xl mb-1">⚡</span>
-                    <span class="text-sm font-bold text-zinc-400">BYD Yangwang U9</span>
-                </div>
-                <div class="flex justify-between items-end mb-3">
-                    <div><h3 class="font-bold text-base text-white p-name"></h3><p class="text-xs text-gray-500 p-desc"></p></div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
-                </div>
-                <button data-amount="0.750000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
-            </div>
-
-            <div class="product-item luxury-card p-4 rounded-2xl" data-category="vehicles" data-pi="0.365000" data-name-tr="Xiaomi SU7 Ultra" data-name-en="Xiaomi SU7 Ultra" data-desc-tr="Pist Rekortmeni Karbon Gövde Devrimi" data-desc-en="Pist Record Carbon Fiber Revolution">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-zinc-900 flex flex-col items-center justify-center border border-white/5">
-                    <span class="text-2xl mb-1">📱</span>
-                    <span class="text-sm font-bold text-zinc-400">Xiaomi SU7 Ultra</span>
-                </div>
-                <div class="flex justify-between items-end mb-3">
-                    <div><h3 class="font-bold text-base text-white p-name"></h3><p class="text-xs text-gray-500 p-desc"></p></div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
-                </div>
-                <button data-amount="0.365000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
-            </div>
-
-            <div class="product-item luxury-card p-4 rounded-2xl" data-category="realestate" data-pi="8.950000" data-name-tr="Monaco Sky Penthouse" data-name-en="Monaco Sky Penthouse" data-desc-tr="Akdeniz Manzaralı Malikane Rezidans" data-desc-en="Mediterranean View Luxury Villa Rezidans">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-zinc-900 flex flex-col items-center justify-center border border-white/5">
-                    <svg class="w-16 h-16 text-[#d4a359]/40 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                    <span class="text-sm font-bold text-zinc-400">Monaco Sky Penthouse</span>
-                </div>
-                <div class="flex justify-between items-end mb-3">
-                    <div><h3 class="font-bold text-base text-white p-name"></h3><p class="text-xs text-gray-500 p-desc"></p></div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
-                </div>
-                <button data-amount="8.950000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
-            </div>
-
-            <div class="product-item luxury-card p-4 rounded-2xl" data-category="realestate" data-pi="3.500000" data-name-tr="Bodrum Marina Villa" data-name-en="Bodrum Marina Villa" data-desc-tr="Denize Sıfır Özel İskeleli Malikane" data-desc-en="Seafront Exclusive Mansion with Private Dock">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-zinc-900 flex flex-col items-center justify-center border border-white/5">
-                    <span class="text-2xl mb-1">🏝️</span>
-                    <span class="text-sm font-bold text-zinc-400">Bodrum Marina Luxury Villa</span>
-                </div>
-                <div class="flex justify-between items-end mb-3">
-                    <div><h3 class="font-bold text-base text-white p-name"></h3><p class="text-xs text-gray-500 p-desc"></p></div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
-                </div>
-                <button data-amount="3.500000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
-            </div>
-
-            <div class="product-item luxury-card p-4 rounded-2xl" data-category="digital" data-pi="0.045000" data-name-tr="Kuantum Yapay Zeka Sunucusu" data-name-en="Quantum AI Node Instance" data-desc-tr="Yüksek Performanslı Bulut Bilişim Sistemi" data-desc-en="High-Performance Dedicated AI Cluster">
-                <div class="relative overflow-hidden rounded-xl mb-3 h-40 bg-zinc-900 flex flex-col items-center justify-center border border-white/5">
-                    <svg class="w-16 h-16 text-[#d4a359]/40 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>
-                    <span class="text-sm font-bold text-zinc-400">Quantum AI Node Cluster</span>
-                </div>
-                <div class="flex justify-between items-end mb-3">
-                    <div><h3 class="font-bold text-base text-white p-name"></h3><p class="text-xs text-gray-500 p-desc"></p></div>
-                    <div class="text-right"><p class="price-display text-[#d4a359] font-mono font-black text-sm"></p></div>
-                </div>
-                <button data-amount="0.045000" class="btn-checkout w-full bg-gradient-to-r from-[#d4a359] to-[#b88a44] text-black font-black py-3 rounded-xl text-xs uppercase tracking-wider transition-all active:scale-95 btn-pay-text"></button>
+                <h3 class="text-lg font-bold mb-1">Escrow Pool #1039</h3>
+                <p class="text-sm text-gray-400">Buyer: R6a8...u833<br>Seller: T859...4833</p>
             </div>
 
         </div>
     </main>
 
-    <footer class="p-4 bg-[#0a0a0f] border-t border-white/5 text-center text-[10px] text-gray-600">
-        <p>© 2026 Pi Global Luxury Protocol Hub.</p>
+    <footer class="bg-gray-800 text-gray-400 p-6 text-center mt-12 border-t border-gray-700">
+        <p>© 2026 Pi Trust Protocol. All rights reserved.</p>
     </footer>
 
-    <script>
-        const GCV = 314159;
-        let currentLang = 'tr';
-        let currentCurrency = 'pi';
-        let totalCartAmountPi = 0;
-        let cartItemCount = 0;
-
-        const dynamicUI = {
-            tr: {
-                subLogo: "GCV GÜVENCELİ ÖDEME PROTOKOLÜ",
-                connectWallet: "Cüzdanı Bağla",
-                cartLabel: "Sepet",
-                gcvLabel: "Konsensüs Değeri (GCV):",
-                catAll: "Tüm Ürünler",
-                catVehicles: "Lüks Araçlar",
-                catRealestate: "Emlak & Arsa",
-                catDigital: "Dijital Cihazlar",
-                payBtn: "Güvenceli Ödemeyi Başlat"
-            },
-            en: {
-                subLogo: "GCV SECURED ESCROW PROTOCOL",
-                connectWallet: "Connect Wallet",
-                cartLabel: "Cart",
-                gcvLabel: "Consensus Rate (GCV):",
-                catAll: "All Products",
-                catVehicles: "Luxury Vehicles",
-                catRealestate: "Real Estate & Lands",
-                catDigital: "Digital Devices",
-                payBtn: "Initiate Secure Payment"
-            }
-        };
-
-        function printLog(text, success = true) {
-            const terminal = document.getElementById('terminalLog');
-            const item = document.createElement('p');
-            item.innerHTML = success ? `> <span class="text-green-400">[OK]</span> ${text}` : `> <span class="text-red-400">[ERR]</span> ${text}`;
-            terminal.appendChild(item);
-            terminal.scrollTop = terminal.scrollHeight;
-        }
-
-        function syncUIVisuals() {
-            const ui = dynamicUI[currentLang];
-            document.getElementById('subLogo').innerText = ui.subLogo;
-            if(!document.getElementById('btnConnect').classList.contains('connected-user')) {
-                document.getElementById('btnConnect').innerText = ui.connectWallet;
-            }
-            document.getElementById('cartLabel').innerText = ui.cartLabel;
-            document.getElementById('gcvLabel').innerText = ui.gcvLabel;
-            document.getElementById('cat-all').innerText = ui.catAll;
-            document.getElementById('cat-vehicles').innerText = ui.catVehicles;
-            document.getElementById('cat-realestate').innerText = ui.catRealestate;
-            document.getElementById('cat-digital').innerText = ui.catDigital;
-
-            document.querySelectorAll('.product-item').forEach(item => {
-                item.querySelector('.p-name').innerText = item.getAttribute(`data-name-${currentLang}`);
-                item.querySelector('.p-desc').innerText = item.getAttribute(`data-desc-${currentLang}`);
-                item.querySelector('.btn-pay-text').innerText = ui.payBtn;
-            });
-            updatePrices();
-        }
-
-        function updatePrices() {
-            document.querySelectorAll('.product-item').forEach(item => {
-                const piVal = parseFloat(item.getAttribute('data-pi'));
-                const priceLabel = item.querySelector('.price-display');
-                if (currentCurrency === 'pi') priceLabel.innerHTML = `${piVal.toFixed(6)} 𝚷`;
-                else if (currentCurrency === 'usd') priceLabel.innerHTML = `$${(piVal * GCV).toLocaleString(undefined, {maximumFractionDigits: 0})}`;
-                else if (currentCurrency === 'eur') priceLabel.innerHTML = `€${(piVal * GCV * 0.92).toLocaleString(undefined, {maximumFractionDigits: 0})}`;
-            });
-
-            const cartTotalLabel = document.getElementById('cartTotal');
-            if (currentCurrency === 'pi') cartTotalLabel.innerHTML = `${totalCartAmountPi.toFixed(6)} 𝚷`;
-            else if (currentCurrency === 'usd') cartTotalLabel.innerHTML = `$${(totalCartAmountPi * GCV).toLocaleString(undefined, {maximumFractionDigits: 0})}`;
-            else if (currentCurrency === 'eur') cartTotalLabel.innerHTML = `€${(totalCartAmountPi * GCV * 0.92).toLocaleString(undefined, {maximumFractionDigits: 0})}`;
-        }
-
-        document.getElementById('langSelect').addEventListener('change', (e) => { currentLang = e.target.value; syncUIVisuals(); });
-        document.getElementById('currencySelect').addEventListener('change', (e) => { currentCurrency = e.target.value; updatePrices(); });
-
-        try {
-            if (typeof Pi !== 'undefined') {
-                Pi.init({ version: '2.0', sandbox: true });
-                document.getElementById('sdkStatus').innerHTML = '> <span class="text-green-400">[OK]</span> Pi Engine Core Online.';
-            } else {
-                document.getElementById('sdkStatus').innerHTML = '> <span class="text-amber-400">[WARN]</span> Sandbox Mod Etkin.';
-            }
-        } catch (e) { printLog(`SDK Hatası: ${e.message}`, false); }
-
-        document.getElementById('btnConnect').addEventListener('click', async () => {
-            if (typeof Pi === 'undefined') { alert("Pi Browser içerisinden açın."); return; }
-            try {
-                const auth = await Pi.authenticate(['username', 'payments'], (p) => {});
-                document.getElementById('btnConnect').innerText = auth.user.username;
-                document.getElementById('btnConnect').className = "bg-green-600 text-white font-bold text-xs px-4 py-2 rounded-full connected-user";
-                printLog(`Giriş yapıldı: ${auth.user.username}`);
-            } catch (err) { printLog(`Hata: ${err.message}`, false); }
-        });
-
-        window.filterCategory = function(cat, element) {
-            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active-tab'));
-            element.classList.add('active-tab');
-            document.querySelectorAll('.product-item').forEach(item => {
-                item.style.display = (cat === 'all' || item.getAttribute('data-category') === cat) ? 'block' : 'none';
-            });
-        }
-
-        document.addEventListener('click', function(e) {
-            if (e.target && e.target.classList.contains('btn-checkout')) {
-                const amt = parseFloat(e.target.getAttribute('data-amount'));
-                cartItemCount++; totalCartAmountPi += amt;
-                document.getElementById('cartCount').innerText = cartItemCount;
-                updatePrices();
-                startPiTransaction(amt, e.target.closest('.product-item').getAttribute(`data-name-${currentLang}`));
-            }
-        });
-
-        async function startPiTransaction(amount, assetName) {
-            if (typeof Pi === 'undefined') return;
-            printLog(`Ödeme paketi hazırlanıyor: ${assetName}`);
-            try {
-                await Pi.createPayment({
-                    amount: amount,
-                    memo: `Escrow Order: ${assetName}`,
-                    metadata: { asset: assetName },
-                }, {
-                    onReadyForServerApproval: function(paymentId) {
-                        printLog(`TxID oluşturuldu. Backend (Render) sunucusu aranıyor...`);
-                        fetch('https://pi-trust-protocol.onrender.com/approve', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ paymentId: paymentId })
-                        }).catch(() => {
-                            printLog(`Önemli: Onay sunucusu (Backend) bağlı değil. İşlem 56 saniye sonra iptal edilecek.`, false);
-                        });
-                    },
-                    onReadyForServerCompletion: function(p, txid) { printLog(`Tamamlandı TxID: ${txid}`); },
-                    onCancel: function() { printLog(`İptal edildi.`, false); },
-                    onError: function(error) {
-                        if (error.message.includes("approve")) {
-                            alert("Cüzdan Zaman Aşımı (Payment Expired): Ödemenin onaylanması için bir arka plan onay sunucusu (Server API) kurmamız gerekiyor. Ön yüz kodumuz hazır, bir sonraki adımda sunucuyu kuralım.");
-                        }
-                    }
-                });
-            } catch (err) { printLog(`Hata: ${err.message}`, false); }
-        }
-
-        syncUIVisuals();
-    </script>
 </body>
 </html>
