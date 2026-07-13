@@ -24,15 +24,22 @@
 </head>
 <body class="bg-gray-900 text-gray-200">
 
-    <!-- GCV Fiyat Şeridi -->
-    <div class="bg-gradient-to-r from-purple-800 to-indigo-900 text-white text-xs md:text-sm font-bold py-2 px-4 text-center flex justify-center items-center shadow-inner relative">
-        <i class="fas fa-chart-line mr-2 text-yellow-400"></i>
-        <span id="gcv-text">Küresel Konsensüs Değeri (GCV) Endeksi: <span class="text-yellow-400">1 Pi = $314,159</span></span>
-        
-        <!-- DİL SEÇİM BUTONLARI -->
-        <div class="absolute right-2 top-1 flex space-x-2">
-            <button onclick="changeLanguage('tr')" class="bg-gray-800 hover:bg-gray-700 text-white text-xs px-2 py-1 rounded font-bold border border-gray-600">TR</button>
-            <button onclick="changeLanguage('en')" class="bg-gray-800 hover:bg-gray-700 text-white text-xs px-2 py-1 rounded font-bold border border-gray-600">EN</button>
+    <!-- ÜST BAR: GCV Fiyat Şeridi ve Dil Seçimi (Üst üste binme engellendi) -->
+    <div class="bg-gradient-to-r from-purple-800 to-indigo-900 text-white py-2 px-4 shadow-inner">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            
+            <!-- GCV Bilgisi -->
+            <div class="flex items-center text-xs md:text-sm font-bold">
+                <i class="fas fa-chart-line mr-2 text-yellow-400"></i>
+                <span id="gcv-text">Küresel Konsensüs Değeri (GCV) Endeksi: <span class="text-yellow-400">1 Pi = $314,159</span></span>
+            </div>
+            
+            <!-- DİL SEÇİM BUTONLARI (Ayrı bir kutu olarak sağa hizalandı) -->
+            <div class="flex space-x-2">
+                <button onclick="changeLanguage('tr')" class="bg-gray-800 hover:bg-gray-700 text-white text-xs px-2.5 py-1 rounded font-bold border border-gray-600 transition-colors">TR</button>
+                <button onclick="changeLanguage('en')" class="bg-gray-800 hover:bg-gray-700 text-white text-xs px-2.5 py-1 rounded font-bold border border-gray-600 transition-colors">EN</button>
+            </div>
+
         </div>
     </div>
 
@@ -140,19 +147,35 @@
 
     <!-- DİL VE PI SDK SCRIPT MOTORU -->
     <script>
-        // Pi SDK Başlatma (Sandbox Modunda)
-        const Pi = window.Pi;
-        if(Pi) {
-            Pi.init({ version: "2.0", sandbox: true });
+        function getPiSDK() {
+            return window.Pi || (window.parent && window.parent.Pi);
         }
 
+        async function initPi() {
+            const PiSDK = getPiSDK();
+            if (PiSDK) {
+                try {
+                    await PiSDK.init({ version: "2.0", sandbox: true });
+                    console.log("Pi SDK başarıyla başlatıldı.");
+                } catch (e) {
+                    console.error("Pi SDK başlatma hatası:", e);
+                }
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(initPi, 1000);
+        });
+
         async function connectPiWallet() {
-            if(!Pi) {
-                alert("Lütfen bu uygulamayı Pi Browser içerisinden açın!");
+            const PiSDK = getPiSDK();
+            if (!PiSDK) {
+                alert("Pi Browser SDK henüz hazır değil. Lütfen birkaç saniye bekleyip tekrar deneyin veya Pi Browser'ı yeniden başlatın.");
                 return;
             }
+
             try {
-                const user = await Pi.authenticate(['username', 'payments'], onIncompletePaymentFound);
+                const user = await PiSDK.authenticate(['username', 'payments'], onIncompletePaymentFound);
                 alert('Cüzdan Başarıyla Bağlandı! Hoş geldin: ' + user.username);
             } catch (err) {
                 alert('Bağlantı Hatası: ' + err.message);
@@ -160,7 +183,7 @@
         }
 
         function onIncompletePaymentFound(payment) {
-            alert('Tamamlanmamış bir ödeme bulundu, lütfen bekleyin...');
+            alert('Tamamlanmamış bir ödeme bulundu, sistem kontrol ediyor...');
         }
 
         function searchTx() {
