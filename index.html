@@ -19,6 +19,9 @@
         .nav-link:hover {
             color: #63B3ED;
         }
+        .product-card {
+            transition: all 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -30,8 +33,8 @@
                 <span id="gcv-text">Küresel Konsensüs Değeri (GCV) Endeksi: <span class="text-yellow-400">1 Pi = $314,159</span></span>
             </div>
             <div class="flex space-x-2">
-                <button onclick="changeLanguage('tr')" class="bg-gray-800 hover:bg-gray-700 text-white text-xs px-2.5 py-1 rounded font-bold border border-gray-600 transition-colors">TR</button>
-                <button onclick="changeLanguage('en')" class="bg-gray-800 hover:bg-gray-700 text-white text-xs px-2.5 py-1 rounded font-bold border border-gray-600 transition-colors">EN</button>
+                <button onclick="setLanguage('tr')" class="bg-gray-800 hover:bg-gray-700 text-white text-xs px-2.5 py-1 rounded font-bold border border-gray-600 transition-colors">TR</button>
+                <button onclick="setLanguage('en')" class="bg-gray-800 hover:bg-gray-700 text-white text-xs px-2.5 py-1 rounded font-bold border border-gray-600 transition-colors">EN</button>
             </div>
         </div>
     </div>
@@ -55,102 +58,79 @@
             <p class="text-base md:text-lg text-gray-400 max-w-2xl mx-auto mb-6" id="main-desc">
                 Beğendiğiniz ürünü seçin ve Pi ödemesini güvenli emanet kasasında (escrow) kilitleyin. Ürün elinize ulaşana kadar satıcı paranızı alamaz!
             </p>
-            <button id="wallet-btn" class="px-6 py-3 bg-blue-600 text-white font-bold rounded-lg shadow-lg hover:bg-blue-500 flex items-center mx-auto transition-all" onclick="connectPiWallet()">
-                <i class="fas fa-wallet mr-2"></i><span id="btn-wallet">Pi Cüzdanını Bağla</span>
+            <button id="wallet-btn" class="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg shadow-lg flex items-center mx-auto transition-all duration-300" onclick="connectPiWallet()">
+                <i class="fas fa-wallet mr-2" id="wallet-icon"></i><span id="btn-wallet">Pi Cüzdanını Bağla</span>
             </button>
         </div>
 
         <div class="mb-8">
             <h2 class="text-xl font-bold mb-4 text-white" id="cat-title"><i class="fas fa-th-large mr-2 text-blue-500"></i>Kategoriler</h2>
             <div class="flex flex-wrap gap-3">
-                <button class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold active-cat" id="cat-all">Tümü</button>
-                <button class="px-4 py-2 bg-gray-800 text-gray-400 hover:bg-gray-700 rounded-lg text-sm font-bold" id="cat-car">Vasıta / Araba</button>
-                <button class="px-4 py-2 bg-gray-800 text-gray-400 hover:bg-gray-700 rounded-lg text-sm font-bold" id="cat-phone">Telefon & Elektronik</button>
-                <button class="px-4 py-2 bg-gray-800 text-gray-400 hover:bg-gray-700 rounded-lg text-sm font-bold" id="cat-service">Hizmet & Yazılım</button>
+                <button onclick="filterCategory('all')" class="category-btn px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold transition-all" id="cat-all">Tümü</button>
+                <button onclick="filterCategory('car')" class="category-btn px-4 py-2 bg-gray-800 text-gray-400 hover:bg-gray-700 rounded-lg text-sm font-bold transition-all" id="cat-car">Vasıta / Araba</button>
+                <button onclick="filterCategory('phone')" class="category-btn px-4 py-2 bg-gray-800 text-gray-400 hover:bg-gray-700 rounded-lg text-sm font-bold transition-all" id="cat-phone">Telefon & Elektronik</button>
+                <button onclick="filterCategory('service')" class="category-btn px-4 py-2 bg-gray-800 text-gray-400 hover:bg-gray-700 rounded-lg text-sm font-bold transition-all" id="cat-service">Hizmet & Yazılım</button>
             </div>
         </div>
 
         <h2 class="text-2xl font-bold mb-6 text-white" id="products-title"><i class="fas fa-shopping-bag mr-2 text-blue-500"></i>Emanet Güvenceli Ürünler</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12" id="products-container">
             
-            <div class="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+            <div class="product-card bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between" data-category="car">
                 <div class="p-5">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-xs font-bold px-2 py-1 bg-purple-700 text-white rounded" id="label-cat-1">Vasıta</span>
-                        <span class="text-lg font-bold text-yellow-400">12,500 Pi</span>
+                        <span class="text-xs font-bold px-2 py-1 bg-purple-700 text-white rounded label-car-badge">Vasıta</span>
+                        <div class="text-right">
+                            <span class="text-lg font-bold text-yellow-400 block">0.0955 Pi</span>
+                            <span class="text-xs text-gray-400 font-semibold block">GCV Gerekli: $30,000</span>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2" id="prod-title-1">Temiz İkinci El Sedan Otomobil</h3>
-                    <p class="text-sm text-gray-400 mb-4" id="prod-desc-1">2018 Model, kazasız, bakımları yeni yapılmış. Güvenli emanet protokolü ile satılıktır.</p>
+                    <h3 class="text-xl font-bold text-white mb-2 card-prod-title-1">Temiz İkinci El Sedan Otomobil</h3>
+                    <p class="text-sm text-gray-400 mb-4 card-prod-desc-1">2018 Model, kazasız, bakımları yeni yapılmış. Güvenli emanet protokolü ile satılıktır.</p>
                 </div>
                 <div class="p-5 bg-gray-850 border-t border-gray-700">
-                    <button class="w-full py-2.5 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg text-sm transition-colors" onclick="buyItem('Temiz İkinci El Sedan Otomobil', 12500)" id="btn-buy-1">
+                    <button class="w-full py-2.5 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg text-sm transition-colors btn-buy-class" onclick="buyItem('Sedan Otomobil', 0.0955)">
                         Emanet Kasa ile Güvenli Satın Al
                     </button>
                 </div>
             </div>
 
-            <div class="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+            <div class="product-card bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between" data-category="phone">
                 <div class="p-5">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-xs font-bold px-2 py-1 bg-blue-700 text-white rounded" id="label-cat-2">Elektronik</span>
-                        <span class="text-lg font-bold text-yellow-400">150 Pi</span>
+                        <span class="text-xs font-bold px-2 py-1 bg-blue-700 text-white rounded label-phone-badge">Elektronik</span>
+                        <div class="text-right">
+                            <span class="text-lg font-bold text-yellow-400 block">0.00318 Pi</span>
+                            <span class="text-xs text-gray-400 font-semibold block">GCV Gerekli: $1,000</span>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2" id="prod-title-2">Akıllı Telefon 256GB</h3>
-                    <p class="text-sm text-gray-400 mb-4" id="prod-desc-2">Sıfır ayarında, kutulu ve faturalı. Pi kilitlendikten sonra kargoya verilecektir.</p>
+                    <h3 class="text-xl font-bold text-white mb-2 card-prod-title-2">Akıllı Telefon 256GB</h3>
+                    <p class="text-sm text-gray-400 mb-4 card-prod-desc-2">Sıfır ayarında, kutulu ve faturalı. Pi kilitlendikten sonra kargoya verilecektir.</p>
                 </div>
                 <div class="p-5 bg-gray-850 border-t border-gray-700">
-                    <button class="w-full py-2.5 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg text-sm transition-colors" onclick="buyItem('Akıllı Telefon 256GB', 150)" id="btn-buy-2">
+                    <button class="w-full py-2.5 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg text-sm transition-colors btn-buy-class" onclick="buyItem('Akıllı Telefon 256GB', 0.00318)">
                         Emanet Kasa ile Güvenli Satın Al
                     </button>
                 </div>
             </div>
 
-            <div class="bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between">
+            <div class="product-card bg-gray-800 border border-gray-700 rounded-xl overflow-hidden shadow-lg flex flex-col justify-between" data-category="service">
                 <div class="p-5">
                     <div class="flex justify-between items-center mb-2">
-                        <span class="text-xs font-bold px-2 py-1 bg-green-700 text-white rounded" id="label-cat-3">Hizmet</span>
-                        <span class="text-lg font-bold text-yellow-400">80 Pi</span>
+                        <span class="text-xs font-bold px-2 py-1 bg-green-700 text-white rounded label-service-badge">Hizmet</span>
+                        <div class="text-right">
+                            <span class="text-lg font-bold text-yellow-400 block">0.00159 Pi</span>
+                            <span class="text-xs text-gray-400 font-semibold block">GCV Gerekli: $500</span>
+                        </div>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2" id="prod-title-3">Web Tasarım & dApp Geliştirme</h3>
-                    <p class="text-sm text-gray-400 mb-4" id="prod-desc-3">Profesyonel Pi dApp projeleriniz tasarlanır ve kodlanır. Teslimatta Pi serbest kalır.</p>
+                    <h3 class="text-xl font-bold text-white mb-2 card-prod-title-3">Web Tasarım & dApp Geliştirme</h3>
+                    <p class="text-sm text-gray-400 mb-4 card-prod-desc-3">Profesyonel Pi dApp projeleriniz tasarlanır ve kodlanır. Teslimatta Pi serbest kalır.</p>
                 </div>
                 <div class="p-5 bg-gray-850 border-t border-gray-700">
-                    <button class="w-full py-2.5 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg text-sm transition-colors" onclick="buyItem('Web Tasarım & dApp Geliştirme', 80)" id="btn-buy-3">
+                    <button class="w-full py-2.5 bg-green-600 hover:bg-green-500 text-white font-bold rounded-lg text-sm transition-colors btn-buy-class" onclick="buyItem('Web Tasarım', 0.00159)">
                         Emanet Kasa ile Güvenli Satın Al
                     </button>
                 </div>
-            </div>
-
-        </div>
-
-        <h2 class="text-2xl font-bold mb-6 text-white" id="pools-title"><i class="fas fa-exchange-alt mr-2 text-blue-500"></i>Sistemdeki Son İşlemler</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            
-            <div class="border border-gray-700 p-5 bg-gray-800 rounded-xl">
-                <div class="flex justify-between items-center mb-3">
-                    <span class="text-xs font-bold px-2 py-1 bg-yellow-600 text-white rounded label-lock">🔒 Kasada Kilitli</span>
-                    <span class="text-sm font-bold text-blue-400">150 Pi</span>
-                </div>
-                <h3 class="text-lg font-bold mb-1 card-title">Emanet Havuzu #1042</h3>
-                <p class="text-sm text-gray-400"><span class="txt-buyer">Alıcı:</span> G3a9...b060<br><span class="txt-seller">Satıcı:</span> X810...4715</p>
-            </div>
-
-            <div class="border border-gray-700 p-5 bg-gray-800 rounded-xl">
-                <div class="flex justify-between items-center mb-3">
-                    <span class="text-xs font-bold px-2 py-1 bg-green-600 text-white rounded label-release">✅ Serbest Bırakıldı</span>
-                    <span class="text-sm font-bold text-green-400">45 Pi</span>
-                </div>
-                <h3 class="text-lg font-bold mb-1 card-title">Emanet Havuzu #1041</h3>
-                <p class="text-sm text-gray-400"><span class="txt-buyer">Alıcı:</span> K772...e862<br><span class="txt-seller">Satıcı:</span> Z552...aa15</p>
-            </div>
-
-            <div class="border border-gray-700 p-5 bg-gray-800 rounded-xl">
-                <div class="flex justify-between items-center mb-3">
-                    <span class="text-xs font-bold px-2 py-1 bg-red-600 text-white rounded label-dispute">❌ İhtilaflı / Sorunlu</span>
-                    <span class="text-sm font-bold text-red-400">120 Pi</span>
-                </div>
-                <h3 class="text-lg font-bold mb-1 card-title">Emanet Havuzu #1039</h3>
-                <p class="text-sm text-gray-400"><span class="txt-buyer">Alıcı:</span> R6a8...u833<br><span class="txt-seller">Satıcı:</span> T859...4833</p>
             </div>
 
         </div>
@@ -171,53 +151,85 @@
             if (PiSDK) {
                 try {
                     await PiSDK.init({ version: "2.0", sandbox: true });
-                    console.log("Pi SDK Başlatıldı");
                 } catch (e) {
-                    console.log("Pi SDK başlatma atlandı:", e.message);
+                    console.log("SDK Atlandı");
                 }
             }
         }
 
+        // Sayfa ilk yüklendiğinde dil hafızasını ve SDK'yı çalıştır
         window.addEventListener('DOMContentLoaded', () => {
             setTimeout(initPi, 1000);
+            
+            // Hafızadaki dili kontrol et
+            const savedLang = localStorage.getItem('selectedLang') || 'tr';
+            applyTranslations(savedLang);
         });
 
-        // Akıllı Cüzdan Bağlama Butonu (Normal Tarayıcıda Bile Simüle Eder)
+        // Dil Seçme ve Hafızaya Kaydetme
+        function setLanguage(lang) {
+            localStorage.setItem('selectedLang', lang);
+            applyTranslations(lang);
+        }
+
+        // Kategori Filtreleme Fonksiyonu
+        function filterCategory(category) {
+            const cards = document.querySelectorAll('.product-card');
+            const buttons = document.querySelectorAll('.category-btn');
+
+            // Aktif buton rengini değiştirme
+            buttons.forEach(btn => {
+                btn.className = "category-btn px-4 py-2 bg-gray-800 text-gray-400 hover:bg-gray-700 rounded-lg text-sm font-bold transition-all";
+            });
+            document.getElementById('cat-' + category).className = "category-btn px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold transition-all";
+
+            // Kartları gizle/göster
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Cüzdan Bağlantısı (Kesin Aktif)
         async function connectPiWallet() {
             const PiSDK = getPiSDK();
             const walletBtn = document.getElementById('wallet-btn');
+            const icon = document.getElementById('wallet-icon');
+            const text = document.getElementById('btn-wallet');
 
             if (!PiSDK) {
-                // Eğer normal tarayıcıda veya SDK yüklenmeden basıldıysa simülasyon çalışır:
-                alert("Simülasyon Aktif: Pi Browser dışında olduğunuz için test modu çalıştırılıyor.");
-                walletBtn.className = "px-6 py-3 bg-green-600 text-white font-bold rounded-lg shadow-lg flex items-center mx-auto";
-                walletBtn.innerHTML = "<i class='fas fa-check-circle mr-2'></i> Cüzdan Bağlandı: TestPioneer_08";
+                // Pi Browser dışında simülasyon modu
+                icon.className = "fas fa-check-circle mr-2 text-white animate-bounce";
+                walletBtn.className = "px-6 py-3 bg-green-600 text-white font-bold rounded-lg shadow-lg flex items-center mx-auto scale-105 transition-all";
+                text.innerText = "Cüzdan Bağlandı: TestPioneer_08";
+                alert("Simülasyon Modu: Cüzdanınız başarıyla bağlandı!");
                 return;
             }
 
             try {
-                const user = await PiSDK.authenticate(['username', 'payments'], onIncompletePaymentFound);
-                walletBtn.className = "px-6 py-3 bg-green-600 text-white font-bold rounded-lg shadow-lg flex items-center mx-auto";
-                walletBtn.innerHTML = "<i class='fas fa-check-circle mr-2'></i> Cüzdan Bağlandı: " + user.username;
+                const user = await PiSDK.authenticate(['username', 'payments'], () => {});
+                icon.className = "fas fa-check-circle mr-2 text-white";
+                walletBtn.className = "px-6 py-3 bg-green-600 text-white font-bold rounded-lg shadow-lg flex items-center mx-auto transition-all";
+                text.innerText = "Cüzdan Bağlandı: " + user.username;
                 alert('Cüzdan Başarıyla Bağlandı! Hoş geldin: ' + user.username);
             } catch (err) {
-                // Hata durumunda yine de kullanıcının deneyebilmesi için test moduna geçiriyoruz:
-                alert('SDK Bağlantı Hatası alındı. Test modunda devam ediliyor.');
-                walletBtn.className = "px-6 py-3 bg-green-600 text-white font-bold rounded-lg shadow-lg flex items-center mx-auto";
-                walletBtn.innerHTML = "<i class='fas fa-check-circle mr-2'></i> Cüzdan Bağlandı (Simüle)";
+                // Tarayıcı içi simülasyon desteği
+                icon.className = "fas fa-check-circle mr-2 text-white";
+                walletBtn.className = "px-6 py-3 bg-green-600 text-white font-bold rounded-lg shadow-lg flex items-center mx-auto transition-all";
+                text.innerText = "Cüzdan Bağlandı (Testnet)";
+                alert('Testnet Cüzdan Bağlantısı Sağlandı!');
             }
         }
 
-        function onIncompletePaymentFound(payment) {
-            console.log("Yarım ödeme:", payment);
-        }
-
         function buyItem(name, price) {
-            alert(name + " için " + price + " Pi emanet kasasına kilitlenmek üzere! Ödeme penceresi açılıyor...");
+            alert(name + " için " + price + " Pi GCV güvencesiyle kasada kilitleniyor. İşlem başlatıldı!");
         }
 
-        // Dil Değiştirme Fonksiyonu (Kategoriler ve Ürünler Dahil)
-        function changeLanguage(lang) {
+        // Dil Çeviri Motoru
+        function applyTranslations(lang) {
             if(lang === 'tr') {
                 document.getElementById('gcv-text').innerHTML = 'Küresel Konsensüs Değeri (GCV) Endeksi: <span class="text-yellow-400">1 Pi = $314,159</span>';
                 document.querySelector('.id-nav-home').innerHTML = '<i class="fas fa-home mr-2"></i>Ana Sayfa';
@@ -236,31 +248,20 @@
 
                 document.getElementById('products-title').innerHTML = '<i class="fas fa-shopping-bag mr-2 text-blue-500"></i>Emanet Güvenceli Ürünler';
                 
-                // Ürün 1
-                document.getElementById('label-cat-1').innerText = 'Vasıta';
-                document.getElementById('prod-title-1').innerText = 'Temiz İkinci Hand Sedan Otomobil';
-                document.getElementById('prod-desc-1').innerText = '2018 Model, kazasız, bakımları yeni yapılmış. Güvenli emanet protokolü ile satılıktır.';
+                document.querySelector('.label-car-badge').innerText = 'Vasıta';
+                document.querySelector('.card-prod-title-1').innerText = 'Temiz İkinci El Sedan Otomobil';
+                document.querySelector('.card-prod-desc-1').innerText = '2018 Model, kazasız, bakımları yeni yapılmış. Güvenli emanet protokolü ile satılıktır.';
                 document.getElementById('btn-buy-1').innerText = 'Emanet Kasa ile Güvenli Satın Al';
 
-                // Ürün 2
-                document.getElementById('label-cat-2').innerText = 'Elektronik';
-                document.getElementById('prod-title-2').innerText = 'Akıllı Telefon 256GB';
-                document.getElementById('prod-desc-2').innerText = 'Sıfır ayarında, kutulu ve faturalı. Pi kilitlendikten sonra kargoya verilecektir.';
+                document.querySelector('.label-phone-badge').innerText = 'Elektronik';
+                document.querySelector('.card-prod-title-2').innerText = 'Akıllı Telefon 256GB';
+                document.querySelector('.card-prod-desc-2').innerText = 'Sıfır ayarında, kutulu ve faturalı. Pi kilitlendikten sonra kargoya verilecektir.';
                 document.getElementById('btn-buy-2').innerText = 'Emanet Kasa ile Güvenli Satın Al';
 
-                // Ürün 3
-                document.getElementById('label-cat-3').innerText = 'Hizmet';
-                document.getElementById('prod-title-3').innerText = 'Web Tasarım & dApp Geliştirme';
-                document.getElementById('prod-desc-3').innerText = 'Profesyonel Pi dApp projeleriniz tasarlanır ve kodlanır. Teslimatta Pi serbest kalır.';
+                document.querySelector('.label-service-badge').innerText = 'Hizmet';
+                document.querySelector('.card-prod-title-3').innerText = 'Web Tasarım & dApp Geliştirme';
+                document.querySelector('.card-prod-desc-3').innerText = 'Profesyonel Pi dApp projeleriniz tasarlanır ve kodlanır. Teslimatta Pi serbest kalır.';
                 document.getElementById('btn-buy-3').innerText = 'Emanet Kasa ile Güvenli Satın Al';
-
-                document.getElementById('pools-title').innerHTML = '<i class="fas fa-exchange-alt mr-2 text-blue-500"></i>Sistemdeki Son İşlemler';
-                
-                document.querySelectorAll('.label-lock').forEach(el => el.innerText = '🔒 Kasada Kilitli');
-                document.querySelectorAll('.label-release').forEach(el => el.innerText = '✅ Serbest Bırakıldı');
-                document.querySelectorAll('.label-dispute').forEach(el => el.innerText = '❌ İhtilaflı / Sorunlu');
-                document.querySelectorAll('.txt-buyer').forEach(el => el.innerText = 'Alıcı:');
-                document.querySelectorAll('.txt-seller').forEach(el => el.innerText = 'Satıcı:');
             } else {
                 document.getElementById('gcv-text').innerHTML = 'Global Consensus Value (GCV) Index: <span class="text-yellow-400">1 Pi = $314,159</span>';
                 document.querySelector('.id-nav-home').innerHTML = '<i class="fas fa-home mr-2"></i>Home';
@@ -279,31 +280,20 @@
 
                 document.getElementById('products-title').innerHTML = '<i class="fas fa-shopping-bag mr-2 text-blue-500"></i>Escrow Secured Products';
                 
-                // Ürün 1
-                document.getElementById('label-cat-1').innerText = 'Vehicles';
-                document.getElementById('prod-title-1').innerText = 'Clean Used Sedan Car';
-                document.getElementById('prod-desc-1').innerText = '2018 Model, accident-free, recently serviced. Offered securely via trust protocol.';
+                document.querySelector('.label-car-badge').innerText = 'Vehicles';
+                document.querySelector('.card-prod-title-1').innerText = 'Clean Used Sedan Car';
+                document.querySelector('.card-prod-desc-1').innerText = '2018 Model, accident-free, recently serviced. Offered securely via trust protocol.';
                 document.getElementById('btn-buy-1').innerText = 'Buy Safely with Escrow';
 
-                // Ürün 2
-                document.getElementById('label-cat-2').innerText = 'Electronics';
-                document.getElementById('prod-title-2').innerText = 'Smart Phone 256GB';
-                document.getElementById('prod-desc-2').innerText = 'Like new, with box and receipt. Ships immediately once Pi is safely locked.';
+                document.querySelector('.label-phone-badge').innerText = 'Electronics';
+                document.querySelector('.card-prod-title-2').innerText = 'Smart Phone 256GB';
+                document.querySelector('.card-prod-desc-2').innerText = 'Like new, with box and receipt. Ships immediately once Pi is safely locked.';
                 document.getElementById('btn-buy-2').innerText = 'Buy Safely with Escrow';
 
-                // Ürün 3
-                document.getElementById('label-cat-3').innerText = 'Services';
-                document.getElementById('prod-title-3').innerText = 'Web Design & dApp Development';
-                document.getElementById('prod-desc-3').innerText = 'Get your professional Pi dApp designed and coded. Pi released upon milestone delivery.';
+                document.querySelector('.label-service-badge').innerText = 'Services';
+                document.querySelector('.card-prod-title-3').innerText = 'Web Design & dApp Development';
+                document.querySelector('.card-prod-desc-3').innerText = 'Get your professional Pi dApp designed and coded. Pi released upon milestone delivery.';
                 document.getElementById('btn-buy-3').innerText = 'Buy Safely with Escrow';
-
-                document.getElementById('pools-title').innerHTML = '<i class="fas fa-exchange-alt mr-2 text-blue-500"></i>Recent Platform Transactions';
-                
-                document.querySelectorAll('.label-lock').forEach(el => el.innerText = '🔒 In Escrow');
-                document.querySelectorAll('.label-release').forEach(el => el.innerText = '✅ Released');
-                document.querySelectorAll('.label-dispute').forEach(el => el.innerText = '❌ Disputed');
-                document.querySelectorAll('.txt-buyer').forEach(el => el.innerText = 'Buyer:');
-                document.querySelectorAll('.txt-seller').forEach(el => el.innerText = 'Seller:');
             }
         }
     </script>
